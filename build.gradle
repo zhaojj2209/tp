@@ -52,7 +52,7 @@ gitHooks {
     hooksDirectory = file('.git/hooks')
     gradleCommand = './gradlew'
     hooks = [
-        'pre-push': 'clean check test'
+        'pre-push': 'clean check'
     ]
 }
 
