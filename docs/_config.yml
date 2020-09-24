@@ -2,14 +2,25 @@ title: "Fine$$e"
 theme: minima
 
 header_pages:
+  - Minutes.md
   - UserGuide.md
   - DeveloperGuide.md
   - AboutUs.md
 
 markdown: kramdown
 
-repository: "se-edu/addressbook-level3"
+repository: "AY2021S1-CS2103T-W16-3/tp"
 github_icon: "images/github-icon.png"
 
 plugins:
-  - jemoji
+  - jekyll-coffeescript
+  - jekyll-default-layout
+  - jekyll-gist
+  # Disabled since we are building the files manually.
+  # - jekyll-github-metadata
+  - jekyll-optional-front-matter
+  - jekyll-paginate
+  - jekyll-readme-index
+  - jekyll-titles-from-headings
+  - jekyll-relative-links
+  - jekyll-spaceship

@@ -5,5 +5,15 @@ source "https://rubygems.org"
 git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem 'jekyll'
-gem 'github-pages', group: :jekyll_plugins
+gem 'minima'
+gem 'jekyll-coffeescript'
+gem 'jekyll-default-layout'
+gem 'jekyll-gist'
+gem 'jekyll-github-metadata'
+gem 'jekyll-optional-front-matter'
+gem 'jekyll-paginate'
+gem 'jekyll-readme-index'
+gem 'jekyll-titles-from-headings'
+gem 'jekyll-relative-links'
 gem 'wdm', '~> 0.1.0' if Gem.win_platform?
+gem 'jekyll-spaceship', '~> 0.9.2'

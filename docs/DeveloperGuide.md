@@ -249,7 +249,7 @@ _{Explain here how the data archiving feature will be implemented}_
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
 | Priority | As a …​               | I want to …​                 | So that I can…​                                                          |
-| -------- | ------------------------ | ------------------------------- | --------------------------------------------------------------------------- |                                                                                    
+| -------- | ------------------------ | ------------------------------- | --------------------------------------------------------------------------- |
 | `* * *`  | new user                 | see usage instructions          | refer to instructions when I forget how to use the app                      |
 | `* * *`  | user                     | add an expense                  |                                                                             |
 | `* * *`  | user                     | view a list of past expenses    | keep track of my past expenses                                              |
@@ -261,7 +261,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user                     | delete an income                | remove income that was entered wrongly                                      |
 | `* * *`  | user                     | set monthly saving goals        | cultivate good saving habits                                                |
 | `* *`    | user                     | view my saving trends           | better plan my future expenses                                              |
-| `*`      | user                     | complete savings challenges     | be motivated to reach my savings goals                                      | 
+| `*`      | user                     | complete savings challenges     | be motivated to reach my savings goals                                      |
 
 *{More to be added}*
 
