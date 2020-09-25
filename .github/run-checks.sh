@@ -1,6 +1,7 @@
 #!/bin/sh
 # Runs all check-* scripts, and returns a non-zero exit code if any of them fail.
 
+echo "Running formatting checks..."
 dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) &&
 ret=0 &&
 for checkscript in "$dir"/check-*; do

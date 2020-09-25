@@ -52,7 +52,8 @@ gitHooks {
     hooksDirectory = file('.git/hooks')
     gradleCommand = './gradlew'
     hooks = [
-        'pre-push': 'clean check'
+        // Git hooks run in a bash environment regardless of OS.
+        'pre-push': 'clean check && .github/run-checks.sh'
     ]
 }
 

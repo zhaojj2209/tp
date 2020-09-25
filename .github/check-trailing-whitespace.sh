@@ -1,5 +1,6 @@
 #!/bin/sh
 # Checks for trailing whitespace
+echo "Checking for trailing whitespace..."
 
 git grep --cached -I -n --no-color -P '[ \t]+$' -- ':/' |
 awk '
@@ -9,7 +10,7 @@ awk '
         ret = 0
     }
     {
-        # Only warn for markdown files (*.md) to accomodate text editors
+        # Only warn for markdown files (*.md) to accommodate text editors
         # which do not properly handle trailing whitespace.
         # (e.g. GitHub web editor)
         if ($1 ~ /\.md$/) {

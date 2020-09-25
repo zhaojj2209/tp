@@ -1,6 +1,7 @@
 #!/bin/sh
 # Checks for prohibited line endings.
 # Prohibited line endings: \r\n
+echo "Checking for prohibited line endings..."
 
 git grep --cached -I -n --no-color -P '\r$' -- ':/' |
 awk '

@@ -1,5 +1,6 @@
 #!/bin/sh
 # Checks that all text files end with a newline.
+echo "Checking for newline at EOF..."
 
 ret=0
 
