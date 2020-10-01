@@ -1,4 +1,4 @@
-package seedu.address.model.person;
+package seedu.address.model.transaction;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
@@ -8,8 +8,8 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.model.person.exceptions.DuplicateTransactionException;
-import seedu.address.model.person.exceptions.TransactionNotFoundException;
+import seedu.address.model.transaction.exceptions.DuplicateTransactionException;
+import seedu.address.model.transaction.exceptions.TransactionNotFoundException;
 
 /**
  * A list of transactions that enforces uniqueness between its elements and does not allow nulls.

@@ -10,8 +10,8 @@ import java.util.Set;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.EditCommand;
-import seedu.address.model.person.Transaction;
-import seedu.address.model.tag.Category;
+import seedu.address.model.category.Category;
+import seedu.address.model.transaction.Transaction;
 
 /**
  * A utility class for Transaction.

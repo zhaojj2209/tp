@@ -1,4 +1,4 @@
-package seedu.address.model.person.exceptions;
+package seedu.address.model.transaction.exceptions;
 
 /**
  * Signals that the operation will result in duplicate Transactions (Transactions are considered duplicates if they
