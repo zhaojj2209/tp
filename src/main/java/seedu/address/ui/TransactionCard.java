@@ -7,14 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Transaction;
 
 /**
- * An UI component that displays information of a {@code Person}.
+ * An UI component that displays information of a {@code Transaction}.
  */
-public class PersonCard extends UiPart<Region> {
+public class TransactionCard extends UiPart<Region> {
 
-    private static final String FXML = "PersonListCard.fxml";
+    private static final String FXML = "TransactionListCard.fxml";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -24,7 +24,7 @@ public class PersonCard extends UiPart<Region> {
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
 
-    public final Person person;
+    public final Transaction transaction;
 
     @FXML
     private HBox cardPane;
@@ -33,28 +33,28 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label phone;
+    private Label amount;
     @FXML
     private Label address;
     @FXML
-    private Label email;
+    private Label date;
     @FXML
-    private FlowPane tags;
+    private FlowPane categories;
 
     /**
-     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
+     * Creates a {@code TransactionCard} with the given {@code Transaction} and index to display.
      */
-    public PersonCard(Person person, int displayedIndex) {
+    public TransactionCard(Transaction transaction, int displayedIndex) {
         super(FXML);
-        this.person = person;
+        this.transaction = transaction;
         id.setText(displayedIndex + ". ");
-        name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
-        email.setText(person.getEmail().value);
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        name.setText(transaction.getName().fullName);
+        amount.setText(transaction.getAmount().value);
+        address.setText(transaction.getAddress().value);
+        date.setText(transaction.getDate().value);
+        transaction.getCategories().stream()
+                .sorted(Comparator.comparing(category -> category.categoryName))
+                .forEach(category -> categories.getChildren().add(new Label(category.categoryName)));
     }
 
     @Override
@@ -65,13 +65,13 @@ public class PersonCard extends UiPart<Region> {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof PersonCard)) {
+        if (!(other instanceof TransactionCard)) {
             return false;
         }
 
         // state check
-        PersonCard card = (PersonCard) other;
+        TransactionCard card = (TransactionCard) other;
         return id.getText().equals(card.id.getText())
-                && person.equals(card.person);
+                && transaction.equals(card.transaction);
     }
 }
