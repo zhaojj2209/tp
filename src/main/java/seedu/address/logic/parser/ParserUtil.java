@@ -9,11 +9,11 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Amount;
-import seedu.address.model.person.Date;
-import seedu.address.model.person.Name;
-import seedu.address.model.tag.Category;
+import seedu.address.model.category.Category;
+import seedu.address.model.transaction.Address;
+import seedu.address.model.transaction.Amount;
+import seedu.address.model.transaction.Date;
+import seedu.address.model.transaction.Name;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.

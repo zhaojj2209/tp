@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import seedu.address.model.AddressBook;
-import seedu.address.model.person.Transaction;
+import seedu.address.model.transaction.Transaction;
 
 /**
  * A utility class containing a list of {@code Transaction} objects to be used in tests.

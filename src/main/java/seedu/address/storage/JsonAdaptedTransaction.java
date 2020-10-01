@@ -10,12 +10,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Amount;
-import seedu.address.model.person.Date;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Transaction;
-import seedu.address.model.tag.Category;
+import seedu.address.model.category.Category;
+import seedu.address.model.transaction.Address;
+import seedu.address.model.transaction.Amount;
+import seedu.address.model.transaction.Date;
+import seedu.address.model.transaction.Name;
+import seedu.address.model.transaction.Transaction;
 
 /**
  * Jackson-friendly version of {@link Transaction}.

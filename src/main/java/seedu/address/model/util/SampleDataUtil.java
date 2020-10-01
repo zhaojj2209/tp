@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Amount;
-import seedu.address.model.person.Date;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Transaction;
-import seedu.address.model.tag.Category;
+import seedu.address.model.category.Category;
+import seedu.address.model.transaction.Address;
+import seedu.address.model.transaction.Amount;
+import seedu.address.model.transaction.Date;
+import seedu.address.model.transaction.Name;
+import seedu.address.model.transaction.Transaction;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.

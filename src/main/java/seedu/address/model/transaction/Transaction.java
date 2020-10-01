@@ -1,4 +1,4 @@
-package seedu.address.model.person;
+package seedu.address.model.transaction;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import seedu.address.model.tag.Category;
+import seedu.address.model.category.Category;
 
 /**
  * Represents a Transaction in the address book.
