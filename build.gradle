@@ -8,7 +8,7 @@ plugins {
     id 'com.github.jakemarsden.git-hooks' version '0.0.2'
 }
 
-mainClassName = 'seedu.address.Main'
+mainClassName = 'ay2021s1_cs2103_w16_3.finesse.Main'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -43,7 +43,7 @@ task coverage(type: JacocoReport) {
 }
 
 pitest {
-    targetClasses = ['seedu.address.*']
+    targetClasses = ['ay2021s1_cs2103_w16_3.finesse.*']
     junit5PluginVersion = '0.12'
     threads = 4
 }
