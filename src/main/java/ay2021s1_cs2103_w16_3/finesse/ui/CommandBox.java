@@ -1,6 +1,5 @@
 package ay2021s1_cs2103_w16_3.finesse.ui;
 
-import ay2021s1_cs2103_w16_3.finesse.logic.Logic;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
@@ -73,7 +72,7 @@ public class CommandBox extends UiPart<Region> {
         /**
          * Executes the command and returns the result.
          *
-         * @see Logic#execute(String)
+         * @see ay2021s1_cs2103_w16_3.finesse.logic.Logic#execute(String)
          */
         CommandResult execute(String commandText) throws CommandException, ParseException;
     }
