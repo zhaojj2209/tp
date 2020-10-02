@@ -2,7 +2,6 @@
   "transactions": [ {
     "name": "Hans Muster",
     "amount": "9482424",
-    "date": "invalid@email!3e",
-    "address": "4th street"
+    "date": "invalid@email!3e"
   } ]
 }

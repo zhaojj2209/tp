@@ -3,7 +3,6 @@ package seedu.address.model.transaction;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalTransactions.ALICE;
@@ -42,8 +41,7 @@ public class UniqueTransactionListTest {
     @Test
     public void contains_transactionWithSameIdentityFieldsInList_returnsTrue() {
         uniqueTransactionList.add(ALICE);
-        Transaction editedAlice = new TransactionBuilder(ALICE).withAddress(VALID_ADDRESS_BOB)
-                .withCategories(VALID_CATEGORY_HUSBAND).build();
+        Transaction editedAlice = new TransactionBuilder(ALICE).withCategories(VALID_CATEGORY_HUSBAND).build();
         assertTrue(uniqueTransactionList.contains(editedAlice));
     }
 
@@ -85,8 +83,7 @@ public class UniqueTransactionListTest {
     @Test
     public void setTransaction_editedTransactionHasSameIdentity_success() {
         uniqueTransactionList.add(ALICE);
-        Transaction editedAlice = new TransactionBuilder(ALICE).withAddress(VALID_ADDRESS_BOB)
-                .withCategories(VALID_CATEGORY_HUSBAND).build();
+        Transaction editedAlice = new TransactionBuilder(ALICE).withCategories(VALID_CATEGORY_HUSBAND).build();
         uniqueTransactionList.setTransaction(ALICE, editedAlice);
         UniqueTransactionList expectedUniqueTransactionList = new UniqueTransactionList();
         expectedUniqueTransactionList.add(editedAlice);

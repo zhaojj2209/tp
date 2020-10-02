@@ -35,8 +35,6 @@ public class TransactionCard extends UiPart<Region> {
     @FXML
     private Label amount;
     @FXML
-    private Label address;
-    @FXML
     private Label date;
     @FXML
     private FlowPane categories;
@@ -50,7 +48,6 @@ public class TransactionCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         name.setText(transaction.getName().fullName);
         amount.setText(transaction.getAmount().value);
-        address.setText(transaction.getAddress().value);
         date.setText(transaction.getDate().value);
         transaction.getCategories().stream()
                 .sorted(Comparator.comparing(category -> category.categoryName))

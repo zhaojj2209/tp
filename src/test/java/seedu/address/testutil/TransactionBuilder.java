@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seedu.address.model.category.Category;
-import seedu.address.model.transaction.Address;
 import seedu.address.model.transaction.Amount;
 import seedu.address.model.transaction.Date;
 import seedu.address.model.transaction.Name;
@@ -19,12 +18,10 @@ public class TransactionBuilder {
     public static final String DEFAULT_NAME = "Alice Pauline";
     public static final String DEFAULT_AMOUNT = "85355255";
     public static final String DEFAULT_DATE = "alice@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
 
     private Name name;
     private Amount amount;
     private Date date;
-    private Address address;
     private Set<Category> categories;
 
     /**
@@ -34,7 +31,6 @@ public class TransactionBuilder {
         name = new Name(DEFAULT_NAME);
         amount = new Amount(DEFAULT_AMOUNT);
         date = new Date(DEFAULT_DATE);
-        address = new Address(DEFAULT_ADDRESS);
         categories = new HashSet<>();
     }
 
@@ -45,7 +41,6 @@ public class TransactionBuilder {
         name = transactionToCopy.getName();
         amount = transactionToCopy.getAmount();
         date = transactionToCopy.getDate();
-        address = transactionToCopy.getAddress();
         categories = new HashSet<>(transactionToCopy.getCategories());
     }
 
@@ -67,14 +62,6 @@ public class TransactionBuilder {
     }
 
     /**
-     * Sets the {@code Address} of the {@code Transaction} that we are building.
-     */
-    public TransactionBuilder withAddress(String address) {
-        this.address = new Address(address);
-        return this;
-    }
-
-    /**
      * Sets the {@code Amount} of the {@code Transaction} that we are building.
      */
     public TransactionBuilder withAmount(String amount) {
@@ -91,7 +78,7 @@ public class TransactionBuilder {
     }
 
     public Transaction build() {
-        return new Transaction(name, amount, date, address, categories);
+        return new Transaction(name, amount, date, categories);
     }
 
 }

@@ -21,18 +21,16 @@ public class Transaction {
     private final Date date;
 
     // Data fields
-    private final Address address;
     private final Set<Category> categories = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Transaction(Name name, Amount amount, Date date, Address address, Set<Category> categories) {
-        requireAllNonNull(name, amount, date, address, categories);
+    public Transaction(Name name, Amount amount, Date date, Set<Category> categories) {
+        requireAllNonNull(name, amount, date, categories);
         this.name = name;
         this.amount = amount;
         this.date = date;
-        this.address = address;
         this.categories.addAll(categories);
     }
 
@@ -46,10 +44,6 @@ public class Transaction {
 
     public Date getDate() {
         return date;
-    }
-
-    public Address getAddress() {
-        return address;
     }
 
     /**
@@ -92,14 +86,13 @@ public class Transaction {
         return otherTransaction.getName().equals(getName())
                 && otherTransaction.getAmount().equals(getAmount())
                 && otherTransaction.getDate().equals(getDate())
-                && otherTransaction.getAddress().equals(getAddress())
                 && otherTransaction.getCategories().equals(getCategories());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, amount, date, address, categories);
+        return Objects.hash(name, amount, date, categories);
     }
 
     @Override
@@ -110,8 +103,6 @@ public class Transaction {
                 .append(getAmount())
                 .append(" Date: ")
                 .append(getDate())
-                .append(" Address: ")
-                .append(getAddress())
                 .append(" Categories: ");
         getCategories().forEach(builder::append);
         return builder.toString();

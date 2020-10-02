@@ -3,7 +3,6 @@ package seedu.address.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalTransactions.ALICE;
@@ -46,8 +45,7 @@ public class AddressBookTest {
     @Test
     public void resetData_withDuplicateTransactions_throwsDuplicateTransactionException() {
         // Two transactions with the same identity fields
-        Transaction editedAlice = new TransactionBuilder(ALICE).withAddress(VALID_ADDRESS_BOB)
-                .withCategories(VALID_CATEGORY_HUSBAND).build();
+        Transaction editedAlice = new TransactionBuilder(ALICE).withCategories(VALID_CATEGORY_HUSBAND).build();
         List<Transaction> newTransactions = Arrays.asList(ALICE, editedAlice);
         AddressBookStub newData = new AddressBookStub(newTransactions);
 
@@ -73,8 +71,7 @@ public class AddressBookTest {
     @Test
     public void hasTransaction_transactionWithSameIdentityFieldsInAddressBook_returnsTrue() {
         addressBook.addTransaction(ALICE);
-        Transaction editedAlice = new TransactionBuilder(ALICE).withAddress(VALID_ADDRESS_BOB)
-                .withCategories(VALID_CATEGORY_HUSBAND).build();
+        Transaction editedAlice = new TransactionBuilder(ALICE).withCategories(VALID_CATEGORY_HUSBAND).build();
         assertTrue(addressBook.hasTransaction(editedAlice));
     }
 

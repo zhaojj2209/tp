@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
@@ -20,7 +19,6 @@ import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.category.Category;
-import seedu.address.model.transaction.Address;
 import seedu.address.model.transaction.Amount;
 import seedu.address.model.transaction.Date;
 import seedu.address.model.transaction.Name;
@@ -40,7 +38,6 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_AMOUNT + "AMOUNT] "
             + "[" + PREFIX_DATE + "DATE] "
-            + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_CATEGORY + "CATEGORY]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_AMOUNT + "91234567 "
@@ -97,11 +94,10 @@ public class EditCommand extends Command {
         Name updatedName = editTransactionDescriptor.getName().orElse(transactionToEdit.getName());
         Amount updatedAmount = editTransactionDescriptor.getAmount().orElse(transactionToEdit.getAmount());
         Date updatedDate = editTransactionDescriptor.getDate().orElse(transactionToEdit.getDate());
-        Address updatedAddress = editTransactionDescriptor.getAddress().orElse(transactionToEdit.getAddress());
         Set<Category> updatedCategories = editTransactionDescriptor.getCategories()
                 .orElse(transactionToEdit.getCategories());
 
-        return new Transaction(updatedName, updatedAmount, updatedDate, updatedAddress, updatedCategories);
+        return new Transaction(updatedName, updatedAmount, updatedDate, updatedCategories);
     }
 
     @Override
@@ -130,7 +126,6 @@ public class EditCommand extends Command {
         private Name name;
         private Amount amount;
         private Date date;
-        private Address address;
         private Set<Category> categories;
 
         public EditTransactionDescriptor() {}
@@ -143,7 +138,6 @@ public class EditCommand extends Command {
             setName(toCopy.name);
             setAmount(toCopy.amount);
             setDate(toCopy.date);
-            setAddress(toCopy.address);
             setCategories(toCopy.categories);
         }
 
@@ -151,7 +145,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, amount, date, address, categories);
+            return CollectionUtil.isAnyNonNull(name, amount, date, categories);
         }
 
         public void setName(Name name) {
@@ -176,14 +170,6 @@ public class EditCommand extends Command {
 
         public Optional<Date> getDate() {
             return Optional.ofNullable(date);
-        }
-
-        public void setAddress(Address address) {
-            this.address = address;
-        }
-
-        public Optional<Address> getAddress() {
-            return Optional.ofNullable(address);
         }
 
         /**
@@ -221,7 +207,6 @@ public class EditCommand extends Command {
             return getName().equals(e.getName())
                     && getAmount().equals(e.getAmount())
                     && getDate().equals(e.getDate())
-                    && getAddress().equals(e.getAddress())
                     && getCategories().equals(e.getCategories());
         }
     }

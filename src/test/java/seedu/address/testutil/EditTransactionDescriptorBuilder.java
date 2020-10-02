@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditTransactionDescriptor;
 import seedu.address.model.category.Category;
-import seedu.address.model.transaction.Address;
 import seedu.address.model.transaction.Amount;
 import seedu.address.model.transaction.Date;
 import seedu.address.model.transaction.Name;
@@ -36,7 +35,6 @@ public class EditTransactionDescriptorBuilder {
         descriptor.setName(transaction.getName());
         descriptor.setAmount(transaction.getAmount());
         descriptor.setDate(transaction.getDate());
-        descriptor.setAddress(transaction.getAddress());
         descriptor.setCategories(transaction.getCategories());
     }
 
@@ -61,14 +59,6 @@ public class EditTransactionDescriptorBuilder {
      */
     public EditTransactionDescriptorBuilder withDate(String date) {
         descriptor.setDate(new Date(date));
-        return this;
-    }
-
-    /**
-     * Sets the {@code Address} of the {@code EditTransactionDescriptor} that we are building.
-     */
-    public EditTransactionDescriptorBuilder withAddress(String address) {
-        descriptor.setAddress(new Address(address));
         return this;
     }
 
