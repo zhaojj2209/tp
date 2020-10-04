@@ -213,6 +213,24 @@ pre {
 }
 
 
+/**
+ * Wide Wrapper
+ */
+.wide-wrapper {
+  width: calc(#{$content-width} - (#{$spacing-unit}));
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: $spacing-unit / 2;
+  padding-left: $spacing-unit / 2;
+  @extend %clearfix;
+
+  @media screen and (min-width: $on-large) {
+    width: 90vw;
+    padding-right: $spacing-unit;
+    padding-left: $spacing-unit;
+  }
+}
+
 
 /**
  * Clearfix
