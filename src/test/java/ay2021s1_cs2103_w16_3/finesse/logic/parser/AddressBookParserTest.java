@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ClearCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.DeleteCommand;
@@ -22,8 +23,10 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.ExitCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.HelpCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.NameContainsKeywordsPredicate;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
@@ -40,6 +43,14 @@ public class AddressBookParserTest {
         Transaction transaction = new TransactionBuilder().build();
         AddCommand command = (AddCommand) parser.parseCommand(TransactionUtil.getAddCommand(transaction));
         assertEquals(new AddCommand(transaction), command);
+    }
+
+    @Test
+    public void parseCommand_addExpense() throws Exception {
+        Expense expense = new TransactionBuilder().buildExpense();
+        AddExpenseCommand command =
+            (AddExpenseCommand) parser.parseCommand(TransactionUtil.getAddExpenseCommand(expense));
+        assertEquals(new AddExpenseCommand(expense), command);
     }
 
     @Test
@@ -96,6 +107,12 @@ public class AddressBookParserTest {
     public void parseCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_listExpense() throws Exception {
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD) instanceof ListExpenseCommand);
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3") instanceof ListExpenseCommand);
     }
 
     @Test

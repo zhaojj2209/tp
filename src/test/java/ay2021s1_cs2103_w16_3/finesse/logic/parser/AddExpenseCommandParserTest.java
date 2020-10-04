@@ -27,55 +27,55 @@ import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.BOB;
 
 import org.junit.jupiter.api.Test;
 
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddIncomeCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Name;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
-public class AddIncomeCommandParserTest {
-    private AddIncomeCommandParser parser = new AddIncomeCommandParser();
+public class AddExpenseCommandParserTest {
+    private AddExpenseCommandParser parser = new AddExpenseCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Income expectedIncome = new TransactionBuilder(BOB).withCategories(VALID_CATEGORY_FRIEND).buildIncome();
+        Expense expectedExpense = new TransactionBuilder(BOB).withCategories(VALID_CATEGORY_FRIEND).buildExpense();
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + AMOUNT_DESC_BOB + DATE_DESC_BOB
-                + CATEGORY_DESC_FRIEND, new AddIncomeCommand(expectedIncome));
+                + CATEGORY_DESC_FRIEND, new AddExpenseCommand(expectedExpense));
 
         // multiple names - last name accepted
         assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB + AMOUNT_DESC_BOB + DATE_DESC_BOB
-                + CATEGORY_DESC_FRIEND, new AddIncomeCommand(expectedIncome));
+                + CATEGORY_DESC_FRIEND, new AddExpenseCommand(expectedExpense));
 
         // multiple amounts - last amount accepted
         assertParseSuccess(parser, NAME_DESC_BOB + AMOUNT_DESC_AMY + AMOUNT_DESC_BOB + DATE_DESC_BOB
-                + CATEGORY_DESC_FRIEND, new AddIncomeCommand(expectedIncome));
+                + CATEGORY_DESC_FRIEND, new AddExpenseCommand(expectedExpense));
 
         // multiple dates - last date accepted
         assertParseSuccess(parser, NAME_DESC_BOB + AMOUNT_DESC_BOB + DATE_DESC_AMY + DATE_DESC_BOB
-                + CATEGORY_DESC_FRIEND, new AddIncomeCommand(expectedIncome));
+                + CATEGORY_DESC_FRIEND, new AddExpenseCommand(expectedExpense));
 
         // multiple categories - all accepted
-        Income expectedIncomeMultipleCategories = new TransactionBuilder(BOB)
-                .withCategories(VALID_CATEGORY_FRIEND, VALID_CATEGORY_HUSBAND).buildIncome();
+        Expense expectedExpenseMultipleCategories = new TransactionBuilder(BOB)
+                .withCategories(VALID_CATEGORY_FRIEND, VALID_CATEGORY_HUSBAND).buildExpense();
         assertParseSuccess(parser, NAME_DESC_BOB + AMOUNT_DESC_BOB + DATE_DESC_BOB + CATEGORY_DESC_HUSBAND
-                + CATEGORY_DESC_FRIEND, new AddIncomeCommand(expectedIncomeMultipleCategories));
+                + CATEGORY_DESC_FRIEND, new AddExpenseCommand(expectedExpenseMultipleCategories));
     }
 
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero categories
-        Income expectedIncome = new TransactionBuilder(AMY).withCategories().buildIncome();
+        Expense expectedExpense = new TransactionBuilder(AMY).withCategories().buildExpense();
         assertParseSuccess(parser, NAME_DESC_AMY + AMOUNT_DESC_AMY + DATE_DESC_AMY,
-                new AddIncomeCommand(expectedIncome));
+                new AddExpenseCommand(expectedExpense));
     }
 
     @Test
     public void parse_compulsoryFieldMissing_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddIncomeCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddExpenseCommand.MESSAGE_USAGE);
 
         // missing name prefix
         assertParseFailure(parser, VALID_NAME_BOB + AMOUNT_DESC_BOB + DATE_DESC_BOB, expectedMessage);
@@ -114,7 +114,7 @@ public class AddIncomeCommandParserTest {
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + AMOUNT_DESC_BOB + DATE_DESC_BOB
-                + CATEGORY_DESC_HUSBAND + CATEGORY_DESC_FRIEND,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddIncomeCommand.MESSAGE_USAGE));
+                        + CATEGORY_DESC_HUSBAND + CATEGORY_DESC_FRIEND,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddExpenseCommand.MESSAGE_USAGE));
     }
 }

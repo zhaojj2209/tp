@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
 /**
- * Contains integration tests (interaction with the Model) and unit tests for ListIncomeCommand.
+ * Contains integration tests (interaction with the Model) and unit tests for ListExpenseCommand.
  */
-public class ListIncomeCommandTest {
+public class ListExpenseCommandTest {
 
     private Model model;
     private Model expectedModel;
@@ -28,26 +28,26 @@ public class ListIncomeCommandTest {
     }
 
     @Test
-    public void execute_showsIncomeOnly() {
-        expectedModel.updateFilteredTransactionList(Income.PREDICATE_SHOW_ALL_INCOME);
-        assertCommandSuccess(new ListIncomeCommand(), model, ListIncomeCommand.MESSAGE_SUCCESS, expectedModel);
+    public void execute_showsExpenseOnly() {
+        expectedModel.updateFilteredTransactionList(Expense.PREDICATE_SHOW_ALL_EXPENSES);
+        assertCommandSuccess(new ListExpenseCommand(), model, ListExpenseCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
     @Test
-    public void execute_hasSomeIncome() {
-        model.addTransaction(new TransactionBuilder().buildIncome());
+    public void execute_hasSomeExpense() {
+        model.addTransaction(new TransactionBuilder().buildExpense());
         expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.updateFilteredTransactionList(transaction -> transaction instanceof Income);
-        assertCommandSuccess(new ListIncomeCommand(), model, ListIncomeCommand.MESSAGE_SUCCESS, expectedModel);
+        expectedModel.updateFilteredTransactionList(transaction -> transaction instanceof Expense);
+        assertCommandSuccess(new ListExpenseCommand(), model, ListExpenseCommand.MESSAGE_SUCCESS, expectedModel);
         assertEquals(model.getFilteredTransactionList().size(), 1);
     }
 
     @Test
-    public void execute_hasSomeNonIncome() {
-        model.addTransaction(new TransactionBuilder().buildExpense());
+    public void execute_hasSomeNonExpense() {
+        model.addTransaction(new TransactionBuilder().buildIncome());
         expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.updateFilteredTransactionList(transaction -> transaction instanceof Income);
-        assertCommandSuccess(new ListIncomeCommand(), model, ListIncomeCommand.MESSAGE_SUCCESS, expectedModel);
+        expectedModel.updateFilteredTransactionList(transaction -> transaction instanceof Expense);
+        assertCommandSuccess(new ListExpenseCommand(), model, ListExpenseCommand.MESSAGE_SUCCESS, expectedModel);
         assertEquals(model.getFilteredTransactionList().size(), 0);
     }
 

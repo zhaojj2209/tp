@@ -6,6 +6,7 @@ import java.util.Set;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Name;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
@@ -84,6 +85,10 @@ public class TransactionBuilder {
 
     public Income buildIncome() {
         return new Income(name, amount, date, categories);
+    }
+
+    public Expense buildExpense() {
+        return new Expense(name, amount, date, categories);
     }
 
 }

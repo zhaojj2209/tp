@@ -8,9 +8,11 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_NAME;
 import java.util.Set;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.EditCommand;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
@@ -20,21 +22,28 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 public class TransactionUtil {
 
     /**
-     * Returns an add command string for adding the {@code transaction}.
+     * Returns an add command string for adding the {@code Transaction}.
      */
     public static String getAddCommand(Transaction transaction) {
         return AddCommand.COMMAND_WORD + " " + getTransactionDetails(transaction);
     }
 
     /**
-     * Returns an add income command string for adding the {@code transaction}.
+     * Returns an add expense command string for adding the {@code Expense}.
+     */
+    public static String getAddExpenseCommand(Expense expense) {
+        return AddExpenseCommand.COMMAND_WORD + " " + getTransactionDetails(expense);
+    }
+
+    /**
+     * Returns an add income command string for adding the {@code Income}.
      */
     public static String getAddIncomeCommand(Income income) {
         return AddIncomeCommand.COMMAND_WORD + " " + getTransactionDetails(income);
     }
 
     /**
-     * Returns the part of command string for the given {@code transaction}'s details.
+     * Returns the part of command string for the given {@code Transaction}'s details.
      */
     public static String getTransactionDetails(Transaction transaction) {
         StringBuilder sb = new StringBuilder();

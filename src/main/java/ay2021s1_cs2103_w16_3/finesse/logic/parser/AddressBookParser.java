@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ClearCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.Command;
@@ -16,6 +17,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.ExitCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.HelpCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 
@@ -49,6 +51,10 @@ public class AddressBookParser {
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
+        case AddExpenseCommand.COMMAND_WORD:
+        case AddExpenseCommand.COMMAND_ALIAS:
+            return new AddExpenseCommandParser().parse(arguments);
+
         case AddIncomeCommand.COMMAND_WORD:
         case AddIncomeCommand.COMMAND_ALIAS:
             return new AddIncomeCommandParser().parse(arguments);
@@ -67,6 +73,10 @@ public class AddressBookParser {
 
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
+
+        case ListExpenseCommand.COMMAND_WORD:
+        case ListExpenseCommand.COMMAND_ALIAS:
+            return new ListExpenseCommand();
 
         case ListIncomeCommand.COMMAND_WORD:
         case ListIncomeCommand.COMMAND_ALIAS:
