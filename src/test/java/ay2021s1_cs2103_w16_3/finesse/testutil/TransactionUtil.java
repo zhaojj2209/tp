@@ -3,7 +3,7 @@ package ay2021s1_cs2103_w16_3.finesse.testutil;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
-import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_NAME;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
 
 import java.util.Set;
 
@@ -47,7 +47,7 @@ public class TransactionUtil {
      */
     public static String getTransactionDetails(Transaction transaction) {
         StringBuilder sb = new StringBuilder();
-        sb.append(PREFIX_NAME + transaction.getName().fullName + " ");
+        sb.append(PREFIX_TITLE + transaction.getTitle().fullTitle + " ");
         sb.append(PREFIX_AMOUNT + transaction.getAmount().value + " ");
         sb.append(PREFIX_DATE + transaction.getDate().value + " ");
         transaction.getCategories().stream().forEach(
@@ -61,7 +61,7 @@ public class TransactionUtil {
      */
     public static String getEditTransactionDescriptorDetails(EditCommand.EditTransactionDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
-        descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name.fullName).append(" "));
+        descriptor.getTitle().ifPresent(title -> sb.append(PREFIX_TITLE).append(title.fullTitle).append(" "));
         descriptor.getAmount().ifPresent(amount -> sb.append(PREFIX_AMOUNT).append(amount.value).append(" "));
         descriptor.getDate().ifPresent(date -> sb.append(PREFIX_DATE).append(date.value).append(" "));
         if (descriptor.getCategories().isPresent()) {

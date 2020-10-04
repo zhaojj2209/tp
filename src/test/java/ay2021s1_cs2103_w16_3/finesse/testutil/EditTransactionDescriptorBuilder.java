@@ -9,7 +9,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.EditCommand.EditTransactionD
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Name;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
@@ -32,17 +32,17 @@ public class EditTransactionDescriptorBuilder {
      */
     public EditTransactionDescriptorBuilder(Transaction transaction) {
         descriptor = new EditTransactionDescriptor();
-        descriptor.setName(transaction.getName());
+        descriptor.setTitle(transaction.getTitle());
         descriptor.setAmount(transaction.getAmount());
         descriptor.setDate(transaction.getDate());
         descriptor.setCategories(transaction.getCategories());
     }
 
     /**
-     * Sets the {@code Name} of the {@code EditTransactionDescriptor} that we are building.
+     * Sets the {@code Title} of the {@code EditTransactionDescriptor} that we are building.
      */
-    public EditTransactionDescriptorBuilder withName(String name) {
-        descriptor.setName(new Name(name));
+    public EditTransactionDescriptorBuilder withTitle(String title) {
+        descriptor.setTitle(new Title(title));
         return this;
     }
 

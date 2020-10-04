@@ -4,7 +4,7 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.DESC_
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.DESC_BOB;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_AMOUNT_BOB;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_CATEGORY_HUSBAND;
-import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_TITLE_BOB;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandFailure;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.showTransactionAtIndex;
@@ -55,11 +55,11 @@ public class EditCommandTest {
         Transaction lastTransaction = model.getFilteredTransactionList().get(indexLastTransaction.getZeroBased());
 
         TransactionBuilder transactionInList = new TransactionBuilder(lastTransaction);
-        Transaction editedTransaction = transactionInList.withName(VALID_NAME_BOB).withAmount(VALID_AMOUNT_BOB)
+        Transaction editedTransaction = transactionInList.withTitle(VALID_TITLE_BOB).withAmount(VALID_AMOUNT_BOB)
                 .withCategories(VALID_CATEGORY_HUSBAND).build();
 
         EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder()
-                .withName(VALID_NAME_BOB).withAmount(VALID_AMOUNT_BOB).withCategories(VALID_CATEGORY_HUSBAND).build();
+                .withTitle(VALID_TITLE_BOB).withAmount(VALID_AMOUNT_BOB).withCategories(VALID_CATEGORY_HUSBAND).build();
         EditCommand editCommand = new EditCommand(indexLastTransaction, descriptor);
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction);
@@ -89,9 +89,9 @@ public class EditCommandTest {
         Transaction transactionInFilteredList = model.getFilteredTransactionList()
                 .get(INDEX_FIRST_TRANSACTION.getZeroBased());
         Transaction editedTransaction =
-                new TransactionBuilder(transactionInFilteredList).withName(VALID_NAME_BOB).build();
+                new TransactionBuilder(transactionInFilteredList).withTitle(VALID_TITLE_BOB).build();
         EditCommand editCommand = new EditCommand(INDEX_FIRST_TRANSACTION,
-                new EditTransactionDescriptorBuilder().withName(VALID_NAME_BOB).build());
+                new EditTransactionDescriptorBuilder().withTitle(VALID_TITLE_BOB).build());
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction);
 
@@ -128,7 +128,7 @@ public class EditCommandTest {
     public void execute_invalidTransactionIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredTransactionList().size() + 1);
         EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder()
-                .withName(VALID_NAME_BOB).build();
+                .withTitle(VALID_TITLE_BOB).build();
         EditCommand editCommand = new EditCommand(outOfBoundIndex, descriptor);
 
         assertCommandFailure(editCommand, model, Messages.MESSAGE_INVALID_TRANSACTION_DISPLAYED_INDEX);
@@ -146,7 +146,7 @@ public class EditCommandTest {
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getTransactionList().size());
 
         EditCommand editCommand = new EditCommand(outOfBoundIndex,
-                new EditTransactionDescriptorBuilder().withName(VALID_NAME_BOB).build());
+                new EditTransactionDescriptorBuilder().withTitle(VALID_TITLE_BOB).build());
 
         assertCommandFailure(editCommand, model, Messages.MESSAGE_INVALID_TRANSACTION_DISPLAYED_INDEX);
     }

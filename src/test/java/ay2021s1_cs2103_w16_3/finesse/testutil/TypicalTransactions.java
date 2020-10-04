@@ -6,8 +6,8 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_CATEGORY_HUSBAND;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_DATE_AMY;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_DATE_BOB;
-import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_NAME_AMY;
-import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_TITLE_AMY;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_TITLE_BOB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,32 +21,33 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
  */
 public class TypicalTransactions {
 
-    public static final Transaction ALICE = new TransactionBuilder().withName("Alice Pauline")
+    public static final Transaction ALICE = new TransactionBuilder().withTitle("Alice Pauline")
             .withDate("alice@example.com").withAmount("94351253").withCategories("friends").build();
-    public static final Transaction BENSON = new TransactionBuilder().withName("Benson Meier")
+    public static final Transaction BENSON = new TransactionBuilder().withTitle("Benson Meier")
             .withDate("johnd@example.com").withAmount("98765432").withCategories("owesMoney", "friends").build();
-    public static final Transaction CARL = new TransactionBuilder().withName("Carl Kurz").withAmount("95352563")
+    public static final Transaction CARL = new TransactionBuilder().withTitle("Carl Kurz").withAmount("95352563")
             .withDate("heinz@example.com").build();
-    public static final Transaction DANIEL = new TransactionBuilder().withName("Daniel Meier").withAmount("87652533")
+    public static final Transaction DANIEL = new TransactionBuilder().withTitle("Daniel Meier").withAmount("87652533")
             .withDate("cornelia@example.com").withCategories("friends").build();
-    public static final Transaction ELLE = new TransactionBuilder().withName("Elle Meyer").withAmount("9482224")
+    public static final Transaction ELLE = new TransactionBuilder().withTitle("Elle Meyer").withAmount("9482224")
             .withDate("werner@example.com").build();
-    public static final Transaction FIONA = new TransactionBuilder().withName("Fiona Kunz").withAmount("9482427")
+    public static final Transaction FIONA = new TransactionBuilder().withTitle("Fiona Kunz").withAmount("9482427")
             .withDate("lydia@example.com").build();
-    public static final Transaction GEORGE = new TransactionBuilder().withName("George Best").withAmount("9482442")
+    public static final Transaction GEORGE = new TransactionBuilder().withTitle("George Best").withAmount("9482442")
             .withDate("anna@example.com").build();
 
     // Manually added
-    public static final Transaction HOON = new TransactionBuilder().withName("Hoon Meier").withAmount("8482424")
+    public static final Transaction HOON = new TransactionBuilder().withTitle("Hoon Meier").withAmount("8482424")
             .withDate("stefan@example.com").build();
-    public static final Transaction IDA = new TransactionBuilder().withName("Ida Mueller").withAmount("8482131")
+    public static final Transaction IDA = new TransactionBuilder().withTitle("Ida Mueller").withAmount("8482131")
             .withDate("hans@example.com").build();
 
     // Manually added - Transaction's details found in {@code CommandTestUtil}
-    public static final Transaction AMY = new TransactionBuilder().withName(VALID_NAME_AMY).withAmount(VALID_AMOUNT_AMY)
-            .withDate(VALID_DATE_AMY).withCategories(VALID_CATEGORY_FRIEND).build();
-    public static final Transaction BOB = new TransactionBuilder().withName(VALID_NAME_BOB).withAmount(VALID_AMOUNT_BOB)
-            .withDate(VALID_DATE_BOB).withCategories(VALID_CATEGORY_HUSBAND, VALID_CATEGORY_FRIEND).build();
+    public static final Transaction AMY = new TransactionBuilder().withTitle(VALID_TITLE_AMY)
+            .withAmount(VALID_AMOUNT_AMY).withDate(VALID_DATE_AMY).withCategories(VALID_CATEGORY_FRIEND).build();
+    public static final Transaction BOB = new TransactionBuilder().withTitle(VALID_TITLE_BOB)
+            .withAmount(VALID_AMOUNT_BOB).withDate(VALID_DATE_BOB)
+            .withCategories(VALID_CATEGORY_HUSBAND, VALID_CATEGORY_FRIEND).build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 

@@ -54,8 +54,8 @@ public class AddIncomeCommandTest {
 
     @Test
     public void equals() {
-        Income alice = new TransactionBuilder().withName("Alice").buildIncome();
-        Income bob = new TransactionBuilder().withName("Bob").buildIncome();
+        Income alice = new TransactionBuilder().withTitle("Alice").buildIncome();
+        Income bob = new TransactionBuilder().withTitle("Bob").buildIncome();
         AddIncomeCommand addAliceCommand = new AddIncomeCommand(alice);
         AddIncomeCommand addBobCommand = new AddIncomeCommand(bob);
 

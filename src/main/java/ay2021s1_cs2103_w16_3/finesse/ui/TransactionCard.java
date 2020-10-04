@@ -29,7 +29,7 @@ public class TransactionCard extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
-    private Label name;
+    private Label title;
     @FXML
     private Label id;
     @FXML
@@ -46,7 +46,7 @@ public class TransactionCard extends UiPart<Region> {
         super(FXML);
         this.transaction = transaction;
         id.setText(displayedIndex + ". ");
-        name.setText(transaction.getName().fullName);
+        title.setText(transaction.getTitle().fullTitle);
         amount.setText(transaction.getAmount().value);
         date.setText(transaction.getDate().value);
         transaction.getCategories().stream()

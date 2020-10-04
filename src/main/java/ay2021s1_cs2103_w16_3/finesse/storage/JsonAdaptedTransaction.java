@@ -13,7 +13,7 @@ import ay2021s1_cs2103_w16_3.finesse.commons.exceptions.IllegalValueException;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Name;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
@@ -23,7 +23,7 @@ class JsonAdaptedTransaction {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Transaction's %s field is missing!";
 
-    private final String name;
+    private final String title;
     private final String amount;
     private final String date;
     private final List<JsonAdaptedCategory> categories = new ArrayList<>();
@@ -32,10 +32,10 @@ class JsonAdaptedTransaction {
      * Constructs a {@code JsonAdaptedTransaction} with the given transaction details.
      */
     @JsonCreator
-    public JsonAdaptedTransaction(@JsonProperty("name") String name, @JsonProperty("amount") String amount,
+    public JsonAdaptedTransaction(@JsonProperty("title") String title, @JsonProperty("amount") String amount,
                                   @JsonProperty("date") String date,
                                   @JsonProperty("categories") List<JsonAdaptedCategory> categories) {
-        this.name = name;
+        this.title = title;
         this.amount = amount;
         this.date = date;
         if (categories != null) {
@@ -47,7 +47,7 @@ class JsonAdaptedTransaction {
      * Converts a given {@code Transaction} into this class for Jackson use.
      */
     public JsonAdaptedTransaction(Transaction source) {
-        name = source.getName().fullName;
+        title = source.getTitle().fullTitle;
         amount = source.getAmount().value;
         date = source.getDate().value;
         categories.addAll(source.getCategories().stream()
@@ -66,13 +66,13 @@ class JsonAdaptedTransaction {
             transactionCategories.add(category.toModelType());
         }
 
-        if (name == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
+        if (title == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Title.class.getSimpleName()));
         }
-        if (!Name.isValidName(name)) {
-            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
+        if (!Title.isValidTitle(title)) {
+            throw new IllegalValueException(Title.MESSAGE_CONSTRAINTS);
         }
-        final Name modelName = new Name(name);
+        final Title modelTitle = new Title(title);
 
         if (amount == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Amount.class.getSimpleName()));
@@ -91,7 +91,7 @@ class JsonAdaptedTransaction {
         final Date modelDate = new Date(date);
 
         final Set<Category> modelCategories = new HashSet<>(transactionCategories);
-        return new Transaction(modelName, modelAmount, modelDate, modelCategories);
+        return new Transaction(modelTitle, modelAmount, modelDate, modelCategories);
     }
 
 }

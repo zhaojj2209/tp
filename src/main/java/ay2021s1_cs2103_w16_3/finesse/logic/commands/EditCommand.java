@@ -3,7 +3,7 @@ package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
-import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_NAME;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
 import static ay2021s1_cs2103_w16_3.finesse.model.Model.PREDICATE_SHOW_ALL_TRANSACTIONS;
 import static java.util.Objects.requireNonNull;
 
@@ -21,7 +21,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Name;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
@@ -35,7 +35,7 @@ public class EditCommand extends Command {
             + "by the index number used in the displayed transaction list. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_NAME + "NAME] "
+            + "[" + PREFIX_TITLE + "TITLE] "
             + "[" + PREFIX_AMOUNT + "AMOUNT] "
             + "[" + PREFIX_DATE + "DATE] "
             + "[" + PREFIX_CATEGORY + "CATEGORY]...\n"
@@ -91,13 +91,13 @@ public class EditCommand extends Command {
                                                        EditTransactionDescriptor editTransactionDescriptor) {
         assert transactionToEdit != null;
 
-        Name updatedName = editTransactionDescriptor.getName().orElse(transactionToEdit.getName());
+        Title updatedTitle = editTransactionDescriptor.getTitle().orElse(transactionToEdit.getTitle());
         Amount updatedAmount = editTransactionDescriptor.getAmount().orElse(transactionToEdit.getAmount());
         Date updatedDate = editTransactionDescriptor.getDate().orElse(transactionToEdit.getDate());
         Set<Category> updatedCategories = editTransactionDescriptor.getCategories()
                 .orElse(transactionToEdit.getCategories());
 
-        return new Transaction(updatedName, updatedAmount, updatedDate, updatedCategories);
+        return new Transaction(updatedTitle, updatedAmount, updatedDate, updatedCategories);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class EditCommand extends Command {
      * corresponding field value of the transaction.
      */
     public static class EditTransactionDescriptor {
-        private Name name;
+        private Title title;
         private Amount amount;
         private Date date;
         private Set<Category> categories;
@@ -135,7 +135,7 @@ public class EditCommand extends Command {
          * A defensive copy of {@code categories} is used internally.
          */
         public EditTransactionDescriptor(EditTransactionDescriptor toCopy) {
-            setName(toCopy.name);
+            setTitle(toCopy.title);
             setAmount(toCopy.amount);
             setDate(toCopy.date);
             setCategories(toCopy.categories);
@@ -145,15 +145,15 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, amount, date, categories);
+            return CollectionUtil.isAnyNonNull(title, amount, date, categories);
         }
 
-        public void setName(Name name) {
-            this.name = name;
+        public void setTitle(Title title) {
+            this.title = title;
         }
 
-        public Optional<Name> getName() {
-            return Optional.ofNullable(name);
+        public Optional<Title> getTitle() {
+            return Optional.ofNullable(title);
         }
 
         public void setAmount(Amount amount) {
@@ -204,7 +204,7 @@ public class EditCommand extends Command {
             // state check
             EditTransactionDescriptor e = (EditTransactionDescriptor) other;
 
-            return getName().equals(e.getName())
+            return getTitle().equals(e.getTitle())
                     && getAmount().equals(e.getAmount())
                     && getDate().equals(e.getDate())
                     && getCategories().equals(e.getCategories());

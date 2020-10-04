@@ -1,11 +1,11 @@
 {
   "transactions": [ {
-    "name": "Alice Pauline",
+    "title": "Alice Pauline",
     "amount": "94351253",
     "date": "alice@example.com",
     "categories": [ "friends" ]
   }, {
-    "name": "Alice Pauline",
+    "title": "Alice Pauline",
     "amount": "94351253",
     "date": "pauline@example.com"
   } ]

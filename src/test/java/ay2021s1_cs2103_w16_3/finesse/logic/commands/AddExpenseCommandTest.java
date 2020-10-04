@@ -54,8 +54,8 @@ public class AddExpenseCommandTest {
 
     @Test
     public void equals() {
-        Expense alice = new TransactionBuilder().withName("Alice").buildExpense();
-        Expense bob = new TransactionBuilder().withName("Bob").buildExpense();
+        Expense alice = new TransactionBuilder().withTitle("Alice").buildExpense();
+        Expense bob = new TransactionBuilder().withTitle("Bob").buildExpense();
         AddExpenseCommand addAliceCommand = new AddExpenseCommand(alice);
         AddExpenseCommand addBobCommand = new AddExpenseCommand(bob);
 

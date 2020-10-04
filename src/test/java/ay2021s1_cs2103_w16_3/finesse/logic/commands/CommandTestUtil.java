@@ -3,7 +3,7 @@ package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
-import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_NAME;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,7 +16,7 @@ import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.model.AddressBook;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.NameContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 
@@ -25,8 +25,8 @@ import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
  */
 public class CommandTestUtil {
 
-    public static final String VALID_NAME_AMY = "Amy Bee";
-    public static final String VALID_NAME_BOB = "Bob Choo";
+    public static final String VALID_TITLE_AMY = "Amy Bee";
+    public static final String VALID_TITLE_BOB = "Bob Choo";
     public static final String VALID_AMOUNT_AMY = "11111111";
     public static final String VALID_AMOUNT_BOB = "22222222";
     public static final String VALID_DATE_AMY = "amy@example.com";
@@ -34,8 +34,8 @@ public class CommandTestUtil {
     public static final String VALID_CATEGORY_HUSBAND = "husband";
     public static final String VALID_CATEGORY_FRIEND = "friend";
 
-    public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
-    public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
+    public static final String TITLE_DESC_AMY = " " + PREFIX_TITLE + VALID_TITLE_AMY;
+    public static final String TITLE_DESC_BOB = " " + PREFIX_TITLE + VALID_TITLE_BOB;
     public static final String AMOUNT_DESC_AMY = " " + PREFIX_AMOUNT + VALID_AMOUNT_AMY;
     public static final String AMOUNT_DESC_BOB = " " + PREFIX_AMOUNT + VALID_AMOUNT_BOB;
     public static final String DATE_DESC_AMY = " " + PREFIX_DATE + VALID_DATE_AMY;
@@ -43,7 +43,7 @@ public class CommandTestUtil {
     public static final String CATEGORY_DESC_FRIEND = " " + PREFIX_CATEGORY + VALID_CATEGORY_FRIEND;
     public static final String CATEGORY_DESC_HUSBAND = " " + PREFIX_CATEGORY + VALID_CATEGORY_HUSBAND;
 
-    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
+    public static final String INVALID_TITLE_DESC = " " + PREFIX_TITLE + "James&"; // '&' not allowed in titles
     public static final String INVALID_AMOUNT_DESC = " " + PREFIX_AMOUNT + "911a"; // 'a' not allowed in amounts
     public static final String INVALID_DATE_DESC = " " + PREFIX_DATE + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_CATEGORY_DESC = " " + PREFIX_CATEGORY + "hubby*";
@@ -56,10 +56,10 @@ public class CommandTestUtil {
     public static final EditCommand.EditTransactionDescriptor DESC_BOB;
 
     static {
-        DESC_AMY = new EditTransactionDescriptorBuilder().withName(VALID_NAME_AMY)
+        DESC_AMY = new EditTransactionDescriptorBuilder().withTitle(VALID_TITLE_AMY)
                 .withAmount(VALID_AMOUNT_AMY).withDate(VALID_DATE_AMY)
                 .withCategories(VALID_CATEGORY_FRIEND).build();
-        DESC_BOB = new EditTransactionDescriptorBuilder().withName(VALID_NAME_BOB)
+        DESC_BOB = new EditTransactionDescriptorBuilder().withTitle(VALID_TITLE_BOB)
                 .withAmount(VALID_AMOUNT_BOB).withDate(VALID_DATE_BOB)
                 .withCategories(VALID_CATEGORY_HUSBAND, VALID_CATEGORY_FRIEND).build();
     }
@@ -114,8 +114,8 @@ public class CommandTestUtil {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredTransactionList().size());
 
         Transaction transaction = model.getFilteredTransactionList().get(targetIndex.getZeroBased());
-        final String[] splitName = transaction.getName().fullName.split("\\s+");
-        model.updateFilteredTransactionList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
+        final String[] splitTitle = transaction.getTitle().fullTitle.split("\\s+");
+        model.updateFilteredTransactionList(new TitleContainsKeywordsPredicate(Arrays.asList(splitTitle[0])));
 
         assertEquals(1, model.getFilteredTransactionList().size());
     }

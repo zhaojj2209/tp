@@ -16,7 +16,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 public class Transaction {
 
     // Identity fields
-    private final Name name;
+    private final Title title;
     private final Amount amount;
     private final Date date;
 
@@ -26,16 +26,16 @@ public class Transaction {
     /**
      * Every field must be present and not null.
      */
-    public Transaction(Name name, Amount amount, Date date, Set<Category> categories) {
-        requireAllNonNull(name, amount, date, categories);
-        this.name = name;
+    public Transaction(Title title, Amount amount, Date date, Set<Category> categories) {
+        requireAllNonNull(title, amount, date, categories);
+        this.title = title;
         this.amount = amount;
         this.date = date;
         this.categories.addAll(categories);
     }
 
-    public Name getName() {
-        return name;
+    public Title getTitle() {
+        return title;
     }
 
     public Amount getAmount() {
@@ -55,7 +55,7 @@ public class Transaction {
     }
 
     /**
-     * Returns true if both transactions of the same name have at least one other identity field that is the same.
+     * Returns true if both transactions of the same title have at least one other identity field that is the same.
      * This defines a weaker notion of equality between two transactions.
      */
     public boolean isSameTransaction(Transaction otherTransaction) {
@@ -64,7 +64,7 @@ public class Transaction {
         }
 
         return otherTransaction != null
-                && otherTransaction.getName().equals(getName())
+                && otherTransaction.getTitle().equals(getTitle())
                 && (otherTransaction.getAmount().equals(getAmount()) || otherTransaction.getDate().equals(getDate()));
     }
 
@@ -83,7 +83,7 @@ public class Transaction {
         }
 
         Transaction otherTransaction = (Transaction) other;
-        return otherTransaction.getName().equals(getName())
+        return otherTransaction.getTitle().equals(getTitle())
                 && otherTransaction.getAmount().equals(getAmount())
                 && otherTransaction.getDate().equals(getDate())
                 && otherTransaction.getCategories().equals(getCategories());
@@ -92,13 +92,13 @@ public class Transaction {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, amount, date, categories);
+        return Objects.hash(title, amount, date, categories);
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getName())
+        builder.append(getTitle())
                 .append(" Amount: ")
                 .append(getAmount())
                 .append(" Date: ")

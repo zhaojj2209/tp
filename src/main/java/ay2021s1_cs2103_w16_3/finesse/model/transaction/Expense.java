@@ -11,7 +11,7 @@ public class Expense extends Transaction {
     public static final Predicate<Transaction> PREDICATE_SHOW_ALL_EXPENSES =
         transaction -> transaction instanceof Expense;
 
-    public Expense(Name name, Amount amount, Date date, Set<Category> categories) {
-        super(name, amount, date, categories);
+    public Expense(Title title, Amount amount, Date date, Set<Category> categories) {
+        super(title, amount, date, categories);
     }
 }

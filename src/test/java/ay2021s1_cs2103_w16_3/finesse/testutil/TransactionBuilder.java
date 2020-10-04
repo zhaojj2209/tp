@@ -8,7 +8,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Name;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.model.util.SampleDataUtil;
 
@@ -17,11 +17,11 @@ import ay2021s1_cs2103_w16_3.finesse.model.util.SampleDataUtil;
  */
 public class TransactionBuilder {
 
-    public static final String DEFAULT_NAME = "Alice Pauline";
+    public static final String DEFAULT_TITLE = "Alice Pauline";
     public static final String DEFAULT_AMOUNT = "85355255";
     public static final String DEFAULT_DATE = "alice@gmail.com";
 
-    private Name name;
+    private Title title;
     private Amount amount;
     private Date date;
     private Set<Category> categories;
@@ -30,7 +30,7 @@ public class TransactionBuilder {
      * Creates a {@code TransactionBuilder} with the default details.
      */
     public TransactionBuilder() {
-        name = new Name(DEFAULT_NAME);
+        title = new Title(DEFAULT_TITLE);
         amount = new Amount(DEFAULT_AMOUNT);
         date = new Date(DEFAULT_DATE);
         categories = new HashSet<>();
@@ -40,17 +40,17 @@ public class TransactionBuilder {
      * Initializes the TransactionBuilder with the data of {@code transactionToCopy}.
      */
     public TransactionBuilder(Transaction transactionToCopy) {
-        name = transactionToCopy.getName();
+        title = transactionToCopy.getTitle();
         amount = transactionToCopy.getAmount();
         date = transactionToCopy.getDate();
         categories = new HashSet<>(transactionToCopy.getCategories());
     }
 
     /**
-     * Sets the {@code Name} of the {@code Transaction} that we are building.
+     * Sets the {@code Title} of the {@code Transaction} that we are building.
      */
-    public TransactionBuilder withName(String name) {
-        this.name = new Name(name);
+    public TransactionBuilder withTitle(String title) {
+        this.title = new Title(title);
         return this;
     }
 
@@ -80,15 +80,15 @@ public class TransactionBuilder {
     }
 
     public Transaction build() {
-        return new Transaction(name, amount, date, categories);
+        return new Transaction(title, amount, date, categories);
     }
 
     public Income buildIncome() {
-        return new Income(name, amount, date, categories);
+        return new Income(title, amount, date, categories);
     }
 
     public Expense buildExpense() {
-        return new Expense(name, amount, date, categories);
+        return new Expense(title, amount, date, categories);
     }
 
 }

@@ -53,8 +53,8 @@ public class AddCommandTest {
 
     @Test
     public void equals() {
-        Transaction alice = new TransactionBuilder().withName("Alice").build();
-        Transaction bob = new TransactionBuilder().withName("Bob").build();
+        Transaction alice = new TransactionBuilder().withTitle("Alice").build();
+        Transaction bob = new TransactionBuilder().withTitle("Bob").build();
         AddCommand addAliceCommand = new AddCommand(alice);
         AddCommand addBobCommand = new AddCommand(bob);
 

@@ -1,37 +1,37 @@
 {
-  "_comment": "AddressBook save file which contains the same Person values as in TypicalPersons#getTypicalAddressBook()",
+  "_comment": "AddressBook save file which contains the same Transaction values as in TypicalPersons#getTypicalAddressBook()",
   "transactions" : [ {
-    "name" : "Alice Pauline",
+    "title" : "Alice Pauline",
     "amount" : "94351253",
     "date" : "alice@example.com",
     "categories" : [ "friends" ]
   }, {
-    "name" : "Benson Meier",
+    "title" : "Benson Meier",
     "amount" : "98765432",
     "date" : "johnd@example.com",
     "categories" : [ "owesMoney", "friends" ]
   }, {
-    "name" : "Carl Kurz",
+    "title" : "Carl Kurz",
     "amount" : "95352563",
     "date" : "heinz@example.com",
     "categories" : [ ]
   }, {
-    "name" : "Daniel Meier",
+    "title" : "Daniel Meier",
     "amount" : "87652533",
     "date" : "cornelia@example.com",
     "categories" : [ "friends" ]
   }, {
-    "name" : "Elle Meyer",
+    "title" : "Elle Meyer",
     "amount" : "9482224",
     "date" : "werner@example.com",
     "categories" : [ ]
   }, {
-    "name" : "Fiona Kunz",
+    "title" : "Fiona Kunz",
     "amount" : "9482427",
     "date" : "lydia@example.com",
     "categories" : [ ]
   }, {
-    "name" : "George Best",
+    "title" : "George Best",
     "amount" : "9482442",
     "date" : "anna@example.com",
     "categories" : [ ]
