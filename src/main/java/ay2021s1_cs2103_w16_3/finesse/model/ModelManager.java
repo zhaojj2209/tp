@@ -14,31 +14,31 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
 /**
- * Represents the in-memory model of the address book data.
+ * Represents the in-memory model of the finance tracker data.
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private final FinanceTracker financeTracker;
     private final UserPrefs userPrefs;
     private final FilteredList<Transaction> filteredTransactions;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given financeTracker and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
+    public ModelManager(ReadOnlyFinanceTracker financeTracker, ReadOnlyUserPrefs userPrefs) {
         super();
-        requireAllNonNull(addressBook, userPrefs);
+        requireAllNonNull(financeTracker, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with Fine$$e: " + financeTracker + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.financeTracker = new FinanceTracker(financeTracker);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredTransactions = new FilteredList<>(this.addressBook.getTransactionList());
+        filteredTransactions = new FilteredList<>(this.financeTracker.getTransactionList());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new FinanceTracker(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -66,42 +66,42 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public Path getAddressBookFilePath() {
-        return userPrefs.getAddressBookFilePath();
+    public Path getFinanceTrackerFilePath() {
+        return userPrefs.getFinanceTrackerFilePath();
     }
 
     @Override
-    public void setAddressBookFilePath(Path addressBookFilePath) {
-        requireNonNull(addressBookFilePath);
-        userPrefs.setAddressBookFilePath(addressBookFilePath);
+    public void setFinanceTrackerFilePath(Path financeTrackerFilePath) {
+        requireNonNull(financeTrackerFilePath);
+        userPrefs.setFinanceTrackerFilePath(financeTrackerFilePath);
     }
 
-    //=========== AddressBook ================================================================================
+    //=========== FinanceTracker ================================================================================
 
     @Override
-    public void setAddressBook(ReadOnlyAddressBook addressBook) {
-        this.addressBook.resetData(addressBook);
+    public void setFinanceTracker(ReadOnlyFinanceTracker financeTracker) {
+        this.financeTracker.resetData(financeTracker);
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public ReadOnlyFinanceTracker getFinanceTracker() {
+        return financeTracker;
     }
 
     @Override
     public boolean hasTransaction(Transaction transaction) {
         requireNonNull(transaction);
-        return addressBook.hasTransaction(transaction);
+        return financeTracker.hasTransaction(transaction);
     }
 
     @Override
     public void deleteTransaction(Transaction target) {
-        addressBook.removeTransaction(target);
+        financeTracker.removeTransaction(target);
     }
 
     @Override
     public void addTransaction(Transaction transaction) {
-        addressBook.addTransaction(transaction);
+        financeTracker.addTransaction(transaction);
         updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
     }
 
@@ -109,14 +109,14 @@ public class ModelManager implements Model {
     public void setTransaction(Transaction target, Transaction editedTransaction) {
         requireAllNonNull(target, editedTransaction);
 
-        addressBook.setTransaction(target, editedTransaction);
+        financeTracker.setTransaction(target, editedTransaction);
     }
 
     //=========== Filtered Transaction List Accessors =============================================================
 
     /**
      * Returns an unmodifiable view of the list of {@code Transaction} backed by the internal list of
-     * {@code versionedAddressBook}
+     * {@code versionedFinanceTracker}
      */
     @Override
     public ObservableList<Transaction> getFilteredTransactionList() {
@@ -143,7 +143,7 @@ public class ModelManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return addressBook.equals(other.addressBook)
+        return financeTracker.equals(other.financeTracker)
                 && userPrefs.equals(other.userPrefs)
                 && filteredTransactions.equals(other.filteredTransactions);
     }

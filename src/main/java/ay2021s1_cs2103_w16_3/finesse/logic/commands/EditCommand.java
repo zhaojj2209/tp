@@ -25,7 +25,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
- * Edits the details of an existing transaction in the address book.
+ * Edits the details of an existing transaction in the finance tracker.
  */
 public class EditCommand extends Command {
 
@@ -45,7 +45,8 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_EDIT_TRANSACTION_SUCCESS = "Edited Transaction: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_TRANSACTION = "This transaction already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_TRANSACTION =
+            "This transaction already exists in the finance tracker.";
 
     private final Index index;
     private final EditTransactionDescriptor editTransactionDescriptor;

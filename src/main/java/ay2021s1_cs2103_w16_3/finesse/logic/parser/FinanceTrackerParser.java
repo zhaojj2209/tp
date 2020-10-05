@@ -24,7 +24,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 /**
  * Parses user input.
  */
-public class AddressBookParser {
+public class FinanceTrackerParser {
 
     /**
      * Used for initial separation of command word and args.

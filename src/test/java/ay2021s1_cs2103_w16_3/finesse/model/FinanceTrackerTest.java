@@ -3,7 +3,7 @@ package ay2021s1_cs2103_w16_3.finesse.model;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_CATEGORY_HUSBAND;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.Assert.assertThrows;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.ALICE;
-import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalAddressBook;
+import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,25 +21,25 @@ import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class AddressBookTest {
+public class FinanceTrackerTest {
 
-    private final AddressBook addressBook = new AddressBook();
+    private final FinanceTracker financeTracker = new FinanceTracker();
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), addressBook.getTransactionList());
+        assertEquals(Collections.emptyList(), financeTracker.getTransactionList());
     }
 
     @Test
     public void resetData_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> addressBook.resetData(null));
+        assertThrows(NullPointerException.class, () -> financeTracker.resetData(null));
     }
 
     @Test
-    public void resetData_withValidReadOnlyAddressBook_replacesData() {
-        AddressBook newData = getTypicalAddressBook();
-        addressBook.resetData(newData);
-        assertEquals(newData, addressBook);
+    public void resetData_withValidReadOnlyFinanceTracker_replacesData() {
+        FinanceTracker newData = getTypicalFinanceTracker();
+        financeTracker.resetData(newData);
+        assertEquals(newData, financeTracker);
     }
 
     @Test
@@ -47,46 +47,46 @@ public class AddressBookTest {
         // Two transactions with the same identity fields
         Transaction editedAlice = new TransactionBuilder(ALICE).withCategories(VALID_CATEGORY_HUSBAND).build();
         List<Transaction> newTransactions = Arrays.asList(ALICE, editedAlice);
-        AddressBookStub newData = new AddressBookStub(newTransactions);
+        FinanceTrackerStub newData = new FinanceTrackerStub(newTransactions);
 
-        assertThrows(DuplicateTransactionException.class, () -> addressBook.resetData(newData));
+        assertThrows(DuplicateTransactionException.class, () -> financeTracker.resetData(newData));
     }
 
     @Test
     public void hasTransaction_nullTransaction_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> addressBook.hasTransaction(null));
+        assertThrows(NullPointerException.class, () -> financeTracker.hasTransaction(null));
     }
 
     @Test
-    public void hasTransacion_transactionNotInAddressBook_returnsFalse() {
-        assertFalse(addressBook.hasTransaction(ALICE));
+    public void hasTransacion_transactionNotInFinanceTracker_returnsFalse() {
+        assertFalse(financeTracker.hasTransaction(ALICE));
     }
 
     @Test
-    public void hasTransaction_transactionInAddressBook_returnsTrue() {
-        addressBook.addTransaction(ALICE);
-        assertTrue(addressBook.hasTransaction(ALICE));
+    public void hasTransaction_transactionInFinanceTracker_returnsTrue() {
+        financeTracker.addTransaction(ALICE);
+        assertTrue(financeTracker.hasTransaction(ALICE));
     }
 
     @Test
-    public void hasTransaction_transactionWithSameIdentityFieldsInAddressBook_returnsTrue() {
-        addressBook.addTransaction(ALICE);
+    public void hasTransaction_transactionWithSameIdentityFieldsInFinanceTracker_returnsTrue() {
+        financeTracker.addTransaction(ALICE);
         Transaction editedAlice = new TransactionBuilder(ALICE).withCategories(VALID_CATEGORY_HUSBAND).build();
-        assertTrue(addressBook.hasTransaction(editedAlice));
+        assertTrue(financeTracker.hasTransaction(editedAlice));
     }
 
     @Test
     public void getTransactionList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> addressBook.getTransactionList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () -> financeTracker.getTransactionList().remove(0));
     }
 
     /**
-     * A stub ReadOnlyAddressBook whose transactions list can violate interface constraints.
+     * A stub ReadOnlyFinanceTracker whose transactions list can violate interface constraints.
      */
-    private static class AddressBookStub implements ReadOnlyAddressBook {
+    private static class FinanceTrackerStub implements ReadOnlyFinanceTracker {
         private final ObservableList<Transaction> transactions = FXCollections.observableArrayList();
 
-        AddressBookStub(Collection<Transaction> transactions) {
+        FinanceTrackerStub(Collection<Transaction> transactions) {
             this.transactions.setAll(transactions);
         }
 

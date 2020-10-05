@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
-import ay2021s1_cs2103_w16_3.finesse.testutil.AddressBookBuilder;
+import ay2021s1_cs2103_w16_3.finesse.testutil.FinanceTrackerBuilder;
 
 public class ModelManagerTest {
 
@@ -26,7 +26,7 @@ public class ModelManagerTest {
     public void constructor() {
         assertEquals(new UserPrefs(), modelManager.getUserPrefs());
         assertEquals(new GuiSettings(), modelManager.getGuiSettings());
-        assertEquals(new AddressBook(), new AddressBook(modelManager.getAddressBook()));
+        assertEquals(new FinanceTracker(), new FinanceTracker(modelManager.getFinanceTracker()));
     }
 
     @Test
@@ -37,14 +37,14 @@ public class ModelManagerTest {
     @Test
     public void setUserPrefs_validUserPrefs_copiesUserPrefs() {
         UserPrefs userPrefs = new UserPrefs();
-        userPrefs.setAddressBookFilePath(Paths.get("address/book/file/path"));
+        userPrefs.setFinanceTrackerFilePath(Paths.get("finance/tracker/file/path"));
         userPrefs.setGuiSettings(new GuiSettings(1, 2, 3, 4));
         modelManager.setUserPrefs(userPrefs);
         assertEquals(userPrefs, modelManager.getUserPrefs());
 
         // Modifying userPrefs should not modify modelManager's userPrefs
         UserPrefs oldUserPrefs = new UserPrefs(userPrefs);
-        userPrefs.setAddressBookFilePath(Paths.get("new/address/book/file/path"));
+        userPrefs.setFinanceTrackerFilePath(Paths.get("new/finance/tracker/file/path"));
         assertEquals(oldUserPrefs, modelManager.getUserPrefs());
     }
 
@@ -61,15 +61,15 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void setAddressBookFilePath_nullPath_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> modelManager.setAddressBookFilePath(null));
+    public void setFinanceTrackerFilePath_nullPath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.setFinanceTrackerFilePath(null));
     }
 
     @Test
-    public void setAddressBookFilePath_validPath_setsAddressBookFilePath() {
-        Path path = Paths.get("address/book/file/path");
-        modelManager.setAddressBookFilePath(path);
-        assertEquals(path, modelManager.getAddressBookFilePath());
+    public void setFinanceTrackerFilePath_validPath_setsFinanceTrackerFilePath() {
+        Path path = Paths.get("finance/tracker/file/path");
+        modelManager.setFinanceTrackerFilePath(path);
+        assertEquals(path, modelManager.getFinanceTrackerFilePath());
     }
 
     @Test
@@ -78,12 +78,12 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasTrasaction_transactionNotInAddressBook_returnsFalse() {
+    public void hasTrasaction_transactionNotInFinanceTracker_returnsFalse() {
         assertFalse(modelManager.hasTransaction(ALICE));
     }
 
     @Test
-    public void hasTransaction_transactionInAddressBook_returnsTrue() {
+    public void hasTransaction_transactionInFinanceTracker_returnsTrue() {
         modelManager.addTransaction(ALICE);
         assertTrue(modelManager.hasTransaction(ALICE));
     }
@@ -95,13 +95,14 @@ public class ModelManagerTest {
 
     @Test
     public void equals() {
-        AddressBook addressBook = new AddressBookBuilder().withTransaction(ALICE).withTransaction(BENSON).build();
-        AddressBook differentAddressBook = new AddressBook();
+        FinanceTracker financeTracker = new FinanceTrackerBuilder().withTransaction(ALICE)
+                .withTransaction(BENSON).build();
+        FinanceTracker differentFinanceTracker = new FinanceTracker();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
-        modelManager = new ModelManager(addressBook, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(addressBook, userPrefs);
+        modelManager = new ModelManager(financeTracker, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(financeTracker, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -113,20 +114,20 @@ public class ModelManagerTest {
         // different types -> returns false
         assertFalse(modelManager.equals(5));
 
-        // different addressBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
+        // different financeTracker -> returns false
+        assertFalse(modelManager.equals(new ModelManager(differentFinanceTracker, userPrefs)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getTitle().fullTitle.split("\\s+");
         modelManager.updateFilteredTransactionList(new TitleContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(financeTracker, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
 
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
-        differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
+        differentUserPrefs.setFinanceTrackerFilePath(Paths.get("differentFilePath"));
+        assertFalse(modelManager.equals(new ModelManager(financeTracker, differentUserPrefs)));
     }
 }

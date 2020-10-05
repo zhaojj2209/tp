@@ -10,7 +10,7 @@ import java.util.Set;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 
 /**
- * Represents a Transaction in the address book.
+ * Represents a Transaction in the finance tracker.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Transaction {

@@ -1,5 +1,5 @@
 {
-  "_comment": "AddressBook save file which contains the same Transaction values as in TypicalPersons#getTypicalAddressBook()",
+  "_comment": "Fine$$e save file which contains the same Transaction values as in TypicalPersons#getTypicalFinanceTracker()",
   "transactions" : [ {
     "title" : "Alice Pauline",
     "amount" : "94351253",

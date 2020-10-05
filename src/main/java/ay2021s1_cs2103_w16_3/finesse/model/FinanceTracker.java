@@ -9,10 +9,10 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.UniqueTransactionList;
 import javafx.collections.ObservableList;
 
 /**
- * Wraps all data at the address-book level
+ * Wraps all data at the finance tracker level
  * Duplicates are not allowed (by .isSameTransaction comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class FinanceTracker implements ReadOnlyFinanceTracker {
 
     private final UniqueTransactionList transactions;
 
@@ -27,12 +27,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         transactions = new UniqueTransactionList();
     }
 
-    public AddressBook() {}
+    public FinanceTracker() {}
 
     /**
-     * Creates an AddressBook using the Transactions in the {@code toBeCopied}
+     * Creates an FinanceTracker using the Transactions in the {@code toBeCopied}
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public FinanceTracker(ReadOnlyFinanceTracker toBeCopied) {
         this();
         resetData(toBeCopied);
     }
@@ -48,9 +48,9 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Resets the existing data of this {@code AddressBook} with {@code newData}.
+     * Resets the existing data of this {@code FinanceTracker} with {@code newData}.
      */
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyFinanceTracker newData) {
         requireNonNull(newData);
 
         setTransactions(newData.getTransactionList());
@@ -59,7 +59,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     //// transaction-level operations
 
     /**
-     * Returns true if a transaction with the same identity as {@code transaction} exists in the address book.
+     * Returns true if a transaction with the same identity as {@code transaction} exists in the finance tracker.
      */
     public boolean hasTransaction(Transaction transaction) {
         requireNonNull(transaction);
@@ -67,8 +67,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Adds a transaction to the address book.
-     * The transaction must not already exist in the address book.
+     * Adds a transaction to the finance tracker.
+     * The transaction must not already exist in the finance tracker.
      */
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
@@ -76,9 +76,9 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Replaces the given transaction {@code target} in the list with {@code editedTransaction}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in the finance tracker.
      * The transaction identity of {@code editedTransaction} must not be the same as another existing transaction
-     * in the address book.
+     * in the finance tracker.
      */
     public void setTransaction(Transaction target, Transaction editedTransaction) {
         requireNonNull(editedTransaction);
@@ -87,8 +87,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Removes {@code key} from this {@code AddressBook}.
-     * {@code key} must exist in the address book.
+     * Removes {@code key} from this {@code FinanceTracker}.
+     * {@code key} must exist in the finance tracker.
      */
     public void removeTransaction(Transaction key) {
         transactions.remove(key);
@@ -110,8 +110,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddressBook // instanceof handles nulls
-                && transactions.equals(((AddressBook) other).transactions));
+                || (other instanceof FinanceTracker // instanceof handles nulls
+                && transactions.equals(((FinanceTracker) other).transactions));
     }
 
     @Override

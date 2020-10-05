@@ -23,10 +23,10 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
-import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyAddressBook;
+import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
-import ay2021s1_cs2103_w16_3.finesse.storage.JsonAddressBookStorage;
+import ay2021s1_cs2103_w16_3.finesse.storage.JsonFinanceTrackerStorage;
 import ay2021s1_cs2103_w16_3.finesse.storage.JsonUserPrefsStorage;
 import ay2021s1_cs2103_w16_3.finesse.storage.StorageManager;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
@@ -42,10 +42,10 @@ public class LogicManagerTest {
 
     @BeforeEach
     public void setUp() {
-        JsonAddressBookStorage addressBookStorage =
-                new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonFinanceTrackerStorage financeTrackerStorage =
+                new JsonFinanceTrackerStorage(temporaryFolder.resolve("fine$$e.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(financeTrackerStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
     }
 
@@ -69,12 +69,13 @@ public class LogicManagerTest {
 
     @Test
     public void execute_storageThrowsIoException_throwsCommandException() {
-        // Setup LogicManager with JsonAddressBookIoExceptionThrowingStub
-        JsonAddressBookStorage addressBookStorage =
-                new JsonAddressBookIoExceptionThrowingStub(temporaryFolder.resolve("ioExceptionAddressBook.json"));
+        // Setup LogicManager with JsonFinanceTrackerIoExceptionThrowingStub
+        JsonFinanceTrackerStorage financeTrackerStorage =
+                new JsonFinanceTrackerIoExceptionThrowingStub(
+                        temporaryFolder.resolve("ioExceptionFinanceTracker.json"));
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ioExceptionUserPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(financeTrackerStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
 
         // Execute add command
@@ -127,7 +128,7 @@ public class LogicManagerTest {
      */
     private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
             String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         assertCommandFailure(inputCommand, expectedException, expectedMessage, expectedModel);
     }
 
@@ -147,13 +148,13 @@ public class LogicManagerTest {
     /**
      * A stub class to throw an {@code IOException} when the save method is called.
      */
-    private static class JsonAddressBookIoExceptionThrowingStub extends JsonAddressBookStorage {
-        private JsonAddressBookIoExceptionThrowingStub(Path filePath) {
+    private static class JsonFinanceTrackerIoExceptionThrowingStub extends JsonFinanceTrackerStorage {
+        private JsonFinanceTrackerIoExceptionThrowingStub(Path filePath) {
             super(filePath);
         }
 
         @Override
-        public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+        public void saveFinanceTracker(ReadOnlyFinanceTracker financeTracker, Path filePath) throws IOException {
             throw DUMMY_IO_EXCEPTION;
         }
     }

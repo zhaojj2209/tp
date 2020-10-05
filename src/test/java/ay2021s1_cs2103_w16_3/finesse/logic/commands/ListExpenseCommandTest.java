@@ -1,7 +1,7 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalAddressBook;
+import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,8 +23,8 @@ public class ListExpenseCommandTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        model = new ModelManager(getTypicalFinanceTracker(), new UserPrefs());
+        expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ListExpenseCommandTest {
     @Test
     public void execute_hasSomeExpense() {
         model.addTransaction(new TransactionBuilder().buildExpense());
-        expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.updateFilteredTransactionList(transaction -> transaction instanceof Expense);
         assertCommandSuccess(new ListExpenseCommand(), model, ListExpenseCommand.MESSAGE_SUCCESS, expectedModel);
         assertEquals(model.getFilteredTransactionList().size(), 1);
@@ -45,7 +45,7 @@ public class ListExpenseCommandTest {
     @Test
     public void execute_hasSomeNonExpense() {
         model.addTransaction(new TransactionBuilder().buildIncome());
-        expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.updateFilteredTransactionList(transaction -> transaction instanceof Expense);
         assertCommandSuccess(new ListExpenseCommand(), model, ListExpenseCommand.MESSAGE_SUCCESS, expectedModel);
         assertEquals(model.getFilteredTransactionList().size(), 0);

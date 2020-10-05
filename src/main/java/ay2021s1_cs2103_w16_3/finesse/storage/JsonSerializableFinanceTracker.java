@@ -9,53 +9,53 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.exceptions.IllegalValueException;
-import ay2021s1_cs2103_w16_3.finesse.model.AddressBook;
-import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyAddressBook;
+import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
+import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
- * An Immutable AddressBook that is serializable to JSON format.
+ * An Immutable FinanceTracker that is serializable to JSON format.
  */
-@JsonRootName(value = "addressbook")
-class JsonSerializableAddressBook {
+@JsonRootName(value = "fine$$e")
+class JsonSerializableFinanceTracker {
 
     public static final String MESSAGE_DUPLICATE_TRANSACTION = "Transactions list contains duplicate transaction(s).";
 
     private final List<JsonAdaptedTransaction> transactions = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given transactions.
+     * Constructs a {@code JsonSerializableFinanceTracker} with the given transactions.
      */
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("transactions") List<JsonAdaptedTransaction> transactions) {
+    public JsonSerializableFinanceTracker(@JsonProperty("transactions") List<JsonAdaptedTransaction> transactions) {
         this.transactions.addAll(transactions);
     }
 
     /**
-     * Converts a given {@code ReadOnlyAddressBook} into this class for Jackson use.
+     * Converts a given {@code ReadOnlyFinanceTracker} into this class for Jackson use.
      *
-     * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
+     * @param source future changes to this will not affect the created {@code JsonSerializableFinanceTracker}.
      */
-    public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
+    public JsonSerializableFinanceTracker(ReadOnlyFinanceTracker source) {
         transactions.addAll(source.getTransactionList().stream().map(JsonAdaptedTransaction::new)
                 .collect(Collectors.toList()));
     }
 
     /**
-     * Converts this address book into the model's {@code AddressBook} object.
+     * Converts this finance tracker into the model's {@code FinanceTracker} object.
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */
-    public AddressBook toModelType() throws IllegalValueException {
-        AddressBook addressBook = new AddressBook();
+    public FinanceTracker toModelType() throws IllegalValueException {
+        FinanceTracker financeTracker = new FinanceTracker();
         for (JsonAdaptedTransaction jsonAdaptedTransaction : transactions) {
             Transaction transaction = jsonAdaptedTransaction.toModelType();
-            if (addressBook.hasTransaction(transaction)) {
+            if (financeTracker.hasTransaction(transaction)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_TRANSACTION);
             }
-            addressBook.addTransaction(transaction);
+            financeTracker.addTransaction(transaction);
         }
-        return addressBook;
+        return financeTracker;
     }
 
 }

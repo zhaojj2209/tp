@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import ay2021s1_cs2103_w16_3.finesse.model.AddressBook;
-import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyAddressBook;
+import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
+import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
@@ -13,7 +13,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
- * Contains utility methods for populating {@code AddressBook} with sample data.
+ * Contains utility methods for populating {@code FinanceTracker} with sample data.
  */
 public class SampleDataUtil {
     public static Transaction[] getSampleTransactions() {
@@ -33,8 +33,8 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyAddressBook getSampleAddressBook() {
-        AddressBook sampleAb = new AddressBook();
+    public static ReadOnlyFinanceTracker getSampleFinanceTracker() {
+        FinanceTracker sampleAb = new FinanceTracker();
         for (Transaction sampleTransaction : getSampleTransactions()) {
             sampleAb.addTransaction(sampleTransaction);
         }

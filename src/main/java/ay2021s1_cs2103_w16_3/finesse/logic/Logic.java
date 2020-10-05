@@ -6,7 +6,7 @@ import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
-import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyAddressBook;
+import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import javafx.collections.ObservableList;
 
@@ -24,19 +24,19 @@ public interface Logic {
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
     /**
-     * Returns the AddressBook.
+     * Returns the FinanceTracker.
      *
-     * @see ay2021s1_cs2103_w16_3.finesse.model.Model#getAddressBook()
+     * @see ay2021s1_cs2103_w16_3.finesse.model.Model#getFinanceTracker()
      */
-    ReadOnlyAddressBook getAddressBook();
+    ReadOnlyFinanceTracker getFinanceTracker();
 
     /** Returns an unmodifiable view of the filtered list of transactions */
     ObservableList<Transaction> getFilteredTransactionList();
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' finance tracker file path.
      */
-    Path getAddressBookFilePath();
+    Path getFinanceTrackerFilePath();
 
     /**
      * Returns the user prefs' GUI settings.

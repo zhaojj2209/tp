@@ -10,7 +10,7 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.asser
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.showTransactionAtIndex;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalIndexes.INDEX_FIRST_TRANSACTION;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalIndexes.INDEX_SECOND_TRANSACTION;
-import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalAddressBook;
+import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import ay2021s1_cs2103_w16_3.finesse.commons.core.Messages;
 import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.EditCommand.EditTransactionDescriptor;
-import ay2021s1_cs2103_w16_3.finesse.model.AddressBook;
+import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
@@ -32,7 +32,7 @@ import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
  */
 public class EditCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalFinanceTracker(), new UserPrefs());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
@@ -43,7 +43,7 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(model.getFilteredTransactionList().get(0), editedTransaction);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -64,7 +64,7 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(lastTransaction, editedTransaction);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -77,7 +77,7 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -95,7 +95,7 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(model.getFilteredTransactionList().get(0), editedTransaction);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -115,8 +115,8 @@ public class EditCommandTest {
     public void execute_duplicateTransactionFilteredList_failure() {
         showTransactionAtIndex(model, INDEX_FIRST_TRANSACTION);
 
-        // edit transaction in filtered list into a duplicate in address book
-        Transaction transactionInList = model.getAddressBook().getTransactionList()
+        // edit transaction in filtered list into a duplicate in finance tracker
+        Transaction transactionInList = model.getFinanceTracker().getTransactionList()
                 .get(INDEX_SECOND_TRANSACTION.getZeroBased());
         EditCommand editCommand = new EditCommand(INDEX_FIRST_TRANSACTION,
                 new EditTransactionDescriptorBuilder(transactionInList).build());
@@ -136,14 +136,14 @@ public class EditCommandTest {
 
     /**
      * Edit filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of finance tracker
      */
     @Test
     public void execute_invalidTransactionIndexFilteredList_failure() {
         showTransactionAtIndex(model, INDEX_FIRST_TRANSACTION);
         Index outOfBoundIndex = INDEX_SECOND_TRANSACTION;
-        // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getTransactionList().size());
+        // ensures that outOfBoundIndex is still in bounds of finance tracker list
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getFinanceTracker().getTransactionList().size());
 
         EditCommand editCommand = new EditCommand(outOfBoundIndex,
                 new EditTransactionDescriptorBuilder().withTitle(VALID_TITLE_BOB).build());
