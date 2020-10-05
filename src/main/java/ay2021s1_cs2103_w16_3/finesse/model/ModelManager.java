@@ -30,7 +30,7 @@ public class ModelManager implements Model {
         super();
         requireAllNonNull(financeTracker, userPrefs);
 
-        logger.fine("Initializing with Fine$$e: " + financeTracker + " and user prefs " + userPrefs);
+        logger.fine("Initializing with finance tracker: " + financeTracker + " and user prefs " + userPrefs);
 
         this.financeTracker = new FinanceTracker(financeTracker);
         this.userPrefs = new UserPrefs(userPrefs);
