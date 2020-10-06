@@ -57,11 +57,11 @@ public class TypicalTransactions {
      * Returns an {@code FinanceTracker} with all the typical transactions.
      */
     public static FinanceTracker getTypicalFinanceTracker() {
-        FinanceTracker ab = new FinanceTracker();
+        FinanceTracker ft = new FinanceTracker();
         for (Transaction transaction : getTypicalTransactions()) {
-            ab.addTransaction(transaction);
+            ft.addTransaction(transaction);
         }
-        return ab;
+        return ft;
     }
 
     public static List<Transaction> getTypicalTransactions() {

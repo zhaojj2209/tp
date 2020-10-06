@@ -5,8 +5,6 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
  * A utility class to help with building FinanceTracker objects.
- * Example usage: <br>
- *     {@code FinanceTracker ab = new FinanceTrackerBuilder().withTransaction("John", "Doe").build();}
  */
 public class FinanceTrackerBuilder {
 
