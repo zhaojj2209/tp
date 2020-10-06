@@ -34,9 +34,9 @@ import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionUtil;
 
-public class AddressBookParserTest {
+public class FinanceTrackerParserTest {
 
-    private final AddressBookParser parser = new AddressBookParser();
+    private final FinanceTrackerParser parser = new FinanceTrackerParser();
 
     @Test
     public void parseCommand_add() throws Exception {

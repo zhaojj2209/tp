@@ -4,7 +4,7 @@ import static ay2021s1_cs2103_w16_3.finesse.commons.util.AppUtil.checkArgument;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents a Category in the address book.
+ * Represents a Category in the finance tracker.
  * Guarantees: immutable; name is valid as declared in {@link #isValidCategoryName(String)}
  */
 public class Category {

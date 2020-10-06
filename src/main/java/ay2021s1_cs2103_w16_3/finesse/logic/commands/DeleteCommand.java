@@ -11,7 +11,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
- * Deletes a transaction identified using it's displayed index from the address book.
+ * Deletes a transaction identified using its displayed index from the finance tracker.
  */
 public class DeleteCommand extends Command {
 

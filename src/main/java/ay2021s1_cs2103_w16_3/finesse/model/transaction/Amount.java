@@ -4,7 +4,7 @@ import static ay2021s1_cs2103_w16_3.finesse.commons.util.AppUtil.checkArgument;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents a Transaction's amount in the address book.
+ * Represents a Transaction's amount in the finance tracker.
  * Guarantees: immutable; is valid as declared in {@link #isValidAmount(String)}
  */
 public class Amount {

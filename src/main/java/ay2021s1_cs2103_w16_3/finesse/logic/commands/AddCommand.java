@@ -11,13 +11,13 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
- * Adds a transaction to the address book.
+ * Adds a transaction to the finance tracker.
  */
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a transaction to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a transaction to the finance tracker. "
             + "Parameters: "
             + PREFIX_TITLE + "TITLE "
             + PREFIX_AMOUNT + "AMOUNT "
@@ -31,7 +31,7 @@ public class AddCommand extends Command {
             + PREFIX_CATEGORY + "owesMoney";
 
     public static final String MESSAGE_SUCCESS = "New transaction added: %1$s";
-    public static final String MESSAGE_DUPLICATE_TRANSACTION = "This transaction already exists in the address book";
+    public static final String MESSAGE_DUPLICATE_TRANSACTION = "This transaction already exists in the finance tracker";
 
     private final Transaction toAdd;
 

@@ -6,7 +6,7 @@ import static java.util.Objects.requireNonNull;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 
 /**
- * Lists all transactions in the address book to the user.
+ * Lists all transactions in the finance tracker to the user.
  */
 public class ListCommand extends Command {
 

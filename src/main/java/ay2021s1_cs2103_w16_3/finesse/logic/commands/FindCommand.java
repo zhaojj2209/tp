@@ -7,7 +7,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
 
 /**
- * Finds and lists all transactions in address book whose title contains any of the argument keywords.
+ * Finds and lists all transactions in finance tracker whose title contains any of the argument keywords.
  * Keyword matching is case insensitive.
  */
 public class FindCommand extends Command {

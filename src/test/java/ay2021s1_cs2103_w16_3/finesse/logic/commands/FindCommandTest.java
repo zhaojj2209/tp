@@ -5,7 +5,7 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.asser
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.CARL;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.ELLE;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.FIONA;
-import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalAddressBook;
+import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,8 +24,8 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPred
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
  */
 public class FindCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalFinanceTracker(), new UserPrefs());
+    private Model expectedModel = new ModelManager(getTypicalFinanceTracker(), new UserPrefs());
 
     @Test
     public void equals() {

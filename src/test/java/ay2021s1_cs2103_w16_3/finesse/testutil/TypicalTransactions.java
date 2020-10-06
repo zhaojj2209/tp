@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ay2021s1_cs2103_w16_3.finesse.model.AddressBook;
+import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
@@ -54,14 +54,14 @@ public class TypicalTransactions {
     private TypicalTransactions() {} // prevents instantiation
 
     /**
-     * Returns an {@code AddressBook} with all the typical transactions.
+     * Returns an {@code FinanceTracker} with all the typical transactions.
      */
-    public static AddressBook getTypicalAddressBook() {
-        AddressBook ab = new AddressBook();
+    public static FinanceTracker getTypicalFinanceTracker() {
+        FinanceTracker ft = new FinanceTracker();
         for (Transaction transaction : getTypicalTransactions()) {
-            ab.addTransaction(transaction);
+            ft.addTransaction(transaction);
         }
-        return ab;
+        return ft;
     }
 
     public static List<Transaction> getTypicalTransactions() {

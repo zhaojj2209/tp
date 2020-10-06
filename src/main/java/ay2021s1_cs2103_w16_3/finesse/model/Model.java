@@ -35,45 +35,45 @@ public interface Model {
     void setGuiSettings(GuiSettings guiSettings);
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' finance tracker file path.
      */
-    Path getAddressBookFilePath();
+    Path getFinanceTrackerFilePath();
 
     /**
-     * Sets the user prefs' address book file path.
+     * Sets the user prefs' finance tracker file path.
      */
-    void setAddressBookFilePath(Path addressBookFilePath);
+    void setFinanceTrackerFilePath(Path financeTrackerFilePath);
 
     /**
-     * Replaces address book data with the data in {@code addressBook}.
+     * Replaces finance tracker data with the data in {@code financeTracker}.
      */
-    void setAddressBook(ReadOnlyAddressBook addressBook);
+    void setFinanceTracker(ReadOnlyFinanceTracker financeTracker);
 
-    /** Returns the AddressBook */
-    ReadOnlyAddressBook getAddressBook();
+    /** Returns the FinanceTracker */
+    ReadOnlyFinanceTracker getFinanceTracker();
 
     /**
-     * Returns true if a transaction with the same identity as {@code transaction} exists in the address book.
+     * Returns true if a transaction with the same identity as {@code transaction} exists in the finance tracker.
      */
     boolean hasTransaction(Transaction transaction);
 
     /**
      * Deletes the given transaction.
-     * The transaction must exist in the address book.
+     * The transaction must exist in the finance tracker.
      */
     void deleteTransaction(Transaction target);
 
     /**
      * Adds the given transaction.
-     * {@code transaction} must not already exist in the address book.
+     * {@code transaction} must not already exist in the finance tracker.
      */
     void addTransaction(Transaction transaction);
 
     /**
      * Replaces the given transaction {@code target} with {@code editedTransaction}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in the finance tracker.
      * The transaction identity of {@code editedTransaction} must not be the same as another existing transaction
-     * in the address book.
+     * in the finance tracker.
      */
     void setTransaction(Transaction target, Transaction editedTransaction);
 

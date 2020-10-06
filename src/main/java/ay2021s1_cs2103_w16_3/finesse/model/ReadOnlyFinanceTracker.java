@@ -4,9 +4,9 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import javafx.collections.ObservableList;
 
 /**
- * Unmodifiable view of an address book
+ * Unmodifiable view of a finance tracker
  */
-public interface ReadOnlyAddressBook {
+public interface ReadOnlyFinanceTracker {
 
     /**
      * Returns an unmodifiable view of the transactions list.
