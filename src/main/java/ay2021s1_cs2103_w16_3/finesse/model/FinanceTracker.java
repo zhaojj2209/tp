@@ -57,14 +57,6 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     //// transaction-level operations
 
     /**
-     * Returns true if a transaction with the same identity as {@code transaction} exists in the finance tracker.
-     */
-    public boolean hasTransaction(Transaction transaction) {
-        requireNonNull(transaction);
-        return transactions.contains(transaction);
-    }
-
-    /**
      * Adds a transaction to the finance tracker.
      */
     public void addTransaction(Transaction transaction) {

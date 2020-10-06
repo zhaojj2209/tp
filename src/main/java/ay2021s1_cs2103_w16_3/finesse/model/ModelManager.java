@@ -89,12 +89,6 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public boolean hasTransaction(Transaction transaction) {
-        requireNonNull(transaction);
-        return financeTracker.hasTransaction(transaction);
-    }
-
-    @Override
     public void deleteTransaction(Transaction target) {
         financeTracker.removeTransaction(target);
     }

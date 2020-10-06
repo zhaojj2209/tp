@@ -5,8 +5,6 @@ import static ay2021s1_cs2103_w16_3.finesse.testutil.Assert.assertThrows;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.ALICE;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.BOB;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,29 +17,6 @@ import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 public class TransactionListTest {
 
     private final TransactionList transactionList = new TransactionList();
-
-    @Test
-    public void contains_nullTransaction_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> transactionList.contains(null));
-    }
-
-    @Test
-    public void contains_transactionNotInList_returnsFalse() {
-        assertFalse(transactionList.contains(ALICE));
-    }
-
-    @Test
-    public void contains_transactionInList_returnsTrue() {
-        transactionList.add(ALICE);
-        assertTrue(transactionList.contains(ALICE));
-    }
-
-    @Test
-    public void contains_transactionWithSameIdentityFieldsInList_returnsTrue() {
-        transactionList.add(ALICE);
-        Transaction editedAlice = new TransactionBuilder(ALICE).withCategories(VALID_CATEGORY_HUSBAND).build();
-        assertTrue(transactionList.contains(editedAlice));
-    }
 
     @Test
     public void add_nullTransaction_throwsNullPointerException() {

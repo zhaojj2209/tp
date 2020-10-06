@@ -73,22 +73,6 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasTransaction_nullTransaction_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> modelManager.hasTransaction(null));
-    }
-
-    @Test
-    public void hasTrasaction_transactionNotInFinanceTracker_returnsFalse() {
-        assertFalse(modelManager.hasTransaction(ALICE));
-    }
-
-    @Test
-    public void hasTransaction_transactionInFinanceTracker_returnsTrue() {
-        modelManager.addTransaction(ALICE);
-        assertTrue(modelManager.hasTransaction(ALICE));
-    }
-
-    @Test
     public void getFilteredTransactionList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredTransactionList().remove(0));
     }

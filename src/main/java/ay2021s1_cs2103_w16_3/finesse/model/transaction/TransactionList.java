@@ -24,14 +24,6 @@ public class TransactionList implements Iterable<Transaction> {
             FXCollections.unmodifiableObservableList(internalList);
 
     /**
-     * Returns true if the list contains an equivalent transaction as the given argument.
-     */
-    public boolean contains(Transaction toCheck) {
-        requireNonNull(toCheck);
-        return internalList.stream().anyMatch(toCheck::isSameTransaction);
-    }
-
-    /**
      * Adds a transaction to the list.
      */
     public void add(Transaction toAdd) {

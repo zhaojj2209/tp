@@ -115,11 +115,6 @@ public class AddExpenseCommandTest {
         }
 
         @Override
-        public boolean hasTransaction(Transaction transaction) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public void deleteTransaction(Transaction target) {
             throw new AssertionError("This method should not be called.");
         }
@@ -141,34 +136,10 @@ public class AddExpenseCommandTest {
     }
 
     /**
-     * A Model stub that contains a single transaction.
-     */
-    private class ModelStubWithTransaction extends ModelStub {
-        private final Transaction transaction;
-
-        ModelStubWithTransaction(Transaction transaction) {
-            requireNonNull(transaction);
-            this.transaction = transaction;
-        }
-
-        @Override
-        public boolean hasTransaction(Transaction transaction) {
-            requireNonNull(transaction);
-            return this.transaction.isSameTransaction(transaction);
-        }
-    }
-
-    /**
      * A Model stub that always accept the transaction being added.
      */
     private class ModelStubAcceptingTransactionAdded extends ModelStub {
         final ArrayList<Transaction> transactionsAdded = new ArrayList<>();
-
-        @Override
-        public boolean hasTransaction(Transaction transaction) {
-            requireNonNull(transaction);
-            return transactionsAdded.stream().anyMatch(transaction::isSameTransaction);
-        }
 
         @Override
         public void addTransaction(Transaction transaction) {
