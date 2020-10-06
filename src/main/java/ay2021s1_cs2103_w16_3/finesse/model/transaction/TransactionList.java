@@ -6,24 +6,18 @@ import static java.util.Objects.requireNonNull;
 import java.util.Iterator;
 import java.util.List;
 
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.exceptions.DuplicateTransactionException;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.exceptions.TransactionNotFoundException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * A list of transactions that enforces uniqueness between its elements and does not allow nulls.
- * A transaction is considered unique by comparing using {@code Transaction#isSameTransaction(Transaction)}. As such,
- * adding and updating of transactions uses Transaction#isSameTransaction(Transaction) for equality so as to ensure
- * that the transaction being added or updated is unique in terms of identity in the UniqueTransactionList. However,
- * the removal of a transaction uses Transaction#equals(Object) so as to ensure that the transaction with exactly the
+ * A list of transactions that does not allow nulls.
+ * The removal of a transaction uses Transaction#equals(Object) so as to ensure that the transaction with exactly the
  * same fields will be removed.
  *
  * Supports a minimal set of list operations.
- *
- * @see Transaction#isSameTransaction(Transaction)
  */
-public class UniqueTransactionList implements Iterable<Transaction> {
+public class TransactionList implements Iterable<Transaction> {
 
     private final ObservableList<Transaction> internalList = FXCollections.observableArrayList();
     private final ObservableList<Transaction> internalUnmodifiableList =
@@ -39,13 +33,9 @@ public class UniqueTransactionList implements Iterable<Transaction> {
 
     /**
      * Adds a transaction to the list.
-     * The transaction must not already exist in the list.
      */
     public void add(Transaction toAdd) {
         requireNonNull(toAdd);
-        if (contains(toAdd)) {
-            throw new DuplicateTransactionException();
-        }
         internalList.add(toAdd);
     }
 
@@ -63,10 +53,6 @@ public class UniqueTransactionList implements Iterable<Transaction> {
             throw new TransactionNotFoundException();
         }
 
-        if (!target.isSameTransaction(editedTransaction) && contains(editedTransaction)) {
-            throw new DuplicateTransactionException();
-        }
-
         internalList.set(index, editedTransaction);
     }
 
@@ -81,20 +67,16 @@ public class UniqueTransactionList implements Iterable<Transaction> {
         }
     }
 
-    public void setTransactions(UniqueTransactionList replacement) {
+    public void setTransactions(TransactionList replacement) {
         requireNonNull(replacement);
         internalList.setAll(replacement.internalList);
     }
 
     /**
      * Replaces the contents of this list with {@code transactions}.
-     * {@code transactions} must not contain duplicate transactions.
      */
     public void setTransactions(List<Transaction> transactions) {
         requireAllNonNull(transactions);
-        if (!transactionsAreUnique(transactions)) {
-            throw new DuplicateTransactionException();
-        }
 
         internalList.setAll(transactions);
     }
@@ -114,8 +96,8 @@ public class UniqueTransactionList implements Iterable<Transaction> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof UniqueTransactionList // instanceof handles nulls
-                        && internalList.equals(((UniqueTransactionList) other).internalList));
+                || (other instanceof TransactionList // instanceof handles nulls
+                        && internalList.equals(((TransactionList) other).internalList));
     }
 
     @Override
@@ -123,17 +105,4 @@ public class UniqueTransactionList implements Iterable<Transaction> {
         return internalList.hashCode();
     }
 
-    /**
-     * Returns true if {@code transactions} contains only unique transactions.
-     */
-    private boolean transactionsAreUnique(List<Transaction> transactions) {
-        for (int i = 0; i < transactions.size() - 1; i++) {
-            for (int j = i + 1; j < transactions.size(); j++) {
-                if (transactions.get(i).isSameTransaction(transactions.get(j))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 }

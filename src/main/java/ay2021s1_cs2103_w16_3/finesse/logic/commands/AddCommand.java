@@ -6,7 +6,6 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
 import static java.util.Objects.requireNonNull;
 
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
@@ -31,7 +30,6 @@ public class AddCommand extends Command {
             + PREFIX_CATEGORY + "owesMoney";
 
     public static final String MESSAGE_SUCCESS = "New transaction added: %1$s";
-    public static final String MESSAGE_DUPLICATE_TRANSACTION = "This transaction already exists in the finance tracker";
 
     private final Transaction toAdd;
 
@@ -44,12 +42,8 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model) {
         requireNonNull(model);
-
-        if (model.hasTransaction(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_TRANSACTION);
-        }
 
         model.addTransaction(toAdd);
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));

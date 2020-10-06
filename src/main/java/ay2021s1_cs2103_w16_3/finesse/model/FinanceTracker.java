@@ -5,16 +5,15 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.UniqueTransactionList;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.TransactionList;
 import javafx.collections.ObservableList;
 
 /**
  * Wraps all data at the finance tracker level
- * Duplicates are not allowed (by .isSameTransaction comparison)
  */
 public class FinanceTracker implements ReadOnlyFinanceTracker {
 
-    private final UniqueTransactionList transactions;
+    private final TransactionList transactions;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -24,7 +23,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
      *   among constructors.
      */
     {
-        transactions = new UniqueTransactionList();
+        transactions = new TransactionList();
     }
 
     public FinanceTracker() {}
@@ -41,7 +40,6 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
 
     /**
      * Replaces the contents of the transaction list with {@code transactions}.
-     * {@code transactions} must not contain duplicate transactions.
      */
     public void setTransactions(List<Transaction> transactions) {
         this.transactions.setTransactions(transactions);
@@ -68,7 +66,6 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
 
     /**
      * Adds a transaction to the finance tracker.
-     * The transaction must not already exist in the finance tracker.
      */
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
@@ -77,8 +74,6 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     /**
      * Replaces the given transaction {@code target} in the list with {@code editedTransaction}.
      * {@code target} must exist in the finance tracker.
-     * The transaction identity of {@code editedTransaction} must not be the same as another existing transaction
-     * in the finance tracker.
      */
     public void setTransaction(Transaction target, Transaction editedTransaction) {
         requireNonNull(editedTransaction);

@@ -14,7 +14,6 @@ import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
@@ -40,16 +39,6 @@ public class AddExpenseCommandTest {
 
         assertEquals(String.format(AddExpenseCommand.MESSAGE_SUCCESS, validExpense), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validExpense), modelStub.transactionsAdded);
-    }
-
-    @Test
-    public void execute_duplicateTransaction_throwsCommandException() {
-        Expense validExpense = new TransactionBuilder().buildExpense();
-        AddExpenseCommand addExpenseCommand = new AddExpenseCommand(validExpense);
-        ModelStub modelStub = new ModelStubWithTransaction(validExpense);
-
-        assertThrows(CommandException.class, AddExpenseCommand.MESSAGE_DUPLICATE_TRANSACTION, ()
-            -> addExpenseCommand.execute(modelStub));
     }
 
     @Test

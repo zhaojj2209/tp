@@ -10,7 +10,6 @@ public interface ReadOnlyFinanceTracker {
 
     /**
      * Returns an unmodifiable view of the transactions list.
-     * This list will not contain any duplicate transactions.
      */
     ObservableList<Transaction> getTransactionList();
 

@@ -1,6 +1,5 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 
-import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandFailure;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
 
@@ -34,12 +33,6 @@ public class AddCommandIntegrationTest {
 
         assertCommandSuccess(new AddCommand(validTransaction), model,
                 String.format(AddCommand.MESSAGE_SUCCESS, validTransaction), expectedModel);
-    }
-
-    @Test
-    public void execute_duplicateTransaction_throwsCommandException() {
-        Transaction transactionInList = model.getFinanceTracker().getTransactionList().get(0);
-        assertCommandFailure(new AddCommand(transactionInList), model, AddCommand.MESSAGE_DUPLICATE_TRANSACTION);
     }
 
 }

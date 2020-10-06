@@ -45,8 +45,6 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_EDIT_TRANSACTION_SUCCESS = "Edited Transaction: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_TRANSACTION =
-            "This transaction already exists in the finance tracker.";
 
     private final Index index;
     private final EditTransactionDescriptor editTransactionDescriptor;
@@ -74,10 +72,6 @@ public class EditCommand extends Command {
 
         Transaction transactionToEdit = lastShownList.get(index.getZeroBased());
         Transaction editedTransaction = createEditedTransaction(transactionToEdit, editTransactionDescriptor);
-
-        if (!transactionToEdit.isSameTransaction(editedTransaction) && model.hasTransaction(editedTransaction)) {
-            throw new CommandException(MESSAGE_DUPLICATE_TRANSACTION);
-        }
 
         model.setTransaction(transactionToEdit, editedTransaction);
         model.updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
