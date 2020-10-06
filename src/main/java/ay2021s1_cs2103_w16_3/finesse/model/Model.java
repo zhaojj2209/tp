@@ -53,11 +53,6 @@ public interface Model {
     ReadOnlyFinanceTracker getFinanceTracker();
 
     /**
-     * Returns true if a transaction with the same identity as {@code transaction} exists in the finance tracker.
-     */
-    boolean hasTransaction(Transaction transaction);
-
-    /**
      * Deletes the given transaction.
      * The transaction must exist in the finance tracker.
      */
@@ -65,15 +60,12 @@ public interface Model {
 
     /**
      * Adds the given transaction.
-     * {@code transaction} must not already exist in the finance tracker.
      */
     void addTransaction(Transaction transaction);
 
     /**
      * Replaces the given transaction {@code target} with {@code editedTransaction}.
      * {@code target} must exist in the finance tracker.
-     * The transaction identity of {@code editedTransaction} must not be the same as another existing transaction
-     * in the finance tracker.
      */
     void setTransaction(Transaction target, Transaction editedTransaction);
 

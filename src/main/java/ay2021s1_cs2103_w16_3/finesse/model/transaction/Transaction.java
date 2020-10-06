@@ -55,20 +55,6 @@ public class Transaction {
     }
 
     /**
-     * Returns true if both transactions of the same title have at least one other identity field that is the same.
-     * This defines a weaker notion of equality between two transactions.
-     */
-    public boolean isSameTransaction(Transaction otherTransaction) {
-        if (otherTransaction == this) {
-            return true;
-        }
-
-        return otherTransaction != null
-                && otherTransaction.getTitle().equals(getTitle())
-                && (otherTransaction.getAmount().equals(getAmount()) || otherTransaction.getDate().equals(getDate()));
-    }
-
-    /**
      * Returns true if both transactions have the same identity and data fields.
      * This defines a stronger notion of equality between two transactions.
      */

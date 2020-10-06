@@ -14,7 +14,6 @@ import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
@@ -40,16 +39,6 @@ public class AddIncomeCommandTest {
 
         assertEquals(String.format(AddIncomeCommand.MESSAGE_SUCCESS, validIncome), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validIncome), modelStub.transactionsAdded);
-    }
-
-    @Test
-    public void execute_duplicateTransaction_throwsCommandException() {
-        Income validIncome = new TransactionBuilder().buildIncome();
-        AddIncomeCommand addIncomeCommand = new AddIncomeCommand(validIncome);
-        ModelStub modelStub = new ModelStubWithTransaction(validIncome);
-
-        assertThrows(CommandException.class, AddIncomeCommand.MESSAGE_DUPLICATE_TRANSACTION, ()
-            -> addIncomeCommand.execute(modelStub));
     }
 
     @Test
@@ -126,11 +115,6 @@ public class AddIncomeCommandTest {
         }
 
         @Override
-        public boolean hasTransaction(Transaction transaction) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public void deleteTransaction(Transaction target) {
             throw new AssertionError("This method should not be called.");
         }
@@ -152,34 +136,10 @@ public class AddIncomeCommandTest {
     }
 
     /**
-     * A Model stub that contains a single transaction.
-     */
-    private class ModelStubWithTransaction extends ModelStub {
-        private final Transaction transaction;
-
-        ModelStubWithTransaction(Transaction transaction) {
-            requireNonNull(transaction);
-            this.transaction = transaction;
-        }
-
-        @Override
-        public boolean hasTransaction(Transaction transaction) {
-            requireNonNull(transaction);
-            return this.transaction.isSameTransaction(transaction);
-        }
-    }
-
-    /**
      * A Model stub that always accept the transaction being added.
      */
     private class ModelStubAcceptingTransactionAdded extends ModelStub {
         final ArrayList<Transaction> transactionsAdded = new ArrayList<>();
-
-        @Override
-        public boolean hasTransaction(Transaction transaction) {
-            requireNonNull(transaction);
-            return transactionsAdded.stream().anyMatch(transaction::isSameTransaction);
-        }
 
         @Override
         public void addTransaction(Transaction transaction) {

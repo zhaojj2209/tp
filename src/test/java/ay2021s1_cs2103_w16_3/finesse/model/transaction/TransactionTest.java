@@ -23,38 +23,6 @@ public class TransactionTest {
     }
 
     @Test
-    public void isSameTransaction() {
-        // same object -> returns true
-        assertTrue(ALICE.isSameTransaction(ALICE));
-
-        // null -> returns false
-        assertFalse(ALICE.isSameTransaction(null));
-
-        // different amount and date -> returns false
-        Transaction editedAlice = new TransactionBuilder(ALICE).withAmount(VALID_AMOUNT_BOB)
-                .withDate(VALID_DATE_BOB).build();
-        assertFalse(ALICE.isSameTransaction(editedAlice));
-
-        // different title -> returns false
-        editedAlice = new TransactionBuilder(ALICE).withTitle(VALID_TITLE_BOB).build();
-        assertFalse(ALICE.isSameTransaction(editedAlice));
-
-        // same title, same amount, different attributes -> returns true
-        editedAlice = new TransactionBuilder(ALICE).withDate(VALID_DATE_BOB).withCategories(VALID_CATEGORY_HUSBAND)
-                .build();
-        assertTrue(ALICE.isSameTransaction(editedAlice));
-
-        // same title, same date, different attributes -> returns true
-        editedAlice = new TransactionBuilder(ALICE).withAmount(VALID_AMOUNT_BOB).withCategories(VALID_CATEGORY_HUSBAND)
-                .build();
-        assertTrue(ALICE.isSameTransaction(editedAlice));
-
-        // same title, same amount, same date, different attributes -> returns true
-        editedAlice = new TransactionBuilder(ALICE).withCategories(VALID_CATEGORY_HUSBAND).build();
-        assertTrue(ALICE.isSameTransaction(editedAlice));
-    }
-
-    @Test
     public void equals() {
         // same values -> returns true
         Transaction aliceCopy = new TransactionBuilder(ALICE).build();

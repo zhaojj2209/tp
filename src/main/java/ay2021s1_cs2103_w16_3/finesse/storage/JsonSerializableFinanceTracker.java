@@ -19,8 +19,6 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 @JsonRootName(value = "fine$$e")
 class JsonSerializableFinanceTracker {
 
-    public static final String MESSAGE_DUPLICATE_TRANSACTION = "Transactions list contains duplicate transaction(s).";
-
     private final List<JsonAdaptedTransaction> transactions = new ArrayList<>();
 
     /**
@@ -50,9 +48,6 @@ class JsonSerializableFinanceTracker {
         FinanceTracker financeTracker = new FinanceTracker();
         for (JsonAdaptedTransaction jsonAdaptedTransaction : transactions) {
             Transaction transaction = jsonAdaptedTransaction.toModelType();
-            if (financeTracker.hasTransaction(transaction)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_TRANSACTION);
-            }
             financeTracker.addTransaction(transaction);
         }
         return financeTracker;
