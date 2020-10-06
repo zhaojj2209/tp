@@ -16,4 +16,4 @@ gem 'jekyll-readme-index'
 gem 'jekyll-titles-from-headings'
 gem 'jekyll-relative-links'
 gem 'wdm', '~> 0.1.0' if Gem.win_platform?
-gem 'jekyll-spaceship', '~> 0.9.2'
+gem 'jekyll-spaceship', git: 'https://github.com/AY2021S1-CS2103T-W16-3/jekyll-spaceship.git'
