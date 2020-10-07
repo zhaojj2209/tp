@@ -8,8 +8,12 @@ import ay2021s1_cs2103_w16_3.finesse.logic.Logic;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
+import ay2021s1_cs2103_w16_3.finesse.ui.expense.ExpensePanel;
+import ay2021s1_cs2103_w16_3.finesse.ui.income.IncomePanel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -32,6 +36,8 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private TransactionListPanel transactionListPanel;
+    private IncomePanel incomePanel;
+    private ExpensePanel expensePanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
@@ -42,6 +48,18 @@ public class MainWindow extends UiPart<Stage> {
     private MenuItem helpMenuItem;
 
     @FXML
+    private MenuItem incomeTabItem;
+
+    @FXML
+    private MenuItem expenseTabItem;
+
+    @FXML
+    private MenuItem analyticsTabItem;
+
+    @FXML
+    private MenuItem overviewTabItem;
+
+    @FXML
     private StackPane transactionListPanelPlaceholder;
 
     @FXML
@@ -49,6 +67,24 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    @FXML
+    private Menu menuHelpTab;
+
+    @FXML
+    private Menu menuIncomeTab;
+
+    @FXML
+    private Menu menuExpenseTab;
+
+    @FXML
+    private Menu menuOverviewTab;
+
+    @FXML
+    private Menu menuAnalyticsTab;
+
+    @FXML
+    private Label panelLabel;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -113,6 +149,12 @@ public class MainWindow extends UiPart<Stage> {
         transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
         transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
 
+        incomePanel = new IncomePanel(logic.getFilteredTransactionList());
+        transactionListPanelPlaceholder.getChildren().add(incomePanel.getRoot());
+
+        expensePanel = new ExpensePanel(logic.getFilteredTransactionList());
+        transactionListPanelPlaceholder.getChildren().add(expensePanel.getRoot());
+
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
@@ -121,6 +163,8 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
+        onOverview();
     }
 
     /**
@@ -145,6 +189,58 @@ public class MainWindow extends UiPart<Stage> {
         } else {
             helpWindow.focus();
         }
+    }
+
+    /**
+     * Opens the income window.
+     */
+    @FXML
+    private void handleIncome() {
+        panelLabel.setText("Income");
+        incomePanel = new IncomePanel(logic.getFilteredTransactionList());
+        transactionListPanelPlaceholder.getChildren().add(incomePanel.getRoot());
+        incomePanel.getRoot().toFront();
+
+        onIncome();
+    }
+
+    /**
+     * Opens the overview window.
+     */
+    @FXML
+    private void handleOverview() {
+        panelLabel.setText("Overview");
+        transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
+        transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
+        transactionListPanel.getRoot().toFront();
+
+        onOverview();
+    }
+
+    /**
+     * Opens the analytics window.
+     */
+    @FXML
+    private void handleAnalytics() {
+        panelLabel.setText("Analytics");
+        transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
+        transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
+        transactionListPanel.getRoot().toFront();
+
+        onAnalytics();
+    }
+
+    /**
+     * Opens the expense window.
+     */
+    @FXML
+    private void handleExpense() {
+        panelLabel.setText("Expense");
+        expensePanel = new ExpensePanel(logic.getFilteredTransactionList());
+        transactionListPanelPlaceholder.getChildren().add(expensePanel.getRoot());
+        expensePanel.getRoot().toFront();
+
+        onExpense();
     }
 
     void show() {
@@ -192,5 +288,47 @@ public class MainWindow extends UiPart<Stage> {
             resultDisplay.setFeedbackToUser(e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * Changes the overview menu tab to blue while the rest becomes the same as the background color.
+     */
+    private void onOverview() {
+        menuOverviewTab.setStyle("-fx-background-color: #3e7b91");
+        menuIncomeTab.setStyle("-fx-background-color: #2E2E36");
+        menuExpenseTab.setStyle("-fx-background-color: #2E2E36");
+        menuAnalyticsTab.setStyle("-fx-background-color: #2E2E36");
+    }
+
+    /**
+     * Changes the income menu tab to blue while the rest becomes the same as the background color.
+     */
+    private void onIncome() {
+        menuOverviewTab.setStyle("-fx-background-color: #2E2E36");
+        menuIncomeTab.setStyle("-fx-background-color: #3e7b91");
+        menuExpenseTab.setStyle("-fx-background-color: #2E2E36");
+        menuAnalyticsTab.setStyle("-fx-background-color: #2E2E36");
+    }
+
+    /**
+     * Changes the expense menu tab to blue while the rest becomes the same as the background color.
+     */
+    private void onExpense() {
+        menuOverviewTab.setStyle("-fx-background-color: #2E2E36");
+        menuIncomeTab.setStyle("-fx-background-color: #2E2E36");
+        menuExpenseTab.setStyle("-fx-background-color: #3e7b91");
+        menuAnalyticsTab.setStyle("-fx-background-color: #2E2E36");
+        menuHelpTab.setStyle("-fx-background-color: #2E2E36");
+    }
+
+    /**
+     * Changes the analytics menu tab to blue while the rest becomes the same as the background color.
+     */
+    private void onAnalytics() {
+        menuOverviewTab.setStyle("-fx-background-color: #2E2E36");
+        menuIncomeTab.setStyle("-fx-background-color: #2E2E36");
+        menuExpenseTab.setStyle("-fx-background-color: #2E2E36");
+        menuAnalyticsTab.setStyle("-fx-background-color: #3e7b91");
+        menuHelpTab.setStyle("-fx-background-color: #2E2E36");
     }
 }
