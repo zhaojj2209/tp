@@ -12,8 +12,11 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
@@ -60,11 +63,27 @@ public class TypicalTransactions {
         FinanceTracker ft = new FinanceTracker();
         for (Transaction transaction : getTypicalTransactions()) {
             ft.addTransaction(transaction);
+            ft.addExpense(new TransactionBuilder(transaction).buildExpense());
+            ft.addIncome(new TransactionBuilder(transaction).buildIncome());
         }
         return ft;
     }
 
     public static List<Transaction> getTypicalTransactions() {
         return new ArrayList<>(Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE));
+    }
+
+    public static List<Expense> getTypicalExpenses() {
+        return getTypicalTransactions().stream()
+                .map(TransactionBuilder::new)
+                .map(TransactionBuilder::buildExpense)
+                .collect(Collectors.toList());
+    }
+
+    public static List<Income> getTypicalIncomes() {
+        return getTypicalTransactions().stream()
+                .map(TransactionBuilder::new)
+                .map(TransactionBuilder::buildIncome)
+                .collect(Collectors.toList());
     }
 }
