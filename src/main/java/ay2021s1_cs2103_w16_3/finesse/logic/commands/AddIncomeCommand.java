@@ -34,7 +34,7 @@ public class AddIncomeCommand extends Command {
     private final Income toAdd;
 
     /**
-     * Creates an AddIncomeCommand to add the specified {@code Income}
+     * Creates an AddIncomeCommand to add the specified {@code Income}.
      */
     public AddIncomeCommand(Income income) {
         requireNonNull(income);
@@ -45,7 +45,7 @@ public class AddIncomeCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
 
-        model.addTransaction(toAdd);
+        model.addIncome(toAdd);
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
 

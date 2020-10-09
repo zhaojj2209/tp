@@ -7,11 +7,13 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import javafx.collections.ObservableList;
 
 /**
- * API of the Logic component
+ * API of the Logic component.
  */
 public interface Logic {
     /**
@@ -30,8 +32,14 @@ public interface Logic {
      */
     ReadOnlyFinanceTracker getFinanceTracker();
 
-    /** Returns an unmodifiable view of the filtered list of transactions */
+    /** Returns an unmodifiable view of the filtered list of transactions. */
     ObservableList<Transaction> getFilteredTransactionList();
+
+    /** Returns an unmodifiable view of the filtered list of expenses. */
+    ObservableList<Expense> getFilteredExpenseList();
+
+    /** Returns an unmodifiable view of the filtered list of incomes. */
+    ObservableList<Income> getFilteredIncomeList();
 
     /**
      * Returns the user prefs' finance tracker file path.

@@ -34,7 +34,7 @@ public class AddExpenseCommand extends Command {
     private final Expense toAdd;
 
     /**
-     * Creates an AddExpenseCommand to add the specified {@code Expense}
+     * Creates an AddExpenseCommand to add the specified {@code Expense}.
      */
     public AddExpenseCommand(Expense expense) {
         requireNonNull(expense);
@@ -45,7 +45,7 @@ public class AddExpenseCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
 
-        model.addTransaction(toAdd);
+        model.addExpense(toAdd);
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
 
