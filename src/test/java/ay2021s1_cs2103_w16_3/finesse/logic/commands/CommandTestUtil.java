@@ -46,8 +46,8 @@ public class CommandTestUtil {
     public static final String INVALID_TITLE_DESC = " " + PREFIX_TITLE + "James&"; // '&' not allowed in titles
     public static final String INVALID_AMOUNT_DESC = " " + PREFIX_AMOUNT + "911a"; // 'a' not allowed in amounts
     public static final String INVALID_DATE_DESC = " " + PREFIX_DATE + "bob!yahoo"; // only numbers and '/' allowed
-    public static final String INVALID_CATEGORY_DESC = " " + PREFIX_CATEGORY + "hubby*";
-    // '*' not allowed in categories
+    public static final String INVALID_CATEGORY_DESC = " " + PREFIX_CATEGORY + "hubby\u2416";
+    // 'SYN' not allowed in categories
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

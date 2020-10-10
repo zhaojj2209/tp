@@ -9,8 +9,8 @@ import static java.util.Objects.requireNonNull;
  */
 public class Category {
 
-    public static final String MESSAGE_CONSTRAINTS = "Categories names should be alphanumeric";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String MESSAGE_CONSTRAINTS = "Category names should be printable.";
+    public static final String VALIDATION_REGEX = "\\p{Print}+";
 
     public final String categoryName;
 

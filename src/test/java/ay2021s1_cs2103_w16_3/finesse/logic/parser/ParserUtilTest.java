@@ -23,7 +23,7 @@ public class ParserUtilTest {
     private static final String INVALID_TITLE = "R@chel";
     private static final String INVALID_AMOUNT = "+651234";
     private static final String INVALID_DATE = "example.com";
-    private static final String INVALID_CATEGORY = "#friend";
+    private static final String INVALID_CATEGORY = "\u2416friend";
 
     private static final String VALID_TITLE = "Rachel Walker";
     private static final String VALID_AMOUNT = "123456";
