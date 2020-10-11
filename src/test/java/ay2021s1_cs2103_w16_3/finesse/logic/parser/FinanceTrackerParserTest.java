@@ -301,11 +301,8 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_findWhenAnalyticsTab() throws Exception {
-        List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream()
-                        .collect(Collectors.joining(" ")), analyticsUiStateStub);
-        assertEquals(new FindCommand(new TitleContainsKeywordsPredicate(keywords)), command);
+        assertThrows(ParseException.class, () -> parser.parseCommand(
+                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_TRANSACTION.getOneBased(), analyticsUiStateStub));
     }
 
     @Test

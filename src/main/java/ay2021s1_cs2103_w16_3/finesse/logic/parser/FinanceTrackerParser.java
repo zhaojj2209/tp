@@ -20,6 +20,9 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.DeleteIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.EditCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ExitCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindExpenseCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindIncomeCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindTransactionCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.HelpCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListExpenseCommand;
@@ -71,12 +74,12 @@ public class FinanceTrackerParser {
             return new EditCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
-            final DeleteCommand baseCommand = new DeleteCommandParser().parse(arguments);
+            final DeleteCommand baseDeleteCommand = new DeleteCommandParser().parse(arguments);
             switch (uiState.getCurrentTab()) {
             case EXPENSES:
-                return new DeleteExpenseCommand(baseCommand);
+                return new DeleteExpenseCommand(baseDeleteCommand);
             case INCOME:
-                return new DeleteIncomeCommand(baseCommand);
+                return new DeleteIncomeCommand(baseDeleteCommand);
             default:
                 throw new ParseException(commandInvalidTabMessage(commandWord,
                         UiState.Tab.EXPENSES, UiState.Tab.INCOME));
@@ -86,7 +89,18 @@ public class FinanceTrackerParser {
             return new ClearCommand();
 
         case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
+            final FindCommand baseFindCommand = new FindCommandParser().parse(arguments);
+            switch (uiState.getCurrentTab()) {
+            case OVERVIEW:
+                return new FindTransactionCommand(baseFindCommand);
+            case EXPENSES:
+                return new FindExpenseCommand(baseFindCommand);
+            case INCOME:
+                return new FindIncomeCommand(baseFindCommand);
+            default:
+                throw new ParseException(commandInvalidTabMessage(commandWord,
+                        UiState.Tab.OVERVIEW, UiState.Tab.EXPENSES, UiState.Tab.INCOME));
+            }
 
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
