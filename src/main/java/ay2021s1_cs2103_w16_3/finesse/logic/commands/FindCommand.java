@@ -7,15 +7,22 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
 
 /**
- * Finds and lists all transactions in finance tracker whose title contains any of the argument keywords.
+ * Finds and lists all transactions in the finance tracker whose title contains any of the argument keywords
+ * depending on the tab the user is on.
  * Keyword matching is case insensitive.
+ *
+ * Base class for FindExpenseCommand, FindIncomeCommand and FindTransactionCommand.
  */
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all transactions whose titles contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all transactions on the current tab "
+            + "whose titles contain any of the specified keywords (case-insensitive) "
+            + "and displays them as a list with index numbers.\n"
+            + "When on Overview tab: Searches all transactions.\n"
+            + "When on Income tab: Searches all incomes.\n"
+            + "When on Overview tab: Searches all expenses.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
@@ -23,6 +30,10 @@ public class FindCommand extends Command {
 
     public FindCommand(TitleContainsKeywordsPredicate predicate) {
         this.predicate = predicate;
+    }
+
+    protected TitleContainsKeywordsPredicate getPredicate() {
+        return predicate;
     }
 
     @Override
