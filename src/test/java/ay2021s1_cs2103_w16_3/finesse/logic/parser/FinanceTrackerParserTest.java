@@ -33,102 +33,501 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionUtil;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState;
 
 public class FinanceTrackerParserTest {
 
     private final FinanceTrackerParser parser = new FinanceTrackerParser();
+    // TODO: Once the UI-dependent command behavior is added, the corresponding tests should be updated too.
+    private final OverviewUiStateStub overviewUiStateStub = new OverviewUiStateStub();
+    private final IncomeUiStateStub incomeUiStateStub = new IncomeUiStateStub();
+    private final ExpensesUiStateStub expensesUiStateStub = new ExpensesUiStateStub();
+    private final AnalyticsUiStateStub analyticsUiStateStub = new AnalyticsUiStateStub();
 
     @Test
-    public void parseCommand_add() throws Exception {
+    public void parseCommand_addWhenOverviewTab() throws Exception {
         Transaction transaction = new TransactionBuilder().build();
-        AddCommand command = (AddCommand) parser.parseCommand(TransactionUtil.getAddCommand(transaction));
+        AddCommand command =
+                (AddCommand) parser.parseCommand(TransactionUtil.getAddCommand(transaction), overviewUiStateStub);
         assertEquals(new AddCommand(transaction), command);
     }
 
     @Test
-    public void parseCommand_addExpense() throws Exception {
+    public void parseCommand_addWhenIncomeTab() throws Exception {
+        Transaction transaction = new TransactionBuilder().build();
+        AddCommand command =
+                (AddCommand) parser.parseCommand(TransactionUtil.getAddCommand(transaction), incomeUiStateStub);
+        assertEquals(new AddCommand(transaction), command);
+    }
+
+    @Test
+    public void parseCommand_addWhenExpensesTab() throws Exception {
+        Transaction transaction = new TransactionBuilder().build();
+        AddCommand command =
+                (AddCommand) parser.parseCommand(TransactionUtil.getAddCommand(transaction), expensesUiStateStub);
+        assertEquals(new AddCommand(transaction), command);
+    }
+
+    @Test
+    public void parseCommand_addWhenAnalyticsTab() throws Exception {
+        Transaction transaction = new TransactionBuilder().build();
+        AddCommand command =
+                (AddCommand) parser.parseCommand(TransactionUtil.getAddCommand(transaction), analyticsUiStateStub);
+        assertEquals(new AddCommand(transaction), command);
+    }
+
+    @Test
+    public void parseCommand_addExpenseWhenOverviewTab() throws Exception {
         Expense expense = new TransactionBuilder().buildExpense();
         AddExpenseCommand command =
-            (AddExpenseCommand) parser.parseCommand(TransactionUtil.getAddExpenseCommand(expense));
+            (AddExpenseCommand) parser.parseCommand(TransactionUtil.getAddExpenseCommand(expense),
+            overviewUiStateStub);
         assertEquals(new AddExpenseCommand(expense), command);
     }
 
     @Test
-    public void parseCommand_addIncome() throws Exception {
+    public void parseCommand_addExpenseWhenIncomeTab() throws Exception {
+        Expense expense = new TransactionBuilder().buildExpense();
+        AddExpenseCommand command =
+                (AddExpenseCommand) parser.parseCommand(TransactionUtil.getAddExpenseCommand(expense),
+                        incomeUiStateStub);
+        assertEquals(new AddExpenseCommand(expense), command);
+    }
+
+    @Test
+    public void parseCommand_addExpenseWhenExpensesTab() throws Exception {
+        Expense expense = new TransactionBuilder().buildExpense();
+        AddExpenseCommand command =
+                (AddExpenseCommand) parser.parseCommand(TransactionUtil.getAddExpenseCommand(expense),
+                        expensesUiStateStub);
+        assertEquals(new AddExpenseCommand(expense), command);
+    }
+
+    @Test
+    public void parseCommand_addExpenseWhenAnalyticsTab() throws Exception {
+        Expense expense = new TransactionBuilder().buildExpense();
+        AddExpenseCommand command =
+                (AddExpenseCommand) parser.parseCommand(TransactionUtil.getAddExpenseCommand(expense),
+                        analyticsUiStateStub);
+        assertEquals(new AddExpenseCommand(expense), command);
+    }
+
+    @Test
+    public void parseCommand_addIncomeWhenOverviewTab() throws Exception {
         Income income = new TransactionBuilder().buildIncome();
-        AddIncomeCommand command = (AddIncomeCommand) parser.parseCommand(TransactionUtil.getAddIncomeCommand(income));
+        AddIncomeCommand command =
+                (AddIncomeCommand) parser.parseCommand(TransactionUtil.getAddIncomeCommand(income),
+                overviewUiStateStub);
         assertEquals(new AddIncomeCommand(income), command);
     }
 
     @Test
-    public void parseCommand_clear() throws Exception {
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD) instanceof ClearCommand);
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3") instanceof ClearCommand);
+    public void parseCommand_addIncomeWhenIncomeTab() throws Exception {
+        Income income = new TransactionBuilder().buildIncome();
+        AddIncomeCommand command =
+                (AddIncomeCommand) parser.parseCommand(TransactionUtil.getAddIncomeCommand(income),
+                        incomeUiStateStub);
+        assertEquals(new AddIncomeCommand(income), command);
     }
 
     @Test
-    public void parseCommand_delete() throws Exception {
+    public void parseCommand_addIncomeWhenExpensesTab() throws Exception {
+        Income income = new TransactionBuilder().buildIncome();
+        AddIncomeCommand command =
+                (AddIncomeCommand) parser.parseCommand(TransactionUtil.getAddIncomeCommand(income),
+                        expensesUiStateStub);
+        assertEquals(new AddIncomeCommand(income), command);
+    }
+
+    @Test
+    public void parseCommand_addIncomeWhenAnalyticsTab() throws Exception {
+        Income income = new TransactionBuilder().buildIncome();
+        AddIncomeCommand command =
+                (AddIncomeCommand) parser.parseCommand(TransactionUtil.getAddIncomeCommand(income),
+                        analyticsUiStateStub);
+        assertEquals(new AddIncomeCommand(income), command);
+    }
+
+    @Test
+    public void parseCommand_clearWhenOverviewTab() throws Exception {
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, overviewUiStateStub) instanceof ClearCommand);
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3",
+                overviewUiStateStub) instanceof ClearCommand);
+    }
+
+    @Test
+    public void parseCommand_clearWhenIncomeTab() throws Exception {
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, overviewUiStateStub) instanceof ClearCommand);
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3",
+                incomeUiStateStub) instanceof ClearCommand);
+    }
+
+    @Test
+    public void parseCommand_clearWhenExpensesTab() throws Exception {
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, overviewUiStateStub) instanceof ClearCommand);
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3",
+                expensesUiStateStub) instanceof ClearCommand);
+    }
+
+    @Test
+    public void parseCommand_clearWhenAnalyticsTab() throws Exception {
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, overviewUiStateStub) instanceof ClearCommand);
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3",
+                analyticsUiStateStub) instanceof ClearCommand);
+    }
+
+    @Test
+    public void parseCommand_deleteWhenOverviewTab() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
-                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_TRANSACTION.getOneBased());
+                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_TRANSACTION.getOneBased(), overviewUiStateStub);
         assertEquals(new DeleteCommand(INDEX_FIRST_TRANSACTION), command);
     }
 
     @Test
-    public void parseCommand_edit() throws Exception {
+    public void parseCommand_deleteWhenIncomeTab() throws Exception {
+        DeleteCommand command = (DeleteCommand) parser.parseCommand(
+                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_TRANSACTION.getOneBased(), incomeUiStateStub);
+        assertEquals(new DeleteCommand(INDEX_FIRST_TRANSACTION), command);
+    }
+
+    @Test
+    public void parseCommand_deleteWhenExpensesTab() throws Exception {
+        DeleteCommand command = (DeleteCommand) parser.parseCommand(
+                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_TRANSACTION.getOneBased(), expensesUiStateStub);
+        assertEquals(new DeleteCommand(INDEX_FIRST_TRANSACTION), command);
+    }
+
+    @Test
+    public void parseCommand_deleteWhenAnalyticsTab() throws Exception {
+        DeleteCommand command = (DeleteCommand) parser.parseCommand(
+                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_TRANSACTION.getOneBased(), analyticsUiStateStub);
+        assertEquals(new DeleteCommand(INDEX_FIRST_TRANSACTION), command);
+    }
+
+    @Test
+    public void parseCommand_editWhenOverviewTab() throws Exception {
         Transaction transaction = new TransactionBuilder().build();
         EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(transaction).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + INDEX_FIRST_TRANSACTION.getOneBased() + " "
-                + TransactionUtil.getEditTransactionDescriptorDetails(descriptor));
+                + TransactionUtil.getEditTransactionDescriptorDetails(descriptor), overviewUiStateStub);
         assertEquals(new EditCommand(INDEX_FIRST_TRANSACTION, descriptor), command);
     }
 
     @Test
-    public void parseCommand_exit() throws Exception {
-        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD) instanceof ExitCommand);
-        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3") instanceof ExitCommand);
+    public void parseCommand_editWhenIncomeTab() throws Exception {
+        Transaction transaction = new TransactionBuilder().build();
+        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(transaction).build();
+        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_TRANSACTION.getOneBased() + " "
+                + TransactionUtil.getEditTransactionDescriptorDetails(descriptor), incomeUiStateStub);
+        assertEquals(new EditCommand(INDEX_FIRST_TRANSACTION, descriptor), command);
     }
 
     @Test
-    public void parseCommand_find() throws Exception {
+    public void parseCommand_editWhenExpensesTab() throws Exception {
+        Transaction transaction = new TransactionBuilder().build();
+        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(transaction).build();
+        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_TRANSACTION.getOneBased() + " "
+                + TransactionUtil.getEditTransactionDescriptorDetails(descriptor), expensesUiStateStub);
+        assertEquals(new EditCommand(INDEX_FIRST_TRANSACTION, descriptor), command);
+    }
+
+    @Test
+    public void parseCommand_editWhenAnalyticsTab() throws Exception {
+        Transaction transaction = new TransactionBuilder().build();
+        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(transaction).build();
+        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_TRANSACTION.getOneBased() + " "
+                + TransactionUtil.getEditTransactionDescriptorDetails(descriptor), analyticsUiStateStub);
+        assertEquals(new EditCommand(INDEX_FIRST_TRANSACTION, descriptor), command);
+    }
+
+    @Test
+    public void parseCommand_exitWhenOverviewTab() throws Exception {
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, overviewUiStateStub) instanceof ExitCommand);
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3",
+                overviewUiStateStub) instanceof ExitCommand);
+    }
+
+    @Test
+    public void parseCommand_exitWhenIncomeTab() throws Exception {
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, overviewUiStateStub) instanceof ExitCommand);
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3",
+                incomeUiStateStub) instanceof ExitCommand);
+    }
+
+    @Test
+    public void parseCommand_exitWhenExpensesTab() throws Exception {
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, overviewUiStateStub) instanceof ExitCommand);
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3",
+                expensesUiStateStub) instanceof ExitCommand);
+    }
+
+    @Test
+    public void parseCommand_exitWhenAnalyticsTab() throws Exception {
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, overviewUiStateStub) instanceof ExitCommand);
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3",
+                analyticsUiStateStub) instanceof ExitCommand);
+    }
+
+    @Test
+    public void parseCommand_findWhenOverviewTab() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+                FindCommand.COMMAND_WORD + " " + keywords.stream()
+                        .collect(Collectors.joining(" ")), overviewUiStateStub);
         assertEquals(new FindCommand(new TitleContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
-    public void parseCommand_help() throws Exception {
-        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD) instanceof HelpCommand);
-        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3") instanceof HelpCommand);
+    public void parseCommand_findWhenIncomeTab() throws Exception {
+        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + keywords.stream()
+                        .collect(Collectors.joining(" ")), incomeUiStateStub);
+        assertEquals(new FindCommand(new TitleContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
-    public void parseCommand_list() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    public void parseCommand_findWhenExpensesTab() throws Exception {
+        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + keywords.stream()
+                        .collect(Collectors.joining(" ")), expensesUiStateStub);
+        assertEquals(new FindCommand(new TitleContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
-    public void parseCommand_listExpense() throws Exception {
-        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD) instanceof ListExpenseCommand);
-        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3") instanceof ListExpenseCommand);
+    public void parseCommand_findWhenAnalyticsTab() throws Exception {
+        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + keywords.stream()
+                        .collect(Collectors.joining(" ")), analyticsUiStateStub);
+        assertEquals(new FindCommand(new TitleContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
-    public void parseCommand_listIncome() throws Exception {
-        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD) instanceof ListIncomeCommand);
-        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD + " 3") instanceof ListIncomeCommand);
+    public void parseCommand_helpWhenOverviewTab() throws Exception {
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, overviewUiStateStub) instanceof HelpCommand);
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3",
+                overviewUiStateStub) instanceof HelpCommand);
     }
 
     @Test
-    public void parseCommand_unrecognisedInput_throwsParseException() {
+    public void parseCommand_helpWhenIncomeTab() throws Exception {
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, overviewUiStateStub) instanceof HelpCommand);
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3",
+                incomeUiStateStub) instanceof HelpCommand);
+    }
+
+    @Test
+    public void parseCommand_helpWhenExpensesTab() throws Exception {
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, overviewUiStateStub) instanceof HelpCommand);
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3",
+                expensesUiStateStub) instanceof HelpCommand);
+    }
+
+    @Test
+    public void parseCommand_helpWhenAnalyticsTab() throws Exception {
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, overviewUiStateStub) instanceof HelpCommand);
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3",
+                analyticsUiStateStub) instanceof HelpCommand);
+    }
+
+    @Test
+    public void parseCommand_listWhenOverviewTab() throws Exception {
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, overviewUiStateStub) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
+                overviewUiStateStub) instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_listWhenIncomeTab() throws Exception {
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, overviewUiStateStub) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
+                incomeUiStateStub) instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_listWhenExpensesTab() throws Exception {
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, overviewUiStateStub) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
+                expensesUiStateStub) instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_listWhenAnalyticsTab() throws Exception {
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, overviewUiStateStub) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
+                analyticsUiStateStub) instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_listExpenseWhenOverviewTab() throws Exception {
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, overviewUiStateStub)
+                instanceof ListExpenseCommand);
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3",
+                overviewUiStateStub) instanceof ListExpenseCommand);
+    }
+
+    @Test
+    public void parseCommand_listExpenseWhenIncomeTab() throws Exception {
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, overviewUiStateStub)
+                instanceof ListExpenseCommand);
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3",
+                incomeUiStateStub) instanceof ListExpenseCommand);
+    }
+
+    @Test
+    public void parseCommand_listExpenseWhenExpensesTab() throws Exception {
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, overviewUiStateStub)
+                instanceof ListExpenseCommand);
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3",
+                expensesUiStateStub) instanceof ListExpenseCommand);
+    }
+
+    @Test
+    public void parseCommand_listExpenseWhenAnalyticsTab() throws Exception {
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, overviewUiStateStub)
+                instanceof ListExpenseCommand);
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3",
+                analyticsUiStateStub) instanceof ListExpenseCommand);
+    }
+
+    @Test
+    public void parseCommand_listIncomeWhenOverviewTab() throws Exception {
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, overviewUiStateStub)
+                instanceof ListIncomeCommand);
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD + " 3",
+                overviewUiStateStub) instanceof ListIncomeCommand);
+    }
+
+    @Test
+    public void parseCommand_listIncomeWhenIncomeTab() throws Exception {
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, overviewUiStateStub)
+                instanceof ListIncomeCommand);
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD + " 3",
+                incomeUiStateStub) instanceof ListIncomeCommand);
+    }
+
+    @Test
+    public void parseCommand_listIncomeWhenExpensesTab() throws Exception {
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, overviewUiStateStub)
+                instanceof ListIncomeCommand);
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD + " 3",
+                expensesUiStateStub) instanceof ListIncomeCommand);
+    }
+
+    @Test
+    public void parseCommand_listIncomeWhenAnalyticsTab() throws Exception {
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, overviewUiStateStub)
+                instanceof ListIncomeCommand);
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD + " 3",
+                analyticsUiStateStub) instanceof ListIncomeCommand);
+    }
+
+    @Test
+    public void parseCommand_unrecognisedInputWhenOverviewTab_throwsParseException() {
         assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
-            -> parser.parseCommand(""));
+            -> parser.parseCommand("", overviewUiStateStub));
     }
 
     @Test
-    public void parseCommand_unknownCommand_throwsParseException() {
-        assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
+    public void parseCommand_unrecognisedInputWhenIncomeTab_throwsParseException() {
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
+            -> parser.parseCommand("", incomeUiStateStub));
+    }
+
+    @Test
+    public void parseCommand_unrecognisedInputWhenExpensesTab_throwsParseException() {
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
+            -> parser.parseCommand("", expensesUiStateStub));
+    }
+
+    @Test
+    public void parseCommand_unrecognisedInputWhenAnalyticsTab_throwsParseException() {
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
+            -> parser.parseCommand("", analyticsUiStateStub));
+    }
+
+    @Test
+    public void parseCommand_unknownCommandWhenOverviewTab_throwsParseException() {
+        assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, ()
+            -> parser.parseCommand("unknownCommand", overviewUiStateStub));
+    }
+
+    @Test
+    public void parseCommand_unknownCommandWhenIncomeTab_throwsParseException() {
+        assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, ()
+            -> parser.parseCommand("unknownCommand", incomeUiStateStub));
+    }
+
+    @Test
+    public void parseCommand_unknownCommandWhenExpensesTab_throwsParseException() {
+        assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, ()
+            -> parser.parseCommand("unknownCommand", expensesUiStateStub));
+    }
+
+    @Test
+    public void parseCommand_unknownCommandWhenAnalyticsTab_throwsParseException() {
+        assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, ()
+            -> parser.parseCommand("unknownCommand", analyticsUiStateStub));
+    }
+
+    /**
+     * A default {@code UiState} stub that has all of the methods failing.
+     */
+    private static class UiStateStub extends UiState {
+        @Override
+        public Tab getCurrentTab() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setCurrentTab(Tab currentTab) {
+            throw new AssertionError("This method should not be called.");
+        }
+    }
+
+    /**
+     * A {@code UiState} stub that always returns the 'Overview' tab as the current tab.
+     */
+    public static class OverviewUiStateStub extends UiStateStub {
+        @Override
+        public Tab getCurrentTab() {
+            return Tab.OVERVIEW;
+        }
+    }
+
+    /**
+     * A {@code UiState} stub that always returns the 'Income' tab as the current tab.
+     */
+    public static class IncomeUiStateStub extends UiStateStub {
+        @Override
+        public Tab getCurrentTab() {
+            return Tab.INCOME;
+        }
+    }
+
+    /**
+     * A {@code UiState} stub that always returns the 'Expenses' tab as the current tab.
+     */
+    public static class ExpensesUiStateStub extends UiStateStub {
+        @Override
+        public Tab getCurrentTab() {
+            return Tab.EXPENSES;
+        }
+    }
+
+    /**
+     * A {@code UiState} stub that always returns the 'Analytics' tab as the current tab.
+     */
+    public static class AnalyticsUiStateStub extends UiStateStub {
+        @Override
+        public Tab getCurrentTab() {
+            return Tab.ANALYTICS;
+        }
     }
 }

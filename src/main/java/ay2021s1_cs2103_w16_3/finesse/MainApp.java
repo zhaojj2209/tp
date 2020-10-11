@@ -28,6 +28,7 @@ import ay2021s1_cs2103_w16_3.finesse.storage.StorageManager;
 import ay2021s1_cs2103_w16_3.finesse.storage.UserPrefsStorage;
 import ay2021s1_cs2103_w16_3.finesse.ui.Ui;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiManager;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -41,6 +42,7 @@ public class MainApp extends Application {
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
     protected Ui ui;
+    protected UiState uiState;
     protected Logic logic;
     protected Storage storage;
     protected Model model;
@@ -66,7 +68,9 @@ public class MainApp extends Application {
 
         logic = new LogicManager(model, storage);
 
-        ui = new UiManager(logic);
+        uiState = new UiState();
+
+        ui = new UiManager(logic, uiState);
     }
 
     /**

@@ -10,6 +10,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState;
 import javafx.collections.ObservableList;
 
 /**
@@ -18,12 +19,14 @@ import javafx.collections.ObservableList;
 public interface Logic {
     /**
      * Executes the command and returns the result.
+     *
      * @param commandText The command as entered by the user.
-     * @return the result of the command execution.
+     * @param uiState The current state of the UI.
+     * @return The result of the command execution.
      * @throws CommandException If an error occurs during command execution.
      * @throws ParseException If an error occurs during parsing.
      */
-    CommandResult execute(String commandText) throws CommandException, ParseException;
+    CommandResult execute(String commandText, UiState uiState) throws CommandException, ParseException;
 
     /**
      * Returns the FinanceTracker.

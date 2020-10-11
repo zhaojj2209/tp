@@ -17,6 +17,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.storage.Storage;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState;
 import javafx.collections.ObservableList;
 
 /**
@@ -40,11 +41,11 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public CommandResult execute(String commandText) throws CommandException, ParseException {
+    public CommandResult execute(String commandText, UiState uiState) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = financeTrackerParser.parseCommand(commandText);
+        Command command = financeTrackerParser.parseCommand(commandText, uiState);
         commandResult = command.execute(model);
 
         try {

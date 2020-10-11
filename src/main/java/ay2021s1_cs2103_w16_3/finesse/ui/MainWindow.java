@@ -8,6 +8,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.Logic;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 import ay2021s1_cs2103_w16_3.finesse.ui.expense.ExpensePanel;
 import ay2021s1_cs2103_w16_3.finesse.ui.income.IncomePanel;
 import javafx.event.ActionEvent;
@@ -31,8 +32,9 @@ public class MainWindow extends UiPart<Stage> {
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
-    private Stage primaryStage;
-    private Logic logic;
+    private final Stage primaryStage;
+    private final Logic logic;
+    private final UiState uiState;
 
     // Independent Ui parts residing in this Ui container
     private TransactionListPanel transactionListPanel;
@@ -87,14 +89,15 @@ public class MainWindow extends UiPart<Stage> {
     private Label panelLabel;
 
     /**
-     * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
+     * Creates a {@code MainWindow} with the given {@code Stage}, {@code Logic} and {@code UiState}.
      */
-    public MainWindow(Stage primaryStage, Logic logic) {
+    public MainWindow(Stage primaryStage, Logic logic, UiState uiState) {
         super(FXML, primaryStage);
 
         // Set dependencies
         this.primaryStage = primaryStage;
         this.logic = logic;
+        this.uiState = uiState;
 
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
@@ -202,6 +205,7 @@ public class MainWindow extends UiPart<Stage> {
         incomePanel.getRoot().toFront();
 
         onIncome();
+        uiState.setCurrentTab(Tab.INCOME);
     }
 
     /**
@@ -215,6 +219,7 @@ public class MainWindow extends UiPart<Stage> {
         transactionListPanel.getRoot().toFront();
 
         onOverview();
+        uiState.setCurrentTab(Tab.OVERVIEW);
     }
 
     /**
@@ -228,6 +233,7 @@ public class MainWindow extends UiPart<Stage> {
         transactionListPanel.getRoot().toFront();
 
         onAnalytics();
+        uiState.setCurrentTab(Tab.ANALYTICS);
     }
 
     /**
@@ -241,6 +247,7 @@ public class MainWindow extends UiPart<Stage> {
         expensePanel.getRoot().toFront();
 
         onExpense();
+        uiState.setCurrentTab(Tab.EXPENSES);
     }
 
     void show() {
@@ -266,11 +273,11 @@ public class MainWindow extends UiPart<Stage> {
     /**
      * Executes the command and returns the result.
      *
-     * @see ay2021s1_cs2103_w16_3.finesse.logic.Logic#execute(String)
+     * @see ay2021s1_cs2103_w16_3.finesse.logic.Logic#execute(String, UiState)
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
-            CommandResult commandResult = logic.execute(commandText);
+            CommandResult commandResult = logic.execute(commandText, uiState);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
