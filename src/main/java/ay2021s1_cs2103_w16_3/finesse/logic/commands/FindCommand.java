@@ -22,7 +22,7 @@ public class FindCommand extends Command {
             + "and displays them as a list with index numbers.\n"
             + "When on Overview tab: Searches all transactions.\n"
             + "When on Income tab: Searches all incomes.\n"
-            + "When on Overview tab: Searches all expenses.\n"
+            + "When on Expenses tab: Searches all expenses.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
