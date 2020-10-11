@@ -1,5 +1,6 @@
 package ay2021s1_cs2103_w16_3.finesse.ui;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
@@ -289,11 +290,39 @@ public class MainWindow extends UiPart<Stage> {
                 handleExit();
             }
 
+            Optional<Tab> tabToSwitchTo = commandResult.getTabToSwitchTo();
+            tabToSwitchTo.ifPresent(this::switchTabs);
+
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("Invalid command: " + commandText);
             resultDisplay.setFeedbackToUser(e.getMessage());
             throw e;
+        }
+    }
+
+    /**
+     * Programmatically switches UI tab based on the specified tab. If the specified tab is {@code null},
+     * do nothing.
+     *
+     * @param tab The tab to switch to.
+     */
+    private void switchTabs(Tab tab) {
+        switch (tab) {
+        case OVERVIEW:
+            handleOverview();
+            break;
+        case INCOME:
+            handleIncome();
+            break;
+        case EXPENSES:
+            handleExpense();
+            break;
+        case ANALYTICS:
+            handleAnalytics();
+            break;
+        default:
+            // Do nothing.
         }
     }
 

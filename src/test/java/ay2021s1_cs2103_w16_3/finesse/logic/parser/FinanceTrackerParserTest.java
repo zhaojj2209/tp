@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddIncomeCommand;
@@ -25,6 +26,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.HelpCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListIncomeCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.TabCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
@@ -157,21 +159,21 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_clearWhenIncomeTab() throws Exception {
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, overviewUiStateStub) instanceof ClearCommand);
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, incomeUiStateStub) instanceof ClearCommand);
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3",
                 incomeUiStateStub) instanceof ClearCommand);
     }
 
     @Test
     public void parseCommand_clearWhenExpensesTab() throws Exception {
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, overviewUiStateStub) instanceof ClearCommand);
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, expensesUiStateStub) instanceof ClearCommand);
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3",
                 expensesUiStateStub) instanceof ClearCommand);
     }
 
     @Test
     public void parseCommand_clearWhenAnalyticsTab() throws Exception {
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, overviewUiStateStub) instanceof ClearCommand);
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD, analyticsUiStateStub) instanceof ClearCommand);
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3",
                 analyticsUiStateStub) instanceof ClearCommand);
     }
@@ -253,21 +255,21 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_exitWhenIncomeTab() throws Exception {
-        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, overviewUiStateStub) instanceof ExitCommand);
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, incomeUiStateStub) instanceof ExitCommand);
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3",
                 incomeUiStateStub) instanceof ExitCommand);
     }
 
     @Test
     public void parseCommand_exitWhenExpensesTab() throws Exception {
-        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, overviewUiStateStub) instanceof ExitCommand);
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, expensesUiStateStub) instanceof ExitCommand);
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3",
                 expensesUiStateStub) instanceof ExitCommand);
     }
 
     @Test
     public void parseCommand_exitWhenAnalyticsTab() throws Exception {
-        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, overviewUiStateStub) instanceof ExitCommand);
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD, analyticsUiStateStub) instanceof ExitCommand);
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3",
                 analyticsUiStateStub) instanceof ExitCommand);
     }
@@ -317,21 +319,21 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_helpWhenIncomeTab() throws Exception {
-        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, overviewUiStateStub) instanceof HelpCommand);
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, incomeUiStateStub) instanceof HelpCommand);
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3",
                 incomeUiStateStub) instanceof HelpCommand);
     }
 
     @Test
     public void parseCommand_helpWhenExpensesTab() throws Exception {
-        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, overviewUiStateStub) instanceof HelpCommand);
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, expensesUiStateStub) instanceof HelpCommand);
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3",
                 expensesUiStateStub) instanceof HelpCommand);
     }
 
     @Test
     public void parseCommand_helpWhenAnalyticsTab() throws Exception {
-        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, overviewUiStateStub) instanceof HelpCommand);
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD, analyticsUiStateStub) instanceof HelpCommand);
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3",
                 analyticsUiStateStub) instanceof HelpCommand);
     }
@@ -345,21 +347,21 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_listWhenIncomeTab() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, overviewUiStateStub) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, incomeUiStateStub) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
                 incomeUiStateStub) instanceof ListCommand);
     }
 
     @Test
     public void parseCommand_listWhenExpensesTab() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, overviewUiStateStub) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, expensesUiStateStub) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
                 expensesUiStateStub) instanceof ListCommand);
     }
 
     @Test
     public void parseCommand_listWhenAnalyticsTab() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, overviewUiStateStub) instanceof ListCommand);
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD, analyticsUiStateStub) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
                 analyticsUiStateStub) instanceof ListCommand);
     }
@@ -374,7 +376,7 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_listExpenseWhenIncomeTab() throws Exception {
-        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, overviewUiStateStub)
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, incomeUiStateStub)
                 instanceof ListExpenseCommand);
         assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3",
                 incomeUiStateStub) instanceof ListExpenseCommand);
@@ -382,7 +384,7 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_listExpenseWhenExpensesTab() throws Exception {
-        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, overviewUiStateStub)
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, expensesUiStateStub)
                 instanceof ListExpenseCommand);
         assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3",
                 expensesUiStateStub) instanceof ListExpenseCommand);
@@ -390,7 +392,7 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_listExpenseWhenAnalyticsTab() throws Exception {
-        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, overviewUiStateStub)
+        assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD, analyticsUiStateStub)
                 instanceof ListExpenseCommand);
         assertTrue(parser.parseCommand(ListExpenseCommand.COMMAND_WORD + " 3",
                 analyticsUiStateStub) instanceof ListExpenseCommand);
@@ -406,7 +408,7 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_listIncomeWhenIncomeTab() throws Exception {
-        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, overviewUiStateStub)
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, incomeUiStateStub)
                 instanceof ListIncomeCommand);
         assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD + " 3",
                 incomeUiStateStub) instanceof ListIncomeCommand);
@@ -414,7 +416,7 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_listIncomeWhenExpensesTab() throws Exception {
-        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, overviewUiStateStub)
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, expensesUiStateStub)
                 instanceof ListIncomeCommand);
         assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD + " 3",
                 expensesUiStateStub) instanceof ListIncomeCommand);
@@ -422,10 +424,38 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_listIncomeWhenAnalyticsTab() throws Exception {
-        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, overviewUiStateStub)
+        assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD, analyticsUiStateStub)
                 instanceof ListIncomeCommand);
         assertTrue(parser.parseCommand(ListIncomeCommand.COMMAND_WORD + " 3",
                 analyticsUiStateStub) instanceof ListIncomeCommand);
+    }
+
+    @Test
+    public void parseCommand_tabWhenOverviewTab() throws Exception {
+        TabCommand command = (TabCommand) parser.parseCommand(
+                TabCommand.COMMAND_WORD + " 1", overviewUiStateStub);
+        assertEquals(new TabCommand(Index.fromOneBased(1)), command);
+    }
+
+    @Test
+    public void parseCommand_tabWhenIncomeTab() throws Exception {
+        TabCommand command = (TabCommand) parser.parseCommand(
+                TabCommand.COMMAND_WORD + " 1", incomeUiStateStub);
+        assertEquals(new TabCommand(Index.fromOneBased(1)), command);
+    }
+
+    @Test
+    public void parseCommand_tabWhenExpensesTab() throws Exception {
+        TabCommand command = (TabCommand) parser.parseCommand(
+                TabCommand.COMMAND_WORD + " 1", expensesUiStateStub);
+        assertEquals(new TabCommand(Index.fromOneBased(1)), command);
+    }
+
+    @Test
+    public void parseCommand_tabWhenAnalyticsTab() throws Exception {
+        TabCommand command = (TabCommand) parser.parseCommand(
+                TabCommand.COMMAND_WORD + " 1", analyticsUiStateStub);
+        assertEquals(new TabCommand(Index.fromOneBased(1)), command);
     }
 
     @Test

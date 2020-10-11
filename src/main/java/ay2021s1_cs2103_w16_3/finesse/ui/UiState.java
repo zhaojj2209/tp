@@ -13,7 +13,17 @@ public class UiState {
         OVERVIEW,
         INCOME,
         EXPENSES,
-        ANALYTICS
+        ANALYTICS;
+
+        /**
+         * Returns a string representation of this {@code Tab}.
+         *
+         * @return A string representation of this {@code Tab}.
+         */
+        @Override
+        public String toString() {
+            return super.toString().toLowerCase();
+        }
     }
 
     /**

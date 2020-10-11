@@ -5,7 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
+
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 public class CommandResultTest {
     @Test
@@ -14,7 +18,7 @@ public class CommandResultTest {
 
         // same values -> returns true
         assertTrue(commandResult.equals(new CommandResult("feedback")));
-        assertTrue(commandResult.equals(new CommandResult("feedback", false, false)));
+        assertTrue(commandResult.equals(new CommandResult("feedback", false, false, null)));
 
         // same object -> returns true
         assertTrue(commandResult.equals(commandResult));
@@ -33,6 +37,9 @@ public class CommandResultTest {
 
         // different exit value -> returns false
         assertFalse(commandResult.equals(new CommandResult("feedback", false, true)));
+
+        // different tabToSwitchTo value -> returns false
+        assertFalse(commandResult.equals(new CommandResult("feedback", Tab.ANALYTICS)));
     }
 
     @Test
@@ -50,5 +57,22 @@ public class CommandResultTest {
 
         // different exit value -> returns different hashcode
         assertNotEquals(commandResult.hashCode(), new CommandResult("feedback", false, true).hashCode());
+
+        // different tabToSwitchTo value -> returns different hashcode
+        assertNotEquals(commandResult.hashCode(), new CommandResult("feedback", false, false, Tab.INCOME));
+    }
+
+    @Test
+    public void getters_returnSameValue() {
+        String feedback = "Hello world!";
+        boolean showHelp = true;
+        boolean exit = true;
+        Tab tabToSwitchTo = Tab.ANALYTICS;
+        CommandResult commandResult = new CommandResult(feedback, showHelp, exit, tabToSwitchTo);
+
+        assertEquals(feedback, commandResult.getFeedbackToUser());
+        assertEquals(showHelp, commandResult.isShowHelp());
+        assertEquals(exit, commandResult.isExit());
+        assertEquals(Optional.of(tabToSwitchTo), commandResult.getTabToSwitchTo());
     }
 }
