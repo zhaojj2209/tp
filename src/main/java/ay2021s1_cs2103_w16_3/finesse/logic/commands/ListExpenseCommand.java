@@ -20,7 +20,7 @@ public class ListExpenseCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredTransactionList(PREDICATE_SHOW_ALL_EXPENSES);
+        model.updateFilteredExpenseList(PREDICATE_SHOW_ALL_EXPENSES);
         return new CommandResult(MESSAGE_SUCCESS, Tab.EXPENSES);
     }
 }

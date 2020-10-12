@@ -33,6 +33,7 @@ public class ListTransactionCommandTest {
         expectedModel.updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
         assertCommandSuccess(new ListTransactionCommand(), model,
                 new CommandResult(ListTransactionCommand.MESSAGE_SUCCESS, Tab.OVERVIEW), expectedModel);
+        assertEquals(model.getFilteredTransactionList().size(), 7);
     }
 
     @Test

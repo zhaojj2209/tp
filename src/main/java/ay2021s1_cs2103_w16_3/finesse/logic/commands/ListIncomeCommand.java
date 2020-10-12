@@ -20,7 +20,7 @@ public class ListIncomeCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredTransactionList(PREDICATE_SHOW_ALL_INCOME);
+        model.updateFilteredIncomeList(PREDICATE_SHOW_ALL_INCOME);
         return new CommandResult(MESSAGE_SUCCESS, Tab.INCOME);
     }
 }

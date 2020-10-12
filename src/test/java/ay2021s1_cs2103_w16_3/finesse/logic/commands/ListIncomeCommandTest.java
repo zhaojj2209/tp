@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
-import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 /**
@@ -30,30 +28,11 @@ public class ListIncomeCommandTest {
     }
 
     @Test
-    public void execute_showsIncomeOnly() {
-        expectedModel.updateFilteredTransactionList(PREDICATE_SHOW_ALL_INCOME);
+    public void execute_showAllIncomeOnly() {
+        expectedModel.updateFilteredIncomeList(PREDICATE_SHOW_ALL_INCOME);
         assertCommandSuccess(new ListIncomeCommand(), model,
                 new CommandResult(ListIncomeCommand.MESSAGE_SUCCESS, Tab.INCOME), expectedModel);
-    }
-
-    @Test
-    public void execute_hasSomeIncome() {
-        model.addTransaction(new TransactionBuilder().buildIncome());
-        expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
-        expectedModel.updateFilteredTransactionList(transaction -> transaction instanceof Income);
-        assertCommandSuccess(new ListIncomeCommand(), model,
-                new CommandResult(ListIncomeCommand.MESSAGE_SUCCESS, Tab.INCOME), expectedModel);
-        assertEquals(model.getFilteredTransactionList().size(), 1);
-    }
-
-    @Test
-    public void execute_hasSomeNonIncome() {
-        model.addTransaction(new TransactionBuilder().buildExpense());
-        expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
-        expectedModel.updateFilteredTransactionList(transaction -> transaction instanceof Income);
-        assertCommandSuccess(new ListIncomeCommand(), model,
-                new CommandResult(ListIncomeCommand.MESSAGE_SUCCESS, Tab.INCOME), expectedModel);
-        assertEquals(model.getFilteredTransactionList().size(), 0);
+        assertEquals(model.getFilteredIncomeList().size(), 7);
     }
 
 }
