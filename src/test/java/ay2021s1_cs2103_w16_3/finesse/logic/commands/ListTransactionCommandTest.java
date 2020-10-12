@@ -3,6 +3,7 @@ package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static ay2021s1_cs2103_w16_3.finesse.model.Model.PREDICATE_SHOW_ALL_TRANSACTIONS;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
+import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalTransactions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,7 @@ public class ListTransactionCommandTest {
         expectedModel.updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
         assertCommandSuccess(new ListTransactionCommand(), model,
                 new CommandResult(ListTransactionCommand.MESSAGE_SUCCESS, Tab.OVERVIEW), expectedModel);
+        assertEquals(getTypicalTransactions().size(), model.getFilteredTransactionList().size());
     }
 
     @Test
@@ -42,7 +44,7 @@ public class ListTransactionCommandTest {
         expectedModel.updateFilteredTransactionList(transaction -> true);
         assertCommandSuccess(new ListTransactionCommand(), model,
                 new CommandResult(ListTransactionCommand.MESSAGE_SUCCESS, Tab.OVERVIEW), expectedModel);
-        assertEquals(model.getFilteredTransactionList().size(), 8);
+        assertEquals(getTypicalTransactions().size() + 1, model.getFilteredTransactionList().size());
     }
 
     @Test
@@ -52,7 +54,7 @@ public class ListTransactionCommandTest {
         expectedModel.updateFilteredTransactionList(transaction -> true);
         assertCommandSuccess(new ListTransactionCommand(), model,
                 new CommandResult(ListTransactionCommand.MESSAGE_SUCCESS, Tab.OVERVIEW), expectedModel);
-        assertEquals(model.getFilteredTransactionList().size(), 8);
+        assertEquals(getTypicalTransactions().size() + 1, model.getFilteredTransactionList().size());
     }
 
 }
