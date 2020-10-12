@@ -1,7 +1,7 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense.PREDICATE_SHOW_ALL_EXPENSES;
+import static ay2021s1_cs2103_w16_3.finesse.model.Model.PREDICATE_SHOW_ALL_TRANSACTIONS;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,7 +29,7 @@ public class ListExpenseCommandTest {
 
     @Test
     public void execute_showsAllExpenseOnly() {
-        expectedModel.updateFilteredExpenseList(PREDICATE_SHOW_ALL_EXPENSES);
+        expectedModel.updateFilteredExpenseList(PREDICATE_SHOW_ALL_TRANSACTIONS);
         assertCommandSuccess(new ListExpenseCommand(), model,
                 new CommandResult(ListExpenseCommand.MESSAGE_SUCCESS, Tab.EXPENSES), expectedModel);
         assertEquals(model.getFilteredExpenseList().size(), 7);
