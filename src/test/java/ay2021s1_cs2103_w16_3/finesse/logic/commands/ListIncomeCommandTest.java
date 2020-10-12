@@ -29,7 +29,7 @@ public class ListIncomeCommandTest {
     }
 
     @Test
-    public void execute_showAllIncomesOnly() {
+    public void execute_showAllIncomes() {
         expectedModel.updateFilteredIncomeList(PREDICATE_SHOW_ALL_TRANSACTIONS);
         assertCommandSuccess(new ListIncomeCommand(), model,
                 new CommandResult(ListIncomeCommand.MESSAGE_SUCCESS, Tab.INCOME), expectedModel);
