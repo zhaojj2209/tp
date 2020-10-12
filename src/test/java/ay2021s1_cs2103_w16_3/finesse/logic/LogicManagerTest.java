@@ -18,7 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.FinanceTrackerParserTest.ExpensesUiStateStub;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
@@ -65,8 +65,8 @@ public class LogicManagerTest {
 
     @Test
     public void execute_validCommand_success() throws Exception {
-        String listCommand = ListCommand.COMMAND_WORD;
-        assertCommandSuccess(listCommand, ListCommand.MESSAGE_SUCCESS, model);
+        String listIncomeCommand = ListIncomeCommand.COMMAND_WORD;
+        assertCommandSuccess(listIncomeCommand, ListIncomeCommand.MESSAGE_SUCCESS, model);
     }
 
     @Test
