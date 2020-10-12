@@ -28,7 +28,7 @@ public class ListExpenseCommandTest {
     }
 
     @Test
-    public void execute_showsAllExpenseOnly() {
+    public void execute_showsAllExpensesOnly() {
         expectedModel.updateFilteredExpenseList(PREDICATE_SHOW_ALL_TRANSACTIONS);
         assertCommandSuccess(new ListExpenseCommand(), model,
                 new CommandResult(ListExpenseCommand.MESSAGE_SUCCESS, Tab.EXPENSES), expectedModel);
