@@ -3,6 +3,7 @@ package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static ay2021s1_cs2103_w16_3.finesse.model.Model.PREDICATE_SHOW_ALL_TRANSACTIONS;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
+import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalIncomes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,7 @@ public class ListIncomeCommandTest {
         expectedModel.updateFilteredIncomeList(PREDICATE_SHOW_ALL_TRANSACTIONS);
         assertCommandSuccess(new ListIncomeCommand(), model,
                 new CommandResult(ListIncomeCommand.MESSAGE_SUCCESS, Tab.INCOME), expectedModel);
-        assertEquals(model.getFilteredIncomeList().size(), 7);
+        assertEquals(getTypicalIncomes().size(), model.getFilteredIncomeList().size());
     }
 
 }
