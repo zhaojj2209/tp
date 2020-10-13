@@ -18,6 +18,8 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.DeleteCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.DeleteExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.DeleteIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.EditCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.EditExpenseCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.EditIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ExitCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindExpenseCommand;
@@ -96,7 +98,16 @@ public class FinanceTrackerParser {
             return new AddIncomeCommandParser().parse(arguments);
 
         case EditCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
+            final EditCommand baseEditCommand = new EditCommandParser().parse(arguments);
+            switch (uiState.getCurrentTab()) {
+            case EXPENSES:
+                return new EditExpenseCommand(baseEditCommand);
+            case INCOME:
+                return new EditIncomeCommand(baseEditCommand);
+            default:
+                throw new ParseException(commandInvalidTabMessage(commandWord,
+                        Tab.EXPENSES, Tab.INCOME));
+            }
 
         case DeleteCommand.COMMAND_WORD:
             final DeleteCommand baseDeleteCommand = new DeleteCommandParser().parse(arguments);

@@ -203,18 +203,13 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_editWhenOverviewTab() throws Exception {
-        Transaction transaction = new TransactionBuilder().build();
-        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(transaction).build();
-        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_TRANSACTION.getOneBased() + " "
-                + TransactionUtil.getEditTransactionDescriptorDetails(descriptor), overviewUiStateStub);
-        assertEquals(new EditCommand(INDEX_FIRST_TRANSACTION, descriptor), command);
+        assertThrows(ParseException.class, () -> parser.parseCommand(EditCommand.COMMAND_WORD, overviewUiStateStub));
     }
 
     @Test
     public void parseCommand_editWhenIncomeTab() throws Exception {
-        Transaction transaction = new TransactionBuilder().build();
-        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(transaction).build();
+        Income income = new TransactionBuilder().buildIncome();
+        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(income).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + INDEX_FIRST_TRANSACTION.getOneBased() + " "
                 + TransactionUtil.getEditTransactionDescriptorDetails(descriptor), incomeUiStateStub);
@@ -223,8 +218,8 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_editWhenExpensesTab() throws Exception {
-        Transaction transaction = new TransactionBuilder().build();
-        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(transaction).build();
+        Expense expense = new TransactionBuilder().buildExpense();
+        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(expense).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + INDEX_FIRST_TRANSACTION.getOneBased() + " "
                 + TransactionUtil.getEditTransactionDescriptorDetails(descriptor), expensesUiStateStub);
@@ -233,12 +228,7 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_editWhenAnalyticsTab() throws Exception {
-        Transaction transaction = new TransactionBuilder().build();
-        EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(transaction).build();
-        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_TRANSACTION.getOneBased() + " "
-                + TransactionUtil.getEditTransactionDescriptorDetails(descriptor), analyticsUiStateStub);
-        assertEquals(new EditCommand(INDEX_FIRST_TRANSACTION, descriptor), command);
+        assertThrows(ParseException.class, () -> parser.parseCommand(EditCommand.COMMAND_WORD, analyticsUiStateStub));
     }
 
     @Test

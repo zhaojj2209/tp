@@ -1,5 +1,6 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 
+import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_TRANSACTION_DISPLAYED_INDEX;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import ay2021s1_cs2103_w16_3.finesse.commons.core.Messages;
 import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
 import ay2021s1_cs2103_w16_3.finesse.commons.util.CollectionUtil;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
@@ -25,40 +25,53 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
- * Edits the details of an existing transaction in the finance tracker.
+ * Edits the details of an existing transaction using its displayed index from the finance tracker
+ * depending on the tab the user is on.
+ *
+ * Base class for EditExpenseCommand and EditIncomeCommand.
  */
 public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the transaction identified "
-            + "by the index number used in the displayed transaction list. "
+            + "by the index number used in the displayed transaction list on the current tab. "
             + "Existing values will be overwritten by the input values.\n"
+            + "When on Income tab: Edits from the currently displayed income list.\n"
+            + "When on Expenses tab: Edits from the currently displayed expenses list.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_TITLE + "TITLE] "
             + "[" + PREFIX_AMOUNT + "AMOUNT] "
             + "[" + PREFIX_DATE + "DATE] "
             + "[" + PREFIX_CATEGORY + "CATEGORY]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_AMOUNT + "91234567 "
-            + PREFIX_DATE + "johndoe@example.com";
+            + PREFIX_AMOUNT + "5 "
+            + PREFIX_DATE + "22/09/2020";
 
     public static final String MESSAGE_EDIT_TRANSACTION_SUCCESS = "Edited Transaction: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
 
-    private final Index index;
+    private final Index targetIndex;
     private final EditTransactionDescriptor editTransactionDescriptor;
 
     /**
-     * @param index of the transaction in the filtered transaction list to edit
-     * @param editTransactionDescriptor details to edit the transaction with
+     * @param targetIndex Index of the transaction in the filtered transaction list to edit.
+     * @param editTransactionDescriptor Details to edit the transaction with.
      */
-    public EditCommand(Index index, EditTransactionDescriptor editTransactionDescriptor) {
-        requireNonNull(index);
+    public EditCommand(Index targetIndex, EditTransactionDescriptor editTransactionDescriptor) {
+        requireNonNull(targetIndex);
         requireNonNull(editTransactionDescriptor);
 
-        this.index = index;
+        this.targetIndex = targetIndex;
         this.editTransactionDescriptor = new EditTransactionDescriptor(editTransactionDescriptor);
+    }
+
+    protected Index getTargetIndex() {
+        return targetIndex;
+    }
+
+    protected EditTransactionDescriptor getEditTransactionDescriptor() {
+        return editTransactionDescriptor;
     }
 
     @Override
@@ -66,11 +79,11 @@ public class EditCommand extends Command {
         requireNonNull(model);
         List<Transaction> lastShownList = model.getFilteredTransactionList();
 
-        if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_TRANSACTION_DISPLAYED_INDEX);
+        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(MESSAGE_INVALID_TRANSACTION_DISPLAYED_INDEX);
         }
 
-        Transaction transactionToEdit = lastShownList.get(index.getZeroBased());
+        Transaction transactionToEdit = lastShownList.get(targetIndex.getZeroBased());
         Transaction editedTransaction = createEditedTransaction(transactionToEdit, editTransactionDescriptor);
 
         model.setTransaction(transactionToEdit, editedTransaction);
@@ -109,7 +122,7 @@ public class EditCommand extends Command {
 
         // state check
         EditCommand e = (EditCommand) other;
-        return index.equals(e.index)
+        return targetIndex.equals(e.targetIndex)
                 && editTransactionDescriptor.equals(e.editTransactionDescriptor);
     }
 

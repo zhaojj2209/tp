@@ -3,6 +3,7 @@ package ay2021s1_cs2103_w16_3.finesse.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Objects;
 
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.ExpenseList;
@@ -189,6 +190,6 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
 
     @Override
     public int hashCode() {
-        return transactions.hashCode();
+        return Objects.hash(transactions, expenses, incomes);
     }
 }
