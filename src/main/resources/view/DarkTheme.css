@@ -13,6 +13,10 @@
     background-color: #2E2E36; /* Used in the default.html file */
 }
 
+.root {
+    -tab-text-color: #888888;
+}
+
 .label {
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
@@ -40,13 +44,14 @@
 }
 
 .tab-pane {
-    -fx-padding: 0 0 0 1;
+    -fx-padding: 0 0 0 0;
+    -fx-border-color: #2E2E36;
+    -fx-tab-min-height:30px;
+    -fx-tab-max-height:30px;
 }
 
 .tab-pane .tab-header-area {
     -fx-padding: 0 0 0 0;
-    -fx-min-height: 0;
-    -fx-max-height: 0;
 }
 
 .table-view {
@@ -142,7 +147,6 @@
 }
 
 .cell_categories {
-    -fx-font-family: "Eczar";
     -fx-font-size: 14px;
     -fx-text-fill: #010504;
 }
@@ -154,7 +158,14 @@
 }
 
 .stack-pane {
-     -fx-background-color: #3B3B44;
+     -fx-background-color: #2E2E36;
+     -fx-hgap: 7;
+}
+
+.command-box {
+     -fx-background-color: #3B3B44 !important;
+     -fx-background-radius: 5;
+     -fx-border-radius: 5;
 }
 
 .result-container {
@@ -171,6 +182,21 @@
      -fx-background-color: #2E2E36;
      -fx-border-color: #2E2E36;
      -fx-border-top-width: 1px;
+}
+
+.right-panel {
+     -fx-background-color: #3B3B44;
+     -fx-border-color: #3B3B44;
+     -fx-border-top-width: 1px;
+     -fx-background-radius: 5;
+     -fx-border-radius: 5;
+}
+
+.right-panel-content {
+     -fx-font-family: "Roboto Condensed";
+     -fx-text-fill: white;
+     -fx-font-size: 16pt;
+     -fx-line-spacing: 10px;
 }
 
 .command-pane{
@@ -222,39 +248,36 @@
     -fx-background-color: #2E2E36;
 }
 
-.context-menu {
+.tab-pane .tab-header-area  .tab-header-background {
     -fx-background-color: #2E2E36;
+    -fx-border-color: #2E2E36;
 }
 
-.context-menu .label {
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: #2E2E36;
+}
+
+.tab-label {
+    -fx-text-fill: -tab-text-color;
+    -fx-font-family: "Roboto Condensed";
+    -fx-font-size: 24px;
+}
+
+.tab {
+    -fx-background-color: #2E2E36;
+    -fx-border-color: #2E2E36;
     -fx-text-fill: white;
 }
 
-.menu-bar {
-    -fx-background-color: #2E2E36;
-}
-
-.menu-bar .label {
+.tab-pane .label {
     -fx-font-size: 18pt;
     -fx-font-family: "Roboto Condensed";
     -fx-text-fill: white;
-    -fx-opacity: 0.9;
 }
 
-.menu .left-container {
-    -fx-background-color: black;
-}
-
-.menu {
-    -fx-padding: 15, 0, 0, 0;
-}
-
-.menu-item {
-    -fx-font-size: 16pt;
-}
-
-.menu-item:focused {
-    -fx-background-color: #3e7b91;
+.tab {
+    -fx-padding: 20, 0, 0, 0;
+    -fx-border-color: #2E2E36;
 }
 
 .command-box-label {
@@ -267,55 +290,40 @@
 .panel-label {
     -fx-font-family: "Roboto Condensed";
     -fx-text-fill: white;
-    -fx-font-size: 16pt;
+    -fx-font-size: 18pt;
 }
+
+.command-box-button {
+    -fx-opacity: 1;
+    -fx-background-color: #3B3B44;
+    -fx-border-color: #3B3B44;
+    -fx-border-radius: 5, 4;
+    -fx-background-radius: 5, 4;
+    -fx-background-insets: 0,3,2,3;
+    -fx-font-family: "Roboto Condensed";
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+}
+
 /*
  * Metro style Push Button
  * Author: Pedro Duque Vieira
  * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
  */
-.button {
-    -fx-padding: 5 22 5 22;
-    -fx-border-color: #e2e2e2;
-    -fx-border-width: 2;
-    -fx-background-radius: 0;
-    -fx-background-color: #2E2E36;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-size: 11pt;
-    -fx-text-fill: #d8d8d8;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+.button:pressed, .button:default:hover:pressed {
+     -fx-background-color: white;
+     -fx-text-fill: #1d1d1d;
 }
 
 .button:hover {
-    -fx-background-color: #3a3a3a;
+    -fx-background-color: white;
+    -fx-text-fill: #1d1d1d;
 }
 
-.button:pressed, .button:default:hover:pressed {
-  -fx-background-color: white;
-  -fx-text-fill: #1d1d1d;
-}
-
-.button:focused {
-    -fx-border-color: #3B3B44;
-    -fx-border-width: 1, 1;
-    -fx-border-style: solid, segments(1, 1);
-    -fx-border-radius: 0, 0;
-    -fx-border-insets: 1 1 1 1, 0;
-}
-
-.button:disabled, .button:default:disabled {
+.button:disabled {
     -fx-opacity: 0.4;
-    -fx-background-color: #2E2E36;
-    -fx-text-fill: white;
-}
-
-.button:default {
-    -fx-background-color: #2E2E36;
-    -fx-text-fill: #ffffff;
-}
-
-.button:default:hover {
-    -fx-background-color: derive(-fx-focus-color, 30%);
+    -fx-background-color: #3B3B44;
+    -fx-text-fill: #d8d8d8;
 }
 
 .dialog-pane {
@@ -344,7 +352,7 @@
 }
 
 .scroll-bar {
-    -fx-background-color: #2E2E36;
+    -fx-background-color: #3B3B44;
 }
 
 .scroll-bar .thumb {
@@ -372,6 +380,8 @@
 #cardPane {
     -fx-background-color: #3B3B44;
     -fx-border-width: 0;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
 }
 
 #commandTypeLabel {
@@ -403,15 +413,15 @@
 #categories {
     -fx-hgap: 7;
     -fx-vgap: 3;
-    -fx-background-insets: 3;
+    -fx-background-insets: 10;
 }
 
 #categories .label {
     -fx-font-family: "Eczar";
     -fx-text-fill: white;
     -fx-background-color: #4527A0;
-    -fx-padding: 1 3 1 3;
+    -fx-padding: 3 7 3 7;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
-    -fx-font-size: 12;
+    -fx-font-size: 13;
 }

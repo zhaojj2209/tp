@@ -9,17 +9,14 @@ import ay2021s1_cs2103_w16_3.finesse.logic.Logic;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
-import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 import ay2021s1_cs2103_w16_3.finesse.ui.expense.ExpensePanel;
 import ay2021s1_cs2103_w16_3.finesse.ui.income.IncomePanel;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.SelectionModel;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -30,6 +27,12 @@ import javafx.stage.Stage;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+
+    private static final String WELCOME_MESSAGE = "Welcome to Fine$$e - your personal finance tracker."
+            + "\nPlease enter the command \"help\" to view the user guide on the various commands you can use.";
+    private static final String USERGUIDE_URL = "https://ay2021s1-cs2103t-w16-3.github.io/tp/UserGuide.html";
+    private static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL + "."
+            + "\nPlease copy the url and paste it in your favourite browser to view all valid commands.";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -42,52 +45,34 @@ public class MainWindow extends UiPart<Stage> {
     private IncomePanel incomePanel;
     private ExpensePanel expensePanel;
     private ResultDisplay resultDisplay;
-    private HelpWindow helpWindow;
+    private SavingsGoalPanel savingsGoalPanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
-
     @FXML
-    private MenuItem helpMenuItem;
-
-    @FXML
-    private MenuItem incomeTabItem;
-
-    @FXML
-    private MenuItem expenseTabItem;
-
-    @FXML
-    private MenuItem analyticsTabItem;
-
-    @FXML
-    private MenuItem overviewTabItem;
-
+    private Button commandBoxButton;
     @FXML
     private StackPane transactionListPanelPlaceholder;
-
     @FXML
     private StackPane resultDisplayPlaceholder;
-
+    @FXML
+    private StackPane savingsGoalPlaceholder;
     @FXML
     private StackPane statusbarPlaceholder;
-
-    @FXML
-    private Menu menuHelpTab;
-
-    @FXML
-    private Menu menuIncomeTab;
-
-    @FXML
-    private Menu menuExpenseTab;
-
-    @FXML
-    private Menu menuOverviewTab;
-
-    @FXML
-    private Menu menuAnalyticsTab;
-
     @FXML
     private Label panelLabel;
+    @FXML
+    private Tab menuHelpTab;
+    @FXML
+    private Tab menuOverviewTab;
+    @FXML
+    private Tab menuIncomeTab;
+    @FXML
+    private Tab menuExpenseTab;
+    @FXML
+    private Tab menuAnalyticsTab;
+    @FXML
+    private TabPane tabPane;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage}, {@code Logic} and {@code UiState}.
@@ -102,54 +87,23 @@ public class MainWindow extends UiPart<Stage> {
 
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
-
-        setAccelerators();
-
-        helpWindow = new HelpWindow();
     }
 
     public Stage getPrimaryStage() {
         return primaryStage;
     }
 
-    private void setAccelerators() {
-        setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
-    }
-
-    /**
-     * Sets the accelerator of a MenuItem.
-     * @param keyCombination the KeyCombination value of the accelerator
-     */
-    private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
-        menuItem.setAccelerator(keyCombination);
-
-        /*
-         * TODO: the code below can be removed once the bug reported here
-         * https://bugs.openjdk.java.net/browse/JDK-8131666
-         * is fixed in later version of SDK.
-         *
-         * According to the bug report, TextInputControl (TextField, TextArea) will
-         * consume function-key events. Because CommandBox contains a TextField, and
-         * ResultDisplay contains a TextArea, thus some accelerators (e.g F1) will
-         * not work when the focus is in them because the key event is consumed by
-         * the TextInputControl(s).
-         *
-         * For now, we add following event filter to capture such key events and open
-         * help window purposely so to support accelerators even when focus is
-         * in CommandBox or ResultDisplay.
-         */
-        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
-                menuItem.getOnAction().handle(new ActionEvent());
-                event.consume();
-            }
-        });
+    public void disableStageResizing() {
+        this.primaryStage.setResizable(false);
     }
 
     /**
      * Fills up all the placeholders of this window.
      */
-    void fillInnerParts() {
+    public void fillInnerParts() {
+        transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
+        transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
+
         incomePanel = new IncomePanel(logic.getFilteredIncomeList());
         transactionListPanelPlaceholder.getChildren().add(incomePanel.getRoot());
 
@@ -159,7 +113,11 @@ public class MainWindow extends UiPart<Stage> {
         transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
         transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
 
+        savingsGoalPanel = new SavingsGoalPanel();
+        savingsGoalPlaceholder.getChildren().add(savingsGoalPanel.getRoot());
+
         resultDisplay = new ResultDisplay();
+        resultDisplay.setFeedbackToUser(WELCOME_MESSAGE);
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getFinanceTrackerFilePath());
@@ -168,7 +126,35 @@ public class MainWindow extends UiPart<Stage> {
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
+        SelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        selectionModel.select(menuOverviewTab);
+
         onOverview();
+    }
+
+    /**
+     * Sets up all the action handlers for the tabs on the tab pane.
+     */
+    public void setActionHandlers() {
+        menuOverviewTab.setOnSelectionChanged(event -> {
+            handleOverview();
+        });
+
+        menuHelpTab.setOnSelectionChanged(event -> {
+            handleTabHelp();
+        });
+
+        menuIncomeTab.setOnSelectionChanged(event -> {
+            handleIncome();
+        });
+
+        menuExpenseTab.setOnSelectionChanged(event -> {
+            handleExpense();
+        });
+
+        menuAnalyticsTab.setOnSelectionChanged(event -> {
+            handleAnalytics();
+        });
     }
 
     /**
@@ -187,12 +173,14 @@ public class MainWindow extends UiPart<Stage> {
      * Opens the help window or focuses on it if it's already opened.
      */
     @FXML
-    public void handleHelp() {
-        if (!helpWindow.isShowing()) {
-            helpWindow.show();
-        } else {
-            helpWindow.focus();
+    public void handleTabHelp() {
+        if (menuHelpTab.isSelected()) {
+            resultDisplay.setFeedbackToUser(HELP_MESSAGE);
         }
+    }
+
+    @FXML void handleCommandHelp() {
+        resultDisplay.setFeedbackToUser(HELP_MESSAGE);
     }
 
     /**
@@ -200,13 +188,14 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     private void handleIncome() {
-        panelLabel.setText("Income");
-        incomePanel = new IncomePanel(logic.getFilteredIncomeList());
-        transactionListPanelPlaceholder.getChildren().add(incomePanel.getRoot());
-        incomePanel.getRoot().toFront();
-
+        if (menuIncomeTab.isSelected()) {
+            panelLabel.setText("Income");
+            incomePanel = new IncomePanel(logic.getFilteredIncomeList());
+            transactionListPanelPlaceholder.getChildren().add(incomePanel.getRoot());
+            incomePanel.getRoot().toFront();
+        }
         onIncome();
-        uiState.setCurrentTab(Tab.INCOME);
+        uiState.setCurrentTab(UiState.Tab.INCOME);
     }
 
     /**
@@ -214,13 +203,15 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     private void handleOverview() {
-        panelLabel.setText("Overview");
-        transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
-        transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
-        transactionListPanel.getRoot().toFront();
+        if (menuOverviewTab.isSelected()) {
+            panelLabel.setText("Overview");
+            transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
+            transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
+            transactionListPanel.getRoot().toFront();
+        }
 
         onOverview();
-        uiState.setCurrentTab(Tab.OVERVIEW);
+        uiState.setCurrentTab(UiState.Tab.OVERVIEW);
     }
 
     /**
@@ -228,13 +219,14 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     private void handleAnalytics() {
-        panelLabel.setText("Analytics");
-        transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
-        transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
-        transactionListPanel.getRoot().toFront();
-
+        if (menuAnalyticsTab.isSelected()) {
+            panelLabel.setText("Analytics");
+            transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
+            transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
+            transactionListPanel.getRoot().toFront();
+        }
         onAnalytics();
-        uiState.setCurrentTab(Tab.ANALYTICS);
+        uiState.setCurrentTab(UiState.Tab.ANALYTICS);
     }
 
     /**
@@ -242,13 +234,14 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     private void handleExpense() {
-        panelLabel.setText("Expense");
-        expensePanel = new ExpensePanel(logic.getFilteredExpenseList());
-        transactionListPanelPlaceholder.getChildren().add(expensePanel.getRoot());
-        expensePanel.getRoot().toFront();
-
+        if (menuExpenseTab.isSelected()) {
+            panelLabel.setText("Expense");
+            expensePanel = new ExpensePanel(logic.getFilteredExpenseList());
+            transactionListPanelPlaceholder.getChildren().add(expensePanel.getRoot());
+            expensePanel.getRoot().toFront();
+        }
         onExpense();
-        uiState.setCurrentTab(Tab.EXPENSES);
+        uiState.setCurrentTab(UiState.Tab.EXPENSES);
     }
 
     void show() {
@@ -263,7 +256,6 @@ public class MainWindow extends UiPart<Stage> {
         GuiSettings guiSettings = new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
-        helpWindow.hide();
         primaryStage.hide();
     }
 
@@ -283,14 +275,14 @@ public class MainWindow extends UiPart<Stage> {
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
             if (commandResult.isShowHelp()) {
-                handleHelp();
+                handleCommandHelp();
             }
 
             if (commandResult.isExit()) {
                 handleExit();
             }
 
-            Optional<Tab> tabToSwitchTo = commandResult.getTabToSwitchTo();
+            Optional<UiState.Tab> tabToSwitchTo = commandResult.getTabToSwitchTo();
             tabToSwitchTo.ifPresent(this::switchTabs);
 
             return commandResult;
@@ -307,7 +299,7 @@ public class MainWindow extends UiPart<Stage> {
      *
      * @param tab The tab to switch to.
      */
-    private void switchTabs(Tab tab) {
+    private void switchTabs(UiState.Tab tab) {
         switch (tab) {
         case OVERVIEW:
             handleOverview();
@@ -327,44 +319,46 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Changes the overview menu tab to blue while the rest becomes the same as the background color.
+     * Changes the text color of the overview tab to white while the rest remains grey
      */
     private void onOverview() {
-        menuOverviewTab.setStyle("-fx-background-color: #3e7b91");
-        menuIncomeTab.setStyle("-fx-background-color: #2E2E36");
-        menuExpenseTab.setStyle("-fx-background-color: #2E2E36");
-        menuAnalyticsTab.setStyle("-fx-background-color: #2E2E36");
+        menuOverviewTab.setStyle("-tab-text-color: white");
+        menuIncomeTab.setStyle("-tab-text-color: #888888");
+        menuExpenseTab.setStyle("-tab-text-color: #888888");
+        menuAnalyticsTab.setStyle("-tab-text-color: #888888");
+        menuHelpTab.setStyle("-tab-text-color: #888888");
     }
 
     /**
-     * Changes the income menu tab to blue while the rest becomes the same as the background color.
+     * Changes the text color of the income tab to white while the rest remains grey.
      */
     private void onIncome() {
-        menuOverviewTab.setStyle("-fx-background-color: #2E2E36");
-        menuIncomeTab.setStyle("-fx-background-color: #3e7b91");
-        menuExpenseTab.setStyle("-fx-background-color: #2E2E36");
-        menuAnalyticsTab.setStyle("-fx-background-color: #2E2E36");
+        menuOverviewTab.setStyle("-tab-text-color: #888888");
+        menuIncomeTab.setStyle("-tab-text-color: white");
+        menuExpenseTab.setStyle("-tab-text-color: #888888");
+        menuAnalyticsTab.setStyle("-tab-text-color: #888888");
+        menuHelpTab.setStyle("-tab-text-color: #888888");
     }
 
     /**
-     * Changes the expense menu tab to blue while the rest becomes the same as the background color.
+     * Changes the text color of the expense tab to white while the rest remains grey.
      */
     private void onExpense() {
-        menuOverviewTab.setStyle("-fx-background-color: #2E2E36");
-        menuIncomeTab.setStyle("-fx-background-color: #2E2E36");
-        menuExpenseTab.setStyle("-fx-background-color: #3e7b91");
-        menuAnalyticsTab.setStyle("-fx-background-color: #2E2E36");
-        menuHelpTab.setStyle("-fx-background-color: #2E2E36");
+        menuOverviewTab.setStyle("-tab-text-color: #888888");
+        menuIncomeTab.setStyle("-tab-text-color: #888888");
+        menuExpenseTab.setStyle("-tab-text-color: white");
+        menuAnalyticsTab.setStyle("-tab-text-color: #888888");
+        menuHelpTab.setStyle("-tab-text-color: #888888");
     }
 
     /**
-     * Changes the analytics menu tab to blue while the rest becomes the same as the background color.
+     * Changes the text color of the analytics tab to white while the rest remains grey.
      */
     private void onAnalytics() {
-        menuOverviewTab.setStyle("-fx-background-color: #2E2E36");
-        menuIncomeTab.setStyle("-fx-background-color: #2E2E36");
-        menuExpenseTab.setStyle("-fx-background-color: #2E2E36");
-        menuAnalyticsTab.setStyle("-fx-background-color: #3e7b91");
-        menuHelpTab.setStyle("-fx-background-color: #2E2E36");
+        menuOverviewTab.setStyle("-tab-text-color: #888888");
+        menuIncomeTab.setStyle("-tab-text-color: #888888");
+        menuExpenseTab.setStyle("-tab-text-color: #888888");
+        menuAnalyticsTab.setStyle("-tab-text-color: white");
+        menuHelpTab.setStyle("-tab-text-color: #888888");
     }
 }
