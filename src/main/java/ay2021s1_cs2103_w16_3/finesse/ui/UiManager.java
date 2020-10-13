@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -39,6 +40,7 @@ public class UiManager implements Ui {
         logger.info("Starting UI...");
 
         try {
+            loadCustomFonts();
             mainWindow = new MainWindow(primaryStage, logic, uiState);
             mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.disableStageResizing();
@@ -49,6 +51,11 @@ public class UiManager implements Ui {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during initializing", e);
         }
+    }
+
+    private void loadCustomFonts() {
+        Font.loadFont(getClass().getResourceAsStream("/fonts/RobotoCondensed-Regular.ttf"), 16);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Eczar-Regular.ttf"), 16);
     }
 
     private Image getImage(String imagePath) {
