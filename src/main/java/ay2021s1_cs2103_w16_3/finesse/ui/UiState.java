@@ -10,10 +10,31 @@ public class UiState {
      * Tabs present in the UI.
      */
     public enum Tab {
-        OVERVIEW,
-        INCOME,
-        EXPENSES,
-        ANALYTICS;
+        OVERVIEW(1),
+        INCOME(2),
+        EXPENSES(3),
+        ANALYTICS(4);
+
+        /** The index of the tab in the {@code TabPane}. */
+        private final int tabIndex;
+
+        /**
+         * Constructs a new {@code Tab} enum with the specified tab index.
+         *
+         * @param tabIndex The index of the tab in the {@code TabPane}.
+         */
+        Tab(int tabIndex) {
+            this.tabIndex = tabIndex;
+        }
+
+        /**
+         * Returns the index of the tab in the {@code TabPane}.
+         *
+         * @return The index of the tab in the {@code TabPane}.
+         */
+        public int getTabIndex() {
+            return tabIndex;
+        }
 
         /**
          * Returns a string representation of this {@code Tab}.

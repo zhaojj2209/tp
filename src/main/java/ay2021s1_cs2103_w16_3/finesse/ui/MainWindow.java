@@ -1,5 +1,7 @@
 package ay2021s1_cs2103_w16_3.finesse.ui;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -294,28 +296,14 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Programmatically switches UI tab based on the specified tab. If the specified tab is {@code null},
-     * do nothing.
+     * Programmatically switches UI tab based on the specified tab.
      *
      * @param tab The tab to switch to.
+     * @throws NullPointerException If the tab is {@code null}.
      */
     private void switchTabs(UiState.Tab tab) {
-        switch (tab) {
-        case OVERVIEW:
-            handleOverview();
-            break;
-        case INCOME:
-            handleIncome();
-            break;
-        case EXPENSES:
-            handleExpense();
-            break;
-        case ANALYTICS:
-            handleAnalytics();
-            break;
-        default:
-            // Do nothing.
-        }
+        requireNonNull(tab);
+        tabPane.getSelectionModel().select(tab.getTabIndex());
     }
 
     /**
