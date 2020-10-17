@@ -38,7 +38,7 @@ public class EditIncomeCommand extends EditCommand {
         Income incomeToEdit = lastShownList.get(getTargetIndex().getZeroBased());
         Income editedIncome = createEditedIncome(incomeToEdit, getEditTransactionDescriptor());
 
-        model.setIncome(incomeToEdit, editedIncome);
+        model.setTransaction(incomeToEdit, editedIncome);
         model.updateFilteredIncomeList(PREDICATE_SHOW_ALL_TRANSACTIONS);
         return new CommandResult(String.format(MESSAGE_EDIT_INCOME_SUCCESS, editedIncome));
     }

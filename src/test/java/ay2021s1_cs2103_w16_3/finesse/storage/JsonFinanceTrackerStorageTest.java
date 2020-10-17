@@ -18,6 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 import ay2021s1_cs2103_w16_3.finesse.commons.exceptions.DataConversionException;
 import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
+import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
 public class JsonFinanceTrackerStorageTest {
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonFinanceTrackerStorageTest");
@@ -74,14 +75,14 @@ public class JsonFinanceTrackerStorageTest {
         assertEquals(original, new FinanceTracker(readBack));
 
         // Modify data, overwrite exiting file, and read back
-        original.addTransaction(HOON);
-        original.removeTransaction(ALICE);
+        original.addTransaction(new TransactionBuilder(HOON).buildExpense());
+        original.removeTransaction(new TransactionBuilder(ALICE).buildExpense());
         jsonFinanceTrackerStorage.saveFinanceTracker(original, filePath);
         readBack = jsonFinanceTrackerStorage.readFinanceTracker(filePath).get();
         assertEquals(original, new FinanceTracker(readBack));
 
         // Save and read without specifying file path
-        original.addTransaction(IDA);
+        original.addTransaction(new TransactionBuilder(IDA).buildIncome());
         jsonFinanceTrackerStorage.saveFinanceTracker(original); // file path not specified
         readBack = jsonFinanceTrackerStorage.readFinanceTracker().get(); // file path not specified
         assertEquals(original, new FinanceTracker(readBack));

@@ -47,7 +47,7 @@ public class EditIncomeCommandTest {
         String expectedMessage = String.format(EditIncomeCommand.MESSAGE_EDIT_INCOME_SUCCESS, editedIncome);
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
-        expectedModel.setIncome(model.getFilteredIncomeList().get(0), editedIncome);
+        expectedModel.setTransaction(model.getFilteredIncomeList().get(0), editedIncome);
 
         assertCommandSuccess(editIncomeCommand, model, expectedMessage, expectedModel);
     }
@@ -69,7 +69,7 @@ public class EditIncomeCommandTest {
         String expectedMessage = String.format(EditIncomeCommand.MESSAGE_EDIT_INCOME_SUCCESS, editedIncome);
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
-        expectedModel.setIncome(lastIncome, editedIncome);
+        expectedModel.setTransaction(lastIncome, editedIncome);
 
         assertCommandSuccess(editIncomeCommand, model, expectedMessage, expectedModel);
     }
@@ -91,10 +91,8 @@ public class EditIncomeCommandTest {
     public void execute_filteredList_success() {
         showIncomeAtIndex(model, INDEX_FIRST_TRANSACTION);
 
-        Income incomeInFilteredList = model.getFilteredIncomeList()
-                .get(INDEX_FIRST_TRANSACTION.getZeroBased());
-        Income editedIncome =
-                new TransactionBuilder(incomeInFilteredList).withTitle(VALID_TITLE_BOB).buildIncome();
+        Income incomeInFilteredList = model.getFilteredIncomeList().get(INDEX_FIRST_TRANSACTION.getZeroBased());
+        Income editedIncome = new TransactionBuilder(incomeInFilteredList).withTitle(VALID_TITLE_BOB).buildIncome();
         EditCommandStub superCommand = new EditCommandStub(INDEX_FIRST_TRANSACTION,
                 new EditTransactionDescriptorBuilder().withTitle(VALID_TITLE_BOB).build());
         EditIncomeCommand editIncomeCommand = new EditIncomeCommand(superCommand);
@@ -102,7 +100,7 @@ public class EditIncomeCommandTest {
         String expectedMessage = String.format(EditIncomeCommand.MESSAGE_EDIT_INCOME_SUCCESS, editedIncome);
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
-        expectedModel.setIncome(model.getFilteredIncomeList().get(0), editedIncome);
+        expectedModel.setTransaction(model.getFilteredIncomeList().get(0), editedIncome);
 
         assertCommandSuccess(editIncomeCommand, model, expectedMessage, expectedModel);
     }

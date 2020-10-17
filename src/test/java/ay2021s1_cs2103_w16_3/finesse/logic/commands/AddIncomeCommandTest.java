@@ -131,27 +131,7 @@ public class AddIncomeCommandTest {
         }
 
         @Override
-        public void deleteExpense(Expense target) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void deleteIncome(Income target) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public void setTransaction(Transaction target, Transaction editedTransaction) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setExpense(Expense target, Expense editedExpense) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setIncome(Income target, Income editedIncome) {
             throw new AssertionError("This method should not be called.");
         }
 

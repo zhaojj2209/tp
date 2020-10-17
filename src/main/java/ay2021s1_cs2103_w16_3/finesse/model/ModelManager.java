@@ -12,6 +12,7 @@ import ay2021s1_cs2103_w16_3.finesse.commons.core.LogsCenter;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
@@ -24,8 +25,8 @@ public class ModelManager implements Model {
     private final FinanceTracker financeTracker;
     private final UserPrefs userPrefs;
     private final FilteredList<Transaction> filteredTransactions;
-    private final FilteredList<Expense> filteredExpenses;
-    private final FilteredList<Income> filteredIncomes;
+    private final FilteredList<Transaction> filteredExpenses;
+    private final FilteredList<Transaction> filteredIncomes;
 
     /**
      * Initializes a ModelManager with the given financeTracker and userPrefs.
@@ -39,8 +40,8 @@ public class ModelManager implements Model {
         this.financeTracker = new FinanceTracker(financeTracker);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredTransactions = new FilteredList<>(this.financeTracker.getTransactionList());
-        filteredExpenses = new FilteredList<>(this.financeTracker.getExpenseList());
-        filteredIncomes = new FilteredList<>(this.financeTracker.getIncomeList());
+        filteredExpenses = new FilteredList<>(this.financeTracker.getTransactionList(), PREDICATE_SHOW_ALL_EXPENSES);
+        filteredIncomes = new FilteredList<>(this.financeTracker.getTransactionList(), PREDICATE_SHOW_ALL_INCOMES);
     }
 
     public ModelManager() {
@@ -100,16 +101,6 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void deleteExpense(Expense target) {
-        financeTracker.removeExpense(target);
-    }
-
-    @Override
-    public void deleteIncome(Income target) {
-        financeTracker.removeIncome(target);
-    }
-
-    @Override
     public void addTransaction(Transaction transaction) {
         financeTracker.addTransaction(transaction);
         updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
@@ -117,13 +108,13 @@ public class ModelManager implements Model {
 
     @Override
     public void addExpense(Expense expense) {
-        financeTracker.addExpense(expense);
+        financeTracker.addTransaction(expense);
         updateFilteredExpenseList(PREDICATE_SHOW_ALL_TRANSACTIONS);
     }
 
     @Override
     public void addIncome(Income income) {
-        financeTracker.addIncome(income);
+        financeTracker.addTransaction(income);
         updateFilteredIncomeList(PREDICATE_SHOW_ALL_TRANSACTIONS);
     }
 
@@ -132,20 +123,6 @@ public class ModelManager implements Model {
         requireAllNonNull(target, editedTransaction);
 
         financeTracker.setTransaction(target, editedTransaction);
-    }
-
-    @Override
-    public void setExpense(Expense target, Expense editedExpense) {
-        requireAllNonNull(target, editedExpense);
-
-        financeTracker.setExpense(target, editedExpense);
-    }
-
-    @Override
-    public void setIncome(Income target, Income editedIncome) {
-        requireAllNonNull(target, editedIncome);
-
-        financeTracker.setIncome(target, editedIncome);
     }
 
     //=========== Filtered Transaction List Accessors =============================================================
@@ -165,7 +142,9 @@ public class ModelManager implements Model {
      */
     @Override
     public ObservableList<Expense> getFilteredExpenseList() {
-        return filteredExpenses;
+        ObservableList<Expense> newFilteredExpenses = FXCollections.observableArrayList();
+        filteredExpenses.forEach(e -> newFilteredExpenses.add((Expense) e));
+        return FXCollections.unmodifiableObservableList(newFilteredExpenses);
     }
 
     /**
@@ -174,7 +153,9 @@ public class ModelManager implements Model {
      */
     @Override
     public ObservableList<Income> getFilteredIncomeList() {
-        return filteredIncomes;
+        ObservableList<Income> newFilteredIncomes = FXCollections.observableArrayList();
+        filteredIncomes.forEach(i -> newFilteredIncomes.add((Income) i));
+        return FXCollections.unmodifiableObservableList(newFilteredIncomes);
     }
 
     @Override
@@ -186,13 +167,13 @@ public class ModelManager implements Model {
     @Override
     public void updateFilteredExpenseList(Predicate<Transaction> predicate) {
         requireNonNull(predicate);
-        filteredExpenses.setPredicate(predicate);
+        filteredExpenses.setPredicate(t -> predicate.test(t) && PREDICATE_SHOW_ALL_EXPENSES.test(t));
     }
 
     @Override
     public void updateFilteredIncomeList(Predicate<Transaction> predicate) {
         requireNonNull(predicate);
-        filteredIncomes.setPredicate(predicate);
+        filteredIncomes.setPredicate(t -> predicate.test(t) && PREDICATE_SHOW_ALL_INCOMES.test(t));
     }
 
     @Override

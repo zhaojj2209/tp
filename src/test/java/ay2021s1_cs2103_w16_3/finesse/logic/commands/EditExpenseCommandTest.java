@@ -47,7 +47,7 @@ public class EditExpenseCommandTest {
         String expectedMessage = String.format(EditExpenseCommand.MESSAGE_EDIT_EXPENSE_SUCCESS, editedExpense);
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
-        expectedModel.setExpense(model.getFilteredExpenseList().get(0), editedExpense);
+        expectedModel.setTransaction(model.getFilteredExpenseList().get(0), editedExpense);
 
         assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel);
     }
@@ -69,7 +69,7 @@ public class EditExpenseCommandTest {
         String expectedMessage = String.format(EditExpenseCommand.MESSAGE_EDIT_EXPENSE_SUCCESS, editedExpense);
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
-        expectedModel.setExpense(lastExpense, editedExpense);
+        expectedModel.setTransaction(lastExpense, editedExpense);
 
         assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel);
     }
@@ -102,7 +102,7 @@ public class EditExpenseCommandTest {
         String expectedMessage = String.format(EditExpenseCommand.MESSAGE_EDIT_EXPENSE_SUCCESS, editedExpense);
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
-        expectedModel.setExpense(model.getFilteredExpenseList().get(0), editedExpense);
+        expectedModel.setTransaction(model.getFilteredExpenseList().get(0), editedExpense);
 
         assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel);
     }

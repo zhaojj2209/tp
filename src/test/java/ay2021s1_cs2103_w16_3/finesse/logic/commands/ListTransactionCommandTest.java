@@ -3,7 +3,6 @@ package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static ay2021s1_cs2103_w16_3.finesse.model.Model.PREDICATE_SHOW_ALL_TRANSACTIONS;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
-import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalTransactions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,27 +33,29 @@ public class ListTransactionCommandTest {
         expectedModel.updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
         assertCommandSuccess(new ListTransactionCommand(), model,
                 new CommandResult(ListTransactionCommand.MESSAGE_SUCCESS, Tab.OVERVIEW), expectedModel);
-        assertEquals(getTypicalTransactions().size(), model.getFilteredTransactionList().size());
+        assertEquals(getTypicalFinanceTracker().getTransactionList().size(), model.getFilteredTransactionList().size());
     }
 
     @Test
     public void execute_hasSomeIncome() {
-        model.addTransaction(new TransactionBuilder().buildIncome());
+        model.addIncome(new TransactionBuilder().buildIncome());
         expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.updateFilteredTransactionList(transaction -> true);
         assertCommandSuccess(new ListTransactionCommand(), model,
                 new CommandResult(ListTransactionCommand.MESSAGE_SUCCESS, Tab.OVERVIEW), expectedModel);
-        assertEquals(getTypicalTransactions().size() + 1, model.getFilteredTransactionList().size());
+        assertEquals(getTypicalFinanceTracker().getTransactionList().size() + 1,
+                model.getFilteredTransactionList().size());
     }
 
     @Test
     public void execute_hasSomeExpense() {
-        model.addTransaction(new TransactionBuilder().buildExpense());
+        model.addExpense(new TransactionBuilder().buildExpense());
         expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.updateFilteredTransactionList(transaction -> true);
         assertCommandSuccess(new ListTransactionCommand(), model,
                 new CommandResult(ListTransactionCommand.MESSAGE_SUCCESS, Tab.OVERVIEW), expectedModel);
-        assertEquals(getTypicalTransactions().size() + 1, model.getFilteredTransactionList().size());
+        assertEquals(getTypicalFinanceTracker().getTransactionList().size() + 1,
+                model.getFilteredTransactionList().size());
     }
 
 }

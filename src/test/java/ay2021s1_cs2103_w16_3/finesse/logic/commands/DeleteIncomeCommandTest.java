@@ -29,22 +29,21 @@ public class DeleteIncomeCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Income incomeToDelete = model.getFilteredIncomeList()
-                .get(INDEX_FIRST_TRANSACTION.getZeroBased());
+        Income incomeToDelete = model.getFilteredIncomeList().get(INDEX_FIRST_TRANSACTION.getZeroBased());
         DeleteCommandStub superCommand = new DeleteCommandStub(INDEX_FIRST_TRANSACTION);
         DeleteIncomeCommand deleteIncomeCommand = new DeleteIncomeCommand(superCommand);
 
         String expectedMessage = String.format(DeleteIncomeCommand.MESSAGE_DELETE_INCOME_SUCCESS, incomeToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
-        expectedModel.deleteIncome(incomeToDelete);
+        expectedModel.deleteTransaction(incomeToDelete);
 
         assertCommandSuccess(deleteIncomeCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredExpenseList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredIncomeList().size() + 1);
         DeleteCommandStub superCommand = new DeleteCommandStub(outOfBoundIndex);
         DeleteIncomeCommand deleteIncomeCommand = new DeleteIncomeCommand(superCommand);
 
@@ -55,15 +54,14 @@ public class DeleteIncomeCommandTest {
     public void execute_validIndexFilteredList_success() {
         showIncomeAtIndex(model, INDEX_FIRST_TRANSACTION);
 
-        Income incomeToDelete = model.getFilteredIncomeList()
-                .get(INDEX_FIRST_TRANSACTION.getZeroBased());
+        Income incomeToDelete = model.getFilteredIncomeList().get(INDEX_FIRST_TRANSACTION.getZeroBased());
         DeleteCommandStub superCommand = new DeleteCommandStub(INDEX_FIRST_TRANSACTION);
         DeleteIncomeCommand deleteIncomeCommand = new DeleteIncomeCommand(superCommand);
 
         String expectedMessage = String.format(DeleteIncomeCommand.MESSAGE_DELETE_INCOME_SUCCESS, incomeToDelete);
 
         Model expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
-        expectedModel.deleteIncome(incomeToDelete);
+        expectedModel.deleteTransaction(incomeToDelete);
         showNoIncomes(expectedModel);
 
         assertCommandSuccess(deleteIncomeCommand, model, expectedMessage, expectedModel);

@@ -19,6 +19,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -66,12 +67,18 @@ public class FindCommandTest {
 
     @Test
     public void execute_multipleKeywords_multipleTransactionsFound() {
-        String expectedMessage = String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW, 3);
+        String expectedMessage = String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW, 6);
         TitleContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredTransactionList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getFilteredTransactionList());
+        assertEquals(Arrays.asList(
+                new TransactionBuilder(CARL).buildExpense(),
+                new TransactionBuilder(CARL).buildIncome(),
+                new TransactionBuilder(ELLE).buildExpense(),
+                new TransactionBuilder(ELLE).buildIncome(),
+                new TransactionBuilder(FIONA).buildExpense(),
+                new TransactionBuilder(FIONA).buildIncome()), model.getFilteredTransactionList());
     }
 
     /**

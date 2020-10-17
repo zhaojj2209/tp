@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
@@ -18,7 +17,6 @@ import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 
@@ -117,7 +115,7 @@ public class CommandTestUtil {
 
         Transaction transaction = model.getFilteredTransactionList().get(targetIndex.getZeroBased());
         final String[] splitTitle = transaction.getTitle().fullTitle.split("\\s+");
-        model.updateFilteredTransactionList(new TitleContainsKeywordsPredicate(Arrays.asList(splitTitle[0])));
+        model.updateFilteredTransactionList(t -> t == transaction);
 
         assertEquals(1, model.getFilteredTransactionList().size());
     }
@@ -131,7 +129,7 @@ public class CommandTestUtil {
 
         Expense expense = model.getFilteredExpenseList().get(targetIndex.getZeroBased());
         final String[] splitTitle = expense.getTitle().fullTitle.split("\\s+");
-        model.updateFilteredExpenseList(new TitleContainsKeywordsPredicate(Arrays.asList(splitTitle[0])));
+        model.updateFilteredExpenseList(e -> e == expense);
 
         assertEquals(1, model.getFilteredExpenseList().size());
     }
@@ -145,7 +143,7 @@ public class CommandTestUtil {
 
         Income income = model.getFilteredIncomeList().get(targetIndex.getZeroBased());
         final String[] splitTitle = income.getTitle().fullTitle.split("\\s+");
-        model.updateFilteredIncomeList(new TitleContainsKeywordsPredicate(Arrays.asList(splitTitle[0])));
+        model.updateFilteredIncomeList(i -> i == income);
 
         assertEquals(1, model.getFilteredIncomeList().size());
     }
