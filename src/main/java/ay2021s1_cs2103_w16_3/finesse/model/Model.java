@@ -68,11 +68,6 @@ public interface Model {
     void deleteTransaction(Transaction target);
 
     /**
-     * Adds the given transaction.
-     */
-    void addTransaction(Transaction transaction);
-
-    /**
      * Adds the given expense.
      */
     void addExpense(Expense expense);

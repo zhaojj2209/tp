@@ -101,12 +101,6 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void addTransaction(Transaction transaction) {
-        financeTracker.addTransaction(transaction);
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
-    }
-
-    @Override
     public void addExpense(Expense expense) {
         financeTracker.addTransaction(expense);
         updateFilteredExpenseList(PREDICATE_SHOW_ALL_TRANSACTIONS);
