@@ -110,6 +110,7 @@ public class EditCommand extends Command {
         if (transactionToEdit instanceof Expense) {
             return new Expense(updatedTitle, updatedAmount, updatedDate, updatedCategories);
         } else {
+            assert transactionToEdit instanceof Income;
             return new Income(updatedTitle, updatedAmount, updatedDate, updatedCategories);
         }
     }
