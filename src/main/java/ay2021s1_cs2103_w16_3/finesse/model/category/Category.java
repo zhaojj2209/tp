@@ -9,8 +9,9 @@ import static java.util.Objects.requireNonNull;
  */
 public class Category {
 
-    public static final String MESSAGE_CONSTRAINTS = "Category names should be printable.";
-    public static final String VALIDATION_REGEX = "\\p{Print}+";
+    public static final String MESSAGE_CONSTRAINTS =
+            "Category names should contain at least one non-whitespace printable ASCII character.";
+    public static final String VALIDATION_REGEX = "\\p{Graph}\\p{Print}*";
 
     public final String categoryName;
 
