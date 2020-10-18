@@ -99,7 +99,8 @@ public class EditCommand extends Command {
      */
     private static Transaction createEditedTransaction(Transaction transactionToEdit,
                                                        EditTransactionDescriptor editTransactionDescriptor) {
-        assert transactionToEdit != null;
+        assert (transactionToEdit != null
+                && (transactionToEdit instanceof Expense || transactionToEdit instanceof Income));
 
         Title updatedTitle = editTransactionDescriptor.getTitle().orElse(transactionToEdit.getTitle());
         Amount updatedAmount = editTransactionDescriptor.getAmount().orElse(transactionToEdit.getAmount());
@@ -109,10 +110,8 @@ public class EditCommand extends Command {
 
         if (transactionToEdit instanceof Expense) {
             return new Expense(updatedTitle, updatedAmount, updatedDate, updatedCategories);
-        } else if (transactionToEdit instanceof Income) {
-            return new Income(updatedTitle, updatedAmount, updatedDate, updatedCategories);
         } else {
-            return new Transaction(updatedTitle, updatedAmount, updatedDate, updatedCategories);
+            return new Income(updatedTitle, updatedAmount, updatedDate, updatedCategories);
         }
     }
 

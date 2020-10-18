@@ -4,10 +4,10 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.FinanceTrackerParser.ADD_COMMAND_COMMAND_WORD;
 
 import java.util.Set;
 
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.EditCommand;
@@ -25,7 +25,7 @@ public class TransactionUtil {
      * Returns an add command string for adding the {@code Transaction}.
      */
     public static String getAddCommand(Transaction transaction) {
-        return AddCommand.COMMAND_WORD + " " + getTransactionDetails(transaction);
+        return ADD_COMMAND_COMMAND_WORD + " " + getTransactionDetails(transaction);
     }
 
     /**

@@ -39,15 +39,14 @@ public class EditCommandTest {
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
         Transaction transactionToEdit = model.getFilteredTransactionList().get(0);
+        assertTrue(transactionToEdit instanceof Expense || transactionToEdit instanceof Income);
 
         TransactionBuilder editedTransactionBuilder = new TransactionBuilder();
         Transaction editedTransaction;
         if (transactionToEdit instanceof Expense) {
             editedTransaction = editedTransactionBuilder.buildExpense();
-        } else if (transactionToEdit instanceof Income) {
-            editedTransaction = editedTransactionBuilder.buildIncome();
         } else {
-            editedTransaction = editedTransactionBuilder.build();
+            editedTransaction = editedTransactionBuilder.buildIncome();
         }
 
         EditCommand.EditTransactionDescriptor descriptor =
@@ -66,6 +65,7 @@ public class EditCommandTest {
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
         Index indexLastTransaction = Index.fromOneBased(model.getFilteredTransactionList().size());
         Transaction lastTransaction = model.getFilteredTransactionList().get(indexLastTransaction.getZeroBased());
+        assertTrue(lastTransaction instanceof Expense || lastTransaction instanceof Income);
 
         TransactionBuilder editedTransactionBuilder = new TransactionBuilder(lastTransaction)
                 .withTitle(VALID_TITLE_INTERNSHIP).withAmount(VALID_AMOUNT_INTERNSHIP)
@@ -73,10 +73,8 @@ public class EditCommandTest {
         Transaction editedTransaction;
         if (lastTransaction instanceof Expense) {
             editedTransaction = editedTransactionBuilder.buildExpense();
-        } else if (lastTransaction instanceof Income) {
-            editedTransaction = editedTransactionBuilder.buildIncome();
         } else {
-            editedTransaction = editedTransactionBuilder.build();
+            editedTransaction = editedTransactionBuilder.buildIncome();
         }
 
         EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder()
@@ -110,16 +108,15 @@ public class EditCommandTest {
 
         Transaction transactionInFilteredList = model.getFilteredTransactionList()
                 .get(INDEX_FIRST_TRANSACTION.getZeroBased());
+        assertTrue(transactionInFilteredList instanceof Expense || transactionInFilteredList instanceof Income);
 
         TransactionBuilder editedTransactionBuilder =
                 new TransactionBuilder(transactionInFilteredList).withTitle(VALID_TITLE_INTERNSHIP);
         Transaction editedTransaction;
         if (transactionInFilteredList instanceof Expense) {
             editedTransaction = editedTransactionBuilder.buildExpense();
-        } else if (transactionInFilteredList instanceof Income) {
-            editedTransaction = editedTransactionBuilder.buildIncome();
         } else {
-            editedTransaction = editedTransactionBuilder.build();
+            editedTransaction = editedTransactionBuilder.buildIncome();
         }
 
         EditCommand editCommand = new EditCommand(INDEX_FIRST_TRANSACTION,

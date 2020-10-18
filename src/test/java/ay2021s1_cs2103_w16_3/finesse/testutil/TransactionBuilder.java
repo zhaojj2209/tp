@@ -79,10 +79,6 @@ public class TransactionBuilder {
         return this;
     }
 
-    public Transaction build() {
-        return new Transaction(title, amount, date, categories);
-    }
-
     public Income buildIncome() {
         return new Income(title, amount, date, categories);
     }

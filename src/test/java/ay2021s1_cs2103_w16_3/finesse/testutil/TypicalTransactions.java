@@ -59,19 +59,17 @@ public class TypicalTransactions {
 
     // Manually added
     public static final Transaction TUITION_FEES_2 = new TransactionBuilder().withTitle("Tuition Fees")
-            .withDate("05/10/2020").withAmount("4221").withCategories("NUS", "GIRO").build();
+            .withDate("05/10/2020").withAmount("4221").withCategories("NUS", "GIRO").buildExpense();
     public static final Transaction TEACHING_ASSISTANT_2 = new TransactionBuilder().withTitle("Teaching Assistant")
-            .withDate("05/10/2020").withAmount("1920").withCategories("NUS", "GIRO").build();
+            .withDate("05/10/2020").withAmount("1920").withCategories("NUS", "GIRO").buildIncome();
 
     // Manually added - Transaction's details found in {@code CommandTestUtil}
     public static final Transaction BUBBLE_TEA_2 = new TransactionBuilder().withTitle(VALID_TITLE_BUBBLE_TEA)
             .withAmount(VALID_AMOUNT_BUBBLE_TEA).withDate(VALID_DATE_BUBBLE_TEA)
-            .withCategories(VALID_CATEGORY_FOOD_BEVERAGE).build();
+            .withCategories(VALID_CATEGORY_FOOD_BEVERAGE).buildExpense();
     public static final Transaction INTERNSHIP_2 = new TransactionBuilder().withTitle(VALID_TITLE_INTERNSHIP)
             .withAmount(VALID_AMOUNT_INTERNSHIP).withDate(VALID_DATE_INTERNSHIP)
-            .withCategories(VALID_CATEGORY_WORK, VALID_CATEGORY_FOOD_BEVERAGE).build();
-
-    public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
+            .withCategories(VALID_CATEGORY_WORK, VALID_CATEGORY_FOOD_BEVERAGE).buildIncome();
 
     private TypicalTransactions() {} // prevents instantiation
 
