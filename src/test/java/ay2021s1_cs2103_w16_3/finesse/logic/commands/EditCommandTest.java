@@ -24,7 +24,6 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
@@ -39,7 +38,6 @@ public class EditCommandTest {
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
         Transaction transactionToEdit = model.getFilteredTransactionList().get(0);
-        assertTrue(transactionToEdit instanceof Expense || transactionToEdit instanceof Income);
 
         TransactionBuilder editedTransactionBuilder = new TransactionBuilder();
         Transaction editedTransaction;
@@ -65,7 +63,6 @@ public class EditCommandTest {
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
         Index indexLastTransaction = Index.fromOneBased(model.getFilteredTransactionList().size());
         Transaction lastTransaction = model.getFilteredTransactionList().get(indexLastTransaction.getZeroBased());
-        assertTrue(lastTransaction instanceof Expense || lastTransaction instanceof Income);
 
         TransactionBuilder editedTransactionBuilder = new TransactionBuilder(lastTransaction)
                 .withTitle(VALID_TITLE_INTERNSHIP).withAmount(VALID_AMOUNT_INTERNSHIP)
@@ -108,7 +105,6 @@ public class EditCommandTest {
 
         Transaction transactionInFilteredList = model.getFilteredTransactionList()
                 .get(INDEX_FIRST_TRANSACTION.getZeroBased());
-        assertTrue(transactionInFilteredList instanceof Expense || transactionInFilteredList instanceof Income);
 
         TransactionBuilder editedTransactionBuilder =
                 new TransactionBuilder(transactionInFilteredList).withTitle(VALID_TITLE_INTERNSHIP);

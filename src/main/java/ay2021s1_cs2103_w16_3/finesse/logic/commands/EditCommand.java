@@ -99,8 +99,7 @@ public class EditCommand extends Command {
      */
     private static Transaction createEditedTransaction(Transaction transactionToEdit,
                                                        EditTransactionDescriptor editTransactionDescriptor) {
-        assert (transactionToEdit != null
-                && (transactionToEdit instanceof Expense || transactionToEdit instanceof Income));
+        assert transactionToEdit != null;
 
         Title updatedTitle = editTransactionDescriptor.getTitle().orElse(transactionToEdit.getTitle());
         Amount updatedAmount = editTransactionDescriptor.getAmount().orElse(transactionToEdit.getAmount());
