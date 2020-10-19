@@ -5,6 +5,7 @@ import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_UNKNOW
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.AMOUNT_DESC_BUBBLE_TEA;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.DATE_DESC_BUBBLE_TEA;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.TITLE_DESC_BUBBLE_TEA;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.FinanceTrackerParser.ADD_COMMAND_COMMAND_WORD;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.Assert.assertThrows;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.BUBBLE_TEA_2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
@@ -84,7 +84,7 @@ public class LogicManagerTest {
         logic = new LogicManager(model, storage);
 
         // Execute add command - adds an Expense as assertCommandFailure uses the expensesUiStateStub
-        String addCommand = AddCommand.COMMAND_WORD + TITLE_DESC_BUBBLE_TEA
+        String addCommand = ADD_COMMAND_COMMAND_WORD + TITLE_DESC_BUBBLE_TEA
                 + AMOUNT_DESC_BUBBLE_TEA + DATE_DESC_BUBBLE_TEA;
         Expense expectedExpense = new TransactionBuilder(BUBBLE_TEA_2).withCategories().buildExpense();
         ModelManager expectedModel = new ModelManager();

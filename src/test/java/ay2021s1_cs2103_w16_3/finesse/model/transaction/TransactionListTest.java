@@ -54,7 +54,8 @@ public class TransactionListTest {
     @Test
     public void setTransaction_editedTransactionHasSameIdentity_success() {
         transactionList.add(BUBBLE_TEA);
-        Transaction editedBubbleTea = new TransactionBuilder(BUBBLE_TEA).withCategories(VALID_CATEGORY_WORK).build();
+        Expense editedBubbleTea = new TransactionBuilder(BUBBLE_TEA)
+                .withCategories(VALID_CATEGORY_WORK).buildExpense();
         transactionList.setTransaction(BUBBLE_TEA, editedBubbleTea);
         TransactionList expectedTransactionList = new TransactionList();
         expectedTransactionList.add(editedBubbleTea);

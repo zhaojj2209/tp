@@ -109,10 +109,9 @@ public class EditCommand extends Command {
 
         if (transactionToEdit instanceof Expense) {
             return new Expense(updatedTitle, updatedAmount, updatedDate, updatedCategories);
-        } else if (transactionToEdit instanceof Income) {
-            return new Income(updatedTitle, updatedAmount, updatedDate, updatedCategories);
         } else {
-            return new Transaction(updatedTitle, updatedAmount, updatedDate, updatedCategories);
+            assert transactionToEdit instanceof Income;
+            return new Income(updatedTitle, updatedAmount, updatedDate, updatedCategories);
         }
     }
 

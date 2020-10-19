@@ -14,7 +14,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
  * Represents a Transaction in the finance tracker.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class Transaction {
+public abstract class Transaction {
 
     public static final Comparator<Transaction> TRANSACTION_COMPARATOR =
             Comparator.comparing((Transaction t) -> t.date).thenComparing(t -> t.title);
@@ -56,27 +56,6 @@ public class Transaction {
      */
     public Set<Category> getCategories() {
         return Collections.unmodifiableSet(categories);
-    }
-
-    /**
-     * Returns true if both transactions have the same identity and data fields.
-     * This defines a stronger notion of equality between two transactions.
-     */
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        if (!(other instanceof Transaction)) {
-            return false;
-        }
-
-        Transaction otherTransaction = (Transaction) other;
-        return otherTransaction.getTitle().equals(getTitle())
-                && otherTransaction.getAmount().equals(getAmount())
-                && otherTransaction.getDate().equals(getDate())
-                && otherTransaction.getCategories().equals(getCategories());
     }
 
     @Override

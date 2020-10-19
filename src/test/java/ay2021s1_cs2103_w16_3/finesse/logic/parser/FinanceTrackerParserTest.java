@@ -31,7 +31,6 @@ import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionUtil;
@@ -47,9 +46,9 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_addWhenOverviewTab() {
-        Transaction transaction = new TransactionBuilder().build();
+        Expense expense = new TransactionBuilder().buildExpense();
         assertThrows(ParseException.class, () -> parser.parseCommand(
-                TransactionUtil.getAddCommand(transaction), overviewUiStateStub));
+                TransactionUtil.getAddCommand(expense), overviewUiStateStub));
     }
 
     @Test
@@ -70,9 +69,9 @@ public class FinanceTrackerParserTest {
 
     @Test
     public void parseCommand_addWhenAnalyticsTab() {
-        Transaction transaction = new TransactionBuilder().build();
+        Expense expense = new TransactionBuilder().buildExpense();
         assertThrows(ParseException.class, () -> parser.parseCommand(
-                TransactionUtil.getAddCommand(transaction), analyticsUiStateStub));
+                TransactionUtil.getAddCommand(expense), analyticsUiStateStub));
     }
 
     @Test

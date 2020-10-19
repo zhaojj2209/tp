@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ClearCommand;
@@ -32,9 +31,6 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListTransactionCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.TabCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiState;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
@@ -42,6 +38,12 @@ import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
  * Parses user input.
  */
 public class FinanceTrackerParser {
+
+    /**
+     * Command word for the generic "add" command which adds an expense or an income to the finance tracker
+     * depending on the tab the user is on.
+     */
+    public static final String ADD_COMMAND_COMMAND_WORD = "add";
 
     /**
      * Used for initial separation of command word and args.
@@ -66,24 +68,12 @@ public class FinanceTrackerParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-        case AddCommand.COMMAND_WORD:
-            final AddCommand baseAddCommand = new AddCommandParser().parse(arguments);
-            final Transaction addCommandToAdd = baseAddCommand.getToAdd();
+        case ADD_COMMAND_COMMAND_WORD:
             switch (uiState.getCurrentTab()) {
             case EXPENSES:
-                return new AddExpenseCommand(new Expense(
-                        addCommandToAdd.getTitle(),
-                        addCommandToAdd.getAmount(),
-                        addCommandToAdd.getDate(),
-                        addCommandToAdd.getCategories()
-                ));
+                return new AddExpenseCommandParser().parse(arguments);
             case INCOME:
-                return new AddIncomeCommand(new Income(
-                        addCommandToAdd.getTitle(),
-                        addCommandToAdd.getAmount(),
-                        addCommandToAdd.getDate(),
-                        addCommandToAdd.getCategories()
-                ));
+                return new AddIncomeCommandParser().parse(arguments);
             default:
                 throw new ParseException(commandInvalidTabMessage(commandWord,
                         Tab.EXPENSES, Tab.INCOME));

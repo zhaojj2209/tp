@@ -44,10 +44,9 @@ public class EditCommandTest {
         Transaction editedTransaction;
         if (transactionToEdit instanceof Expense) {
             editedTransaction = editedTransactionBuilder.buildExpense();
-        } else if (transactionToEdit instanceof Income) {
-            editedTransaction = editedTransactionBuilder.buildIncome();
         } else {
-            editedTransaction = editedTransactionBuilder.build();
+            assertTrue(transactionToEdit instanceof Income);
+            editedTransaction = editedTransactionBuilder.buildIncome();
         }
 
         EditCommand.EditTransactionDescriptor descriptor =
@@ -73,10 +72,9 @@ public class EditCommandTest {
         Transaction editedTransaction;
         if (lastTransaction instanceof Expense) {
             editedTransaction = editedTransactionBuilder.buildExpense();
-        } else if (lastTransaction instanceof Income) {
-            editedTransaction = editedTransactionBuilder.buildIncome();
         } else {
-            editedTransaction = editedTransactionBuilder.build();
+            assertTrue(lastTransaction instanceof Income);
+            editedTransaction = editedTransactionBuilder.buildIncome();
         }
 
         EditCommand.EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder()
@@ -116,10 +114,9 @@ public class EditCommandTest {
         Transaction editedTransaction;
         if (transactionInFilteredList instanceof Expense) {
             editedTransaction = editedTransactionBuilder.buildExpense();
-        } else if (transactionInFilteredList instanceof Income) {
-            editedTransaction = editedTransactionBuilder.buildIncome();
         } else {
-            editedTransaction = editedTransactionBuilder.build();
+            assertTrue(transactionInFilteredList instanceof Income);
+            editedTransaction = editedTransactionBuilder.buildIncome();
         }
 
         EditCommand editCommand = new EditCommand(INDEX_FIRST_TRANSACTION,
