@@ -115,7 +115,7 @@ The *data fields* `Title`, `Amount`, `Date`, and `Category` are encapsulations o
 | `Date`      | `java.time.LocalDate`       |
 | `Category`  | `java.lang.String`          |
 
-The underlying Java data types allow more operations to be done on `Transaction` objects, such as filtering transactions by date, or aggregating the amounts of expenses and incomes.
+The underlying Java data types allow more operations to be done on `Transaction` objects, such as filtering `Transaction`s by `Date`, or aggregating the `Amount`s of `Expense`s and `Income`s.
 
 <div markdown="span" class="alert alert-info">:information_source:
 **Note:** All data fields take in a `String` in their constructor, regardless of the underlying Java data type.
