@@ -18,6 +18,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyUserPrefs;
+import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
@@ -111,6 +112,11 @@ public class AddExpenseCommandTest {
         }
 
         @Override
+        public void addFrequentExpense(FrequentExpense frequentExpense) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void setFinanceTracker(ReadOnlyFinanceTracker newData) {
             throw new AssertionError("This method should not be called.");
         }
@@ -126,7 +132,17 @@ public class AddExpenseCommandTest {
         }
 
         @Override
+        public void deleteFrequentExpense(FrequentExpense target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void setTransaction(Transaction target, Transaction editedTransaction) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setFrequentExpense(FrequentExpense target, FrequentExpense editedFrequentExpense) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -146,6 +162,11 @@ public class AddExpenseCommandTest {
         }
 
         @Override
+        public ObservableList<FrequentExpense> getFilteredFrequentExpenseList() {
+            return null;
+        }
+
+        @Override
         public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
             throw new AssertionError("This method should not be called.");
         }
@@ -157,6 +178,11 @@ public class AddExpenseCommandTest {
 
         @Override
         public void updateFilteredIncomeList(Predicate<Transaction> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredFrequentExpenseList(Predicate<FrequentExpense> predicate) {
             throw new AssertionError("This method should not be called.");
         }
     }

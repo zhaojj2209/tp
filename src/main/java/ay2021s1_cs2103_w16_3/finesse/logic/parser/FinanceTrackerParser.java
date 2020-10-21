@@ -32,7 +32,15 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.ListTransactionCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.TabCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.frequent.AddFrequentExpenseCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.frequent.ConvertFrequentExpenseCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.frequent.DeleteFrequentExpenseCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.frequent.EditFrequentExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.frequentparsers.AddFrequentExpenseCommandParser;
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.frequentparsers.ConvertFrequentExpenseCommandParser;
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.frequentparsers.DeleteFrequentExpenseCommandParser;
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.frequentparsers.EditFrequentExpenseCommandParser;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiState;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
@@ -94,6 +102,10 @@ public class FinanceTrackerParser {
         case AddIncomeCommand.COMMAND_ALIAS:
             return new AddIncomeCommandParser().parse(arguments);
 
+        case AddFrequentExpenseCommand.COMMAND_WORD:
+        case AddFrequentExpenseCommand.COMMAND_ALIAS:
+            return new AddFrequentExpenseCommandParser().parse(arguments);
+
         case EditCommand.COMMAND_WORD:
             final EditCommand baseEditCommand = new EditCommandParser().parse(arguments);
             switch (uiCurrentTab) {
@@ -106,6 +118,9 @@ public class FinanceTrackerParser {
                         Tab.EXPENSES, Tab.INCOME));
             }
 
+        case EditFrequentExpenseCommand.COMMAND_WORD:
+            return new EditFrequentExpenseCommandParser().parse(arguments);
+
         case DeleteCommand.COMMAND_WORD:
             final DeleteCommand baseDeleteCommand = new DeleteCommandParser().parse(arguments);
             switch (uiCurrentTab) {
@@ -117,6 +132,13 @@ public class FinanceTrackerParser {
                 throw new ParseException(commandInvalidTabMessage(commandWord,
                         Tab.EXPENSES, Tab.INCOME));
             }
+
+        case DeleteFrequentExpenseCommand.COMMAND_WORD:
+            return new DeleteFrequentExpenseCommandParser().parse(arguments);
+
+        case ConvertFrequentExpenseCommand.COMMAND_WORD:
+        case ConvertFrequentExpenseCommand.COMMAND_ALIAS:
+            return new ConvertFrequentExpenseCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();

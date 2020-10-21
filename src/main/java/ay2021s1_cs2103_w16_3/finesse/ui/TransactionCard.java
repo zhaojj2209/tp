@@ -4,6 +4,8 @@ import java.util.Comparator;
 
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -16,7 +18,7 @@ import javafx.scene.layout.VBox;
 public class TransactionCard extends UiPart<Region> {
 
     private static final String FXML = "TransactionListCard.fxml";
-    private static final double PREFFERED_CARD_HEIGHT = 70.00;
+    private static final double PREFERRED_CARD_HEIGHT = 80.00;
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -47,9 +49,10 @@ public class TransactionCard extends UiPart<Region> {
     public TransactionCard(Transaction transaction, int displayedIndex) {
         super(FXML);
         this.transaction = transaction;
-        cardPane.setPrefHeight(PREFFERED_CARD_HEIGHT);
+        cardPane.setPrefHeight(PREFERRED_CARD_HEIGHT);
         id.setText(displayedIndex + ". ");
         title.setText(transaction.getTitle().fullTitle);
+        title.setWrapText(true);
         amount.setText(transaction.getAmount().toString());
         transaction.getCategories().stream()
                 .sorted(Comparator.comparing(category -> category.categoryName))
@@ -58,6 +61,8 @@ public class TransactionCard extends UiPart<Region> {
                     newCategory.setStyle("-fx-font-family: Eczar");
                     categories.getChildren().add(newCategory);
                 });
+        categories.setRowValignment(VPos.CENTER);
+        categories.setColumnHalignment(HPos.CENTER);
     }
 
     @Override
