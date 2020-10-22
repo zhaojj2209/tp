@@ -88,5 +88,8 @@
     "amount": "$1000",
     "date": "10/10/2020",
     "categories": [ "Work" ]
-  } ]
+  } ],
+  "monthlyBudget" : {
+    "expenseLimit" : "500.00"
+  }
 }
