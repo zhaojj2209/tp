@@ -1,5 +1,6 @@
 package ay2021s1_cs2103_w16_3.finesse.model.budget;
 
+import static ay2021s1_cs2103_w16_3.finesse.commons.util.AppUtil.checkArgument;
 import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
@@ -13,6 +14,10 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public abstract class ObservableCurrency {
 
+    public static final String MESSAGE_CONSTRAINTS =
+            "Amounts should only contain numbers, with an optional 2 decimal places or '$' prefix";
+    public static final String VALIDATION_REGEX = "^\\$?\\d+(\\.\\d{2})?$";
+
     private BigDecimal value;
     private final ObjectProperty<BigDecimal> observableValue;
 
@@ -23,9 +28,18 @@ public abstract class ObservableCurrency {
      */
     public ObservableCurrency(String amount) {
         requireNonNull(amount);
+        checkArgument(isValidAmount(amount), MESSAGE_CONSTRAINTS);
         value = new BigDecimal(amount.replaceFirst("^\\$", ""));
         observableValue = new SimpleObjectProperty<>(value);
         assert value.compareTo(BigDecimal.ZERO) >= 0; // amount should be non-negative
+    }
+
+    /**
+     * Returns true if a given string is a valid amount.
+     * A valid amount must only contain numbers, with an optional 2 decimal places or '$' prefix.
+     */
+    public static boolean isValidAmount(String test) {
+        return test.matches(VALIDATION_REGEX);
     }
 
     public BigDecimal getValue() {
