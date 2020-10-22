@@ -1,6 +1,8 @@
 package ay2021s1_cs2103_w16_3.finesse.ui;
 
 import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -30,11 +32,13 @@ public class SavingsGoalPanel extends UiPart<Region> {
      */
     public SavingsGoalPanel(MonthlyBudget monthlyBudget) {
         super(FXML);
-        String expenseLimit = String.format(
-                "Monthly Expense Limit: $%s",
-                monthlyBudget.getMonthlyExpenseLimit().getObservableValue().get().toString());
         savingsPicture.setImage(savingsPanelPicture);
         savingsGoalHeader.setText(header);
-        savingsGoalContent.setText(expenseLimit);
+        StringBinding expenseLimitBinding = Bindings.createStringBinding(() ->
+                        String.format(
+                                "Monthly Expense Limit: $%s",
+                                monthlyBudget.getMonthlyExpenseLimit().getValue().toString()),
+                monthlyBudget.getMonthlyExpenseLimit().getObservableValue());
+        savingsGoalContent.textProperty().bind(expenseLimitBinding);
     }
 }
