@@ -9,6 +9,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpenseList;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncomeList;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
@@ -82,6 +83,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
         setTransactions(newData.getTransactionList());
         setFrequentExpenses(newData.getFrequentExpenseList());
         setFrequentIncomes(newData.getFrequentIncomeList());
+        setMonthlyBudget(newData.getMonthlyBudget());
     }
 
     //// transaction-level operations
@@ -141,6 +143,16 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
      */
     public void removeFrequentExpense(FrequentExpense key) {
         frequentExpenses.remove(key);
+    }
+
+    //// budget-level operations
+
+    public void setExpenseLimit(Amount limit) {
+        monthlyBudget.setMonthlyExpenseLimit(limit);
+    }
+
+    public void setMonthlyBudget(MonthlyBudget budget) {
+        monthlyBudget.setMonthlyExpenseLimit(new Amount(budget.getMonthlyExpenseLimit().getValue().toString()));
     }
 
     //// util methods

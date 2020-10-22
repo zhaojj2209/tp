@@ -51,7 +51,7 @@ public class ModelManager implements Model {
         filteredIncomes = new FilteredList<>(this.financeTracker.getTransactionList(), PREDICATE_SHOW_ALL_INCOMES);
         filteredFrequentExpenses = new FilteredList<>(this.financeTracker.getFrequentExpenseList());
         filteredFrequentIncomes = new FilteredList<>(this.financeTracker.getFrequentIncomeList());
-        monthlyBudget = financeTracker.getMonthlyBudget();
+        monthlyBudget = this.financeTracker.getMonthlyBudget();
     }
 
     public ModelManager() {
