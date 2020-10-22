@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
 
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -22,9 +21,9 @@ public abstract class ObservableCurrency {
      *
      * @param amount A valid amount.
      */
-    public ObservableCurrency(Amount amount) {
+    public ObservableCurrency(String amount) {
         requireNonNull(amount);
-        value = new BigDecimal(amount.toString().replaceFirst("^\\$", ""));
+        value = new BigDecimal(amount.replaceFirst("^\\$", ""));
         observableValue = new SimpleObjectProperty<>(value);
         assert value.compareTo(BigDecimal.ZERO) >= 0; // amount should be non-negative
     }
@@ -37,8 +36,8 @@ public abstract class ObservableCurrency {
         return observableValue;
     }
 
-    public void setValue(Amount amount) {
-        value = new BigDecimal(amount.toString().replaceFirst("^\\$", ""));
+    public void setValue(String amount) {
+        value = new BigDecimal(amount.replaceFirst("^\\$", ""));
         observableValue.setValue(value);
     }
 

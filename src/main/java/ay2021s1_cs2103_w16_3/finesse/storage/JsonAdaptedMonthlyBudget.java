@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.exceptions.IllegalValueException;
 import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 
 /**
@@ -38,7 +37,7 @@ class JsonAdaptedMonthlyBudget {
     public MonthlyBudget toModelType() {
         final MonthlyBudget monthlyBudget = new MonthlyBudget();
         if (expenseLimit != null) {
-            monthlyBudget.setMonthlyExpenseLimit(new Amount(expenseLimit));
+            monthlyBudget.setMonthlyExpenseLimit(expenseLimit);
         }
 
         return monthlyBudget;

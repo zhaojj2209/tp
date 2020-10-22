@@ -167,7 +167,7 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void setExpenseLimit(Amount limit) {
+    public void setExpenseLimit(String limit) {
         monthlyBudget.setMonthlyExpenseLimit(limit);
     }
 

@@ -164,7 +164,7 @@ public class AddFrequentExpenseCommandTest {
         }
 
         @Override
-        public void setExpenseLimit(Amount limit) {
+        public void setExpenseLimit(String limit) {
             throw new AssertionError("This method should not be called.");
         }
 

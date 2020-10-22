@@ -147,12 +147,12 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
 
     //// budget-level operations
 
-    public void setExpenseLimit(Amount limit) {
+    public void setExpenseLimit(String limit) {
         monthlyBudget.setMonthlyExpenseLimit(limit);
     }
 
     public void setMonthlyBudget(MonthlyBudget budget) {
-        monthlyBudget.setMonthlyExpenseLimit(new Amount(budget.getMonthlyExpenseLimit().getValue().toString()));
+        monthlyBudget.setMonthlyExpenseLimit(budget.getMonthlyExpenseLimit().getValue().toString());
     }
 
     //// util methods
