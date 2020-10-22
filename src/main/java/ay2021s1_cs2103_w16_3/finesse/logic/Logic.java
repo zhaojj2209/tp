@@ -7,6 +7,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
+import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
@@ -51,6 +52,8 @@ public interface Logic {
 
     /** Returns an unmodifiable view of the filtered list of frequent incomes. */
     ObservableList<FrequentIncome> getFilteredFrequentIncomeList();
+    /** Returns the monthly budget. */
+    MonthlyBudget getMonthlyBudget();
 
     /**
      * Returns the user prefs' finance tracker file path.

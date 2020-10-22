@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
+import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpenseList;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
@@ -23,6 +24,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     private final TransactionList transactions;
     private final FrequentExpenseList frequentExpenses;
     private final FrequentIncomeList frequentIncomes;
+    private final MonthlyBudget monthlyBudget;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -35,6 +37,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
         transactions = new TransactionList();
         frequentExpenses = new FrequentExpenseList();
         frequentIncomes = new FrequentIncomeList();
+        monthlyBudget = new MonthlyBudget();
     }
 
     public FinanceTracker() {}
@@ -185,6 +188,9 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
         return frequentIncomes.asUnmodifiableObservableList();
     }
 
+    public MonthlyBudget getMonthlyBudget() {
+        return monthlyBudget;
+    }
 
     @Override
     public boolean equals(Object other) {

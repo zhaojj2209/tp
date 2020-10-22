@@ -22,6 +22,7 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -81,6 +82,8 @@ public class MainWindow extends UiPart<Stage> {
     private Tab menuAnalyticsTab;
     @FXML
     private TabPane tabPane;
+    @FXML
+    private Text expenseLimit;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage}, {@code Logic} and {@code UiState}.
@@ -124,7 +127,7 @@ public class MainWindow extends UiPart<Stage> {
         transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
         transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
 
-        savingsGoalPanel = new SavingsGoalPanel();
+        savingsGoalPanel = new SavingsGoalPanel(logic.getMonthlyBudget());
         savingsGoalPlaceholder.getChildren().add(savingsGoalPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
@@ -227,7 +230,7 @@ public class MainWindow extends UiPart<Stage> {
             transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
             transactionListPanel.getRoot().toFront();
 
-            savingsGoalPanel = new SavingsGoalPanel();
+            savingsGoalPanel = new SavingsGoalPanel(logic.getMonthlyBudget());
             savingsGoalPlaceholder.getChildren().add(savingsGoalPanel.getRoot());
         }
         onOverview();
@@ -247,7 +250,7 @@ public class MainWindow extends UiPart<Stage> {
             transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
             transactionListPanel.getRoot().toFront();
 
-            savingsGoalPanel = new SavingsGoalPanel();
+            savingsGoalPanel = new SavingsGoalPanel(logic.getMonthlyBudget());
             savingsGoalPlaceholder.getChildren().add(savingsGoalPanel.getRoot());
         }
         onAnalytics();

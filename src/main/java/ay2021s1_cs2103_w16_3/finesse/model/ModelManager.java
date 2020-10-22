@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
 import ay2021s1_cs2103_w16_3.finesse.commons.core.LogsCenter;
+import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
@@ -31,6 +33,7 @@ public class ModelManager implements Model {
     private final FilteredList<Transaction> filteredIncomes;
     private final FilteredList<FrequentExpense> filteredFrequentExpenses;
     private final FilteredList<FrequentIncome> filteredFrequentIncomes;
+    private final MonthlyBudget monthlyBudget;
 
     /**
      * Initializes a ModelManager with the given financeTracker and userPrefs.
@@ -48,6 +51,7 @@ public class ModelManager implements Model {
         filteredIncomes = new FilteredList<>(this.financeTracker.getTransactionList(), PREDICATE_SHOW_ALL_INCOMES);
         filteredFrequentExpenses = new FilteredList<>(this.financeTracker.getFrequentExpenseList());
         filteredFrequentIncomes = new FilteredList<>(this.financeTracker.getFrequentIncomeList());
+        monthlyBudget = financeTracker.getMonthlyBudget();
     }
 
     public ModelManager() {
@@ -154,6 +158,17 @@ public class ModelManager implements Model {
         requireNonNull(predicate);
 
         filteredFrequentExpenses.setPredicate(predicate);
+    }
+
+    //=========== Budget ===========================================================================================
+    @Override
+    public MonthlyBudget getMonthlyBudget() {
+        return monthlyBudget;
+    }
+
+    @Override
+    public void setExpenseLimit(Amount limit) {
+        monthlyBudget.setMonthlyExpenseLimit(limit);
     }
 
     //=========== Filtered Transaction List Accessors =============================================================

@@ -20,8 +20,10 @@ import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyUserPrefs;
+import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
@@ -153,6 +155,16 @@ public class AddFrequentExpenseCommandTest {
 
         @Override
         public void setFrequentExpense(FrequentExpense target, FrequentExpense editedFrequentExpense) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public MonthlyBudget getMonthlyBudget() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setExpenseLimit(Amount limit) {
             throw new AssertionError("This method should not be called.");
         }
 
