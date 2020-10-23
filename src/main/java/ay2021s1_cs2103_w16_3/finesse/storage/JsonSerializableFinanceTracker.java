@@ -12,6 +12,7 @@ import ay2021s1_cs2103_w16_3.finesse.commons.exceptions.IllegalValueException;
 import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
+import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 
@@ -24,18 +25,20 @@ class JsonSerializableFinanceTracker {
     private final List<JsonAdaptedExpense> expenses = new ArrayList<>();
     private final List<JsonAdaptedIncome> incomes = new ArrayList<>();
     private final List<JsonAdaptedFrequentExpense> frequentExpenses = new ArrayList<>();
+    private final List<JsonAdaptedFrequentIncome> frequentIncomes = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonSerializableFinanceTracker} with the given transactions.
      */
     @JsonCreator
     public JsonSerializableFinanceTracker(@JsonProperty("expenses") List<JsonAdaptedExpense> expenses,
-                                          @JsonProperty("incomes") List<JsonAdaptedIncome> incomes,
-                                          @JsonProperty("frequentExpenses") List<JsonAdaptedFrequentExpense>
-                                                      frequentExpenses) {
+            @JsonProperty("incomes") List<JsonAdaptedIncome> incomes,
+            @JsonProperty("frequentExpenses") List<JsonAdaptedFrequentExpense> frequentExpenses,
+            @JsonProperty("frequentIncomes") List<JsonAdaptedFrequentIncome> frequentIncomes) {
         this.expenses.addAll(expenses);
         this.incomes.addAll(incomes);
         this.frequentExpenses.addAll(frequentExpenses);
+        this.frequentIncomes.addAll(frequentIncomes);
     }
 
     /**
@@ -49,6 +52,8 @@ class JsonSerializableFinanceTracker {
         incomes.addAll(source.getIncomeList().stream().map(JsonAdaptedIncome::new)
                 .collect(Collectors.toList()));
         frequentExpenses.addAll(source.getFrequentExpenseList().stream().map(JsonAdaptedFrequentExpense::new)
+                .collect(Collectors.toList()));
+        frequentIncomes.addAll(source.getFrequentIncomeList().stream().map(JsonAdaptedFrequentIncome::new)
                 .collect(Collectors.toList()));
     }
 
@@ -70,6 +75,10 @@ class JsonSerializableFinanceTracker {
         for (JsonAdaptedFrequentExpense jsonAdaptedFrequentExpense : frequentExpenses) {
             FrequentExpense frequentExpense = jsonAdaptedFrequentExpense.toModelType();
             financeTracker.addFrequentExpense(frequentExpense);
+        }
+        for (JsonAdaptedFrequentIncome jsonAdaptedFrequentIncome : frequentIncomes) {
+            FrequentIncome frequentIncome = jsonAdaptedFrequentIncome.toModelType();
+            financeTracker.addFrequentIncome(frequentIncome);
         }
         return financeTracker;
     }

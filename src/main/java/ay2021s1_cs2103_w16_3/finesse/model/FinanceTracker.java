@@ -6,6 +6,8 @@ import java.util.List;
 
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpenseList;
+import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
+import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncomeList;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
@@ -20,6 +22,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
 
     private final TransactionList transactions;
     private final FrequentExpenseList frequentExpenses;
+    private final FrequentIncomeList frequentIncomes;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -31,6 +34,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     {
         transactions = new TransactionList();
         frequentExpenses = new FrequentExpenseList();
+        frequentIncomes = new FrequentIncomeList();
     }
 
     public FinanceTracker() {}
@@ -53,10 +57,17 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     }
 
     /**
-     * Replaces the contents of the transaction list with {@code frequentExpenses}.
+     * Replaces the contents of the frequent expense list with {@code frequentExpenses}.
      */
     public void setFrequentExpenses(List<FrequentExpense> frequentExpenses) {
         this.frequentExpenses.setFrequentExpenses(frequentExpenses);
+    }
+
+    /**
+     * Replaces the contents of the frequent incomes list with {@code frequentIncomes}.
+     */
+    public void setFrequentIncomes(List<FrequentIncome> frequentIncomes) {
+        this.frequentIncomes.setFrequentIncomes(frequentIncomes);
     }
 
     /**
@@ -67,6 +78,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
 
         setTransactions(newData.getTransactionList());
         setFrequentExpenses(newData.getFrequentExpenseList());
+        setFrequentIncomes(newData.getFrequentIncomeList());
     }
 
     //// transaction-level operations
@@ -83,6 +95,13 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
      */
     public void addFrequentExpense(FrequentExpense frequentExpense) {
         frequentExpenses.add(frequentExpense);
+    }
+
+    /**
+     * Adds a frequent income to the finance tracker.
+     */
+    public void addFrequentIncome(FrequentIncome frequentIncome) {
+        frequentIncomes.add(frequentIncome);
     }
 
     /**
@@ -162,6 +181,12 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     }
 
     @Override
+    public ObservableList<FrequentIncome> getFrequentIncomeList() {
+        return frequentIncomes.asUnmodifiableObservableList();
+    }
+
+
+    @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof FinanceTracker // instanceof handles nulls
@@ -172,4 +197,5 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     public int hashCode() {
         return transactions.hashCode();
     }
+
 }

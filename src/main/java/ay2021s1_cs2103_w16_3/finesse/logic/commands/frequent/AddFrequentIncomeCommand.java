@@ -9,14 +9,14 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.Command;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
-import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
+import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.DuplicateFrequentTransactionException;
 
-public class AddFrequentExpenseCommand extends Command {
-    public static final String COMMAND_WORD = "add-frequent-expense";
-    public static final String COMMAND_ALIAS = "addfe";
+public class AddFrequentIncomeCommand extends Command {
+    public static final String COMMAND_WORD = "add-frequent-income";
+    public static final String COMMAND_ALIAS = "addfi";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a frequent expense to the finance tracker. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a frequent income to the finance tracker. "
             + "Parameters: "
             + PREFIX_TITLE + "TITLE "
             + PREFIX_AMOUNT + "AMOUNT "
@@ -26,16 +26,17 @@ public class AddFrequentExpenseCommand extends Command {
             + PREFIX_AMOUNT + "24 "
             + PREFIX_CATEGORY + "Utilities";
 
-    public static final String MESSAGE_SUCCESS = "New frequent expense added: %1$s";
+    public static final String MESSAGE_SUCCESS = "New frequent income added: %1$s";
 
-    private final FrequentExpense toAdd;
+    private final FrequentIncome toAdd;
 
     /**
-     * Creates an AddFrequentExpenseCommand to add the specified {@code FrequentExpense}
+     * Creates an AddFrequentIncomeCommand to add the specified {@code FrequentIncome}
+     * @param frequentIncome
      */
-    public AddFrequentExpenseCommand(FrequentExpense frequentExpense) {
-        requireNonNull(frequentExpense);
-        toAdd = frequentExpense;
+    public AddFrequentIncomeCommand(FrequentIncome frequentIncome) {
+        requireNonNull(frequentIncome);
+        toAdd = frequentIncome;
     }
 
     @Override
@@ -43,17 +44,18 @@ public class AddFrequentExpenseCommand extends Command {
         requireNonNull(model);
 
         try {
-            model.addFrequentExpense(toAdd);
+            model.addFrequentIncome(toAdd);
         } catch (DuplicateFrequentTransactionException e) {
             throw new CommandException(e.getMessage());
         }
+
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddFrequentExpenseCommand // instanceof handles nulls
-                && toAdd.equals(((AddFrequentExpenseCommand) other).toAdd));
+                || (other instanceof AddFrequentIncomeCommand // instanceof handles nulls
+                && toAdd.equals(((AddFrequentIncomeCommand) other).toAdd));
     }
 }

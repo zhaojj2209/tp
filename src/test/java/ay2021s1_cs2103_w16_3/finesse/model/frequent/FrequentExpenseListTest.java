@@ -4,14 +4,16 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID
 import static ay2021s1_cs2103_w16_3.finesse.testutil.Assert.assertThrows;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.PHONE_BILL;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.SPOTIFY_SUBSCRIPTION;
+import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFrequentExpenses;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.DuplicateFrequentExpenseException;
+import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.DuplicateFrequentTransactionException;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.FrequentExpenseNotFoundException;
 import ay2021s1_cs2103_w16_3.finesse.testutil.FrequentTransactionBuilder;
 
@@ -32,7 +34,7 @@ public class FrequentExpenseListTest {
 
         FrequentExpense frequentExpenseCopy = new FrequentTransactionBuilder(frequentExpense).buildFrequentExpense();
 
-        assertThrows(DuplicateFrequentExpenseException.class, () -> frequentExpenseList.add(frequentExpenseCopy));
+        assertThrows(DuplicateFrequentTransactionException.class, () -> frequentExpenseList.add(frequentExpenseCopy));
     }
 
     @Test
@@ -136,4 +138,31 @@ public class FrequentExpenseListTest {
         assertThrows(UnsupportedOperationException.class, ()
             -> frequentExpenseList.asUnmodifiableObservableList().remove(0));
     }
+
+    @Test
+    public void equals_distinctFrequentExpenseListsWithSameAttributes_returnsTrue() {
+        List<FrequentExpense> frequentExpenses = getTypicalFrequentExpenses();
+        FrequentExpenseList firstTransactionList = new FrequentExpenseList();
+        FrequentExpenseList secondTransactionList = new FrequentExpenseList();
+
+        firstTransactionList.setFrequentExpenses(frequentExpenses);
+        secondTransactionList.setFrequentExpenses(frequentExpenses);
+
+        assertNotSame(firstTransactionList, secondTransactionList);
+        assertEquals(firstTransactionList, secondTransactionList);
+    }
+
+    @Test
+    public void hashCode_distinctFrequentExpenseListsWithSameAttributes_returnsTrue() {
+        List<FrequentExpense> frequentExpenses = getTypicalFrequentExpenses();
+        FrequentExpenseList firstTransactionList = new FrequentExpenseList();
+        FrequentExpenseList secondTransactionList = new FrequentExpenseList();
+
+        firstTransactionList.setFrequentExpenses(frequentExpenses);
+        secondTransactionList.setFrequentExpenses(frequentExpenses);
+
+        assertNotSame(firstTransactionList, secondTransactionList);
+        assertEquals(firstTransactionList.hashCode(), secondTransactionList.hashCode());
+    }
+
 }
