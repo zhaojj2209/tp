@@ -6,11 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ay2021s1_cs2103_w16_3.finesse.commons.exceptions.IllegalValueException;
 import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 
 /**
- * JSON-friendly version of {@link Expense}.
+ * JSON-friendly version of {@link MonthlyBudget}.
  */
 class JsonAdaptedMonthlyBudget {
 
@@ -19,7 +18,7 @@ class JsonAdaptedMonthlyBudget {
     private final String expenseLimit;
 
     /**
-     * Constructs a {@code JsonAdaptedExpense} with the given transaction details.
+     * Constructs a {@code JsonAdaptedMonthlyBudget} with the given transaction details.
      */
     @JsonCreator
     public JsonAdaptedMonthlyBudget(@JsonProperty("expenseLimit") String expenseLimit) {
@@ -27,16 +26,16 @@ class JsonAdaptedMonthlyBudget {
     }
 
     /**
-     * Converts a given {@code Expense} into this class for Jackson use.
+     * Converts a given {@code MonthlyBudget} into this class for Jackson use.
      */
     public JsonAdaptedMonthlyBudget(MonthlyBudget source) {
         expenseLimit = source.getMonthlyExpenseLimit().getObservableAmount().get().toString();
     }
 
     /**
-     * Converts this Jackson-friendly adapted expense object into the model's {@code Expense} object.
+     * Converts this Jackson-friendly adapted monthly budget object into the model's {@code MonthlyBudget} object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted transaction.
+     * @throws IllegalValueException if there were any data constraints violated in the adapted monthly budget.
      */
     public MonthlyBudget toModelType() throws IllegalValueException {
         final MonthlyBudget monthlyBudget = new MonthlyBudget();

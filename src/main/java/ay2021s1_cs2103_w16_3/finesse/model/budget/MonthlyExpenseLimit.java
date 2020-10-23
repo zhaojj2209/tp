@@ -12,7 +12,6 @@ public class MonthlyExpenseLimit extends ObservableAmount {
      *
      * @param limit A valid limit.
      */
-
     public MonthlyExpenseLimit(Amount limit) {
         super(limit);
     }
