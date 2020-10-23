@@ -169,6 +169,11 @@ public class AddFrequentExpenseCommandTest {
         }
 
         @Override
+        public void setSavingsGoal(Amount goal) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<Transaction> getFilteredTransactionList() {
             throw new AssertionError("This method should not be called.");
         }

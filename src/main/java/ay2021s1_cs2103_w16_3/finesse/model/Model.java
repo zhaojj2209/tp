@@ -119,6 +119,9 @@ public interface Model {
     /** Sets an expense limit. */
     void setExpenseLimit(Amount limit);
 
+    /** Sets a savings goal. */
+    void setSavingsGoal(Amount goal);
+
     /** Returns an unmodifiable view of the filtered transaction list. */
     ObservableList<Transaction> getFilteredTransactionList();
 

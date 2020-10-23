@@ -14,13 +14,13 @@
         <padding>
             <Insets bottom="10" top="20"/>
         </padding>
-        <Label fx:id="savingsGoalHeader" styleClass="right-panel-content"/>
+        <Label fx:id="monthlyExpenseLimit" styleClass="right-panel-content"/>
     </HBox>
     <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
         <padding>
             <Insets bottom="10" top="10"/>
         </padding>
-        <Label fx:id="savingsGoalContent" wrapText="true" styleClass="right-panel-content"/>
+        <Label fx:id="monthlySavingsGoal" wrapText="true" styleClass="right-panel-content"/>
     </HBox>
     <Region VBox.vgrow="ALWAYS"/>
     <ImageView fx:id="savingsPicture" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"/>
