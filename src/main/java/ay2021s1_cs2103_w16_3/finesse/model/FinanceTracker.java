@@ -160,7 +160,6 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
         monthlyBudget.setMonthlySavingsGoal(budget.getMonthlySavingsGoal().getAmount());
     }
 
-
     //// util methods
 
     @Override

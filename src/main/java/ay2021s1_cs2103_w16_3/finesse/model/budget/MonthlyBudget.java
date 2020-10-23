@@ -10,7 +10,7 @@ public class MonthlyBudget {
     private MonthlySavingsGoal monthlySavingsGoal;
 
     /**
-     * Creates a {@code MonthlyBudget}.
+     * Creates a {@code MonthlyBudget} with an expense limit and savings goal of $0.
      */
     public MonthlyBudget() {
         monthlyExpenseLimit = new MonthlyExpenseLimit(new Amount("0"));
