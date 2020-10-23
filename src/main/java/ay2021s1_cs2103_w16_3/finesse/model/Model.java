@@ -4,8 +4,10 @@ import java.nio.file.Path;
 import java.util.function.Predicate;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
+import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
@@ -110,6 +112,12 @@ public interface Model {
      * {@code target} must exist in the finance tracker.
      */
     void setFrequentExpense(FrequentExpense target, FrequentExpense editedFrequentExpense);
+
+    /** Returns the monthly budget. */
+    MonthlyBudget getMonthlyBudget();
+
+    /** Sets an expense limit. */
+    void setExpenseLimit(Amount limit);
 
     /** Returns an unmodifiable view of the filtered transaction list. */
     ObservableList<Transaction> getFilteredTransactionList();
