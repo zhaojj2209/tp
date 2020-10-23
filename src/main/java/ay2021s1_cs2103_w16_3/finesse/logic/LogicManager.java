@@ -89,7 +89,7 @@ public class LogicManager implements Logic {
     public ObservableList<FrequentIncome> getFilteredFrequentIncomeList() {
         return model.getFilteredFrequentIncomeList();
     }
-    
+
     public MonthlyBudget getMonthlyBudget() {
         return model.getMonthlyBudget();
     }

@@ -37,7 +37,7 @@ public interface ReadOnlyFinanceTracker {
      * Returns an unmodifiable view of the frequent income list.
      */
     ObservableList<FrequentIncome> getFrequentIncomeList();
-    
+
     /**
      * Returns the monthly budget.
      */
