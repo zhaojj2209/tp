@@ -11,16 +11,16 @@ import ay2021s1_cs2103_w16_3.finesse.logic.Logic;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
-import ay2021s1_cs2103_w16_3.finesse.ui.expense.ExpensePanel;
-import ay2021s1_cs2103_w16_3.finesse.ui.frequent.FrequentExpensePanel;
-import ay2021s1_cs2103_w16_3.finesse.ui.frequent.FrequentIncomePanel;
-import ay2021s1_cs2103_w16_3.finesse.ui.income.IncomePanel;
+import ay2021s1_cs2103_w16_3.finesse.ui.tabs.AnalyticsTabPane;
+import ay2021s1_cs2103_w16_3.finesse.ui.tabs.ExpenseTabPane;
+import ay2021s1_cs2103_w16_3.finesse.ui.tabs.IncomeTabPane;
+import ay2021s1_cs2103_w16_3.finesse.ui.tabs.OverviewTabPane;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -46,40 +46,26 @@ public class MainWindow extends UiPart<Stage> {
     private final UiState uiState;
 
     // Independent Ui parts residing in this Ui container
-    private TransactionListPanel transactionListPanel;
-    private FrequentExpensePanel frequentExpensePanel;
-    private FrequentIncomePanel frequentIncomePanel;
-    private IncomePanel incomePanel;
-    private ExpensePanel expensePanel;
     private ResultDisplay resultDisplay;
-    private SavingsGoalPanel savingsGoalPanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
     @FXML
     private Button commandBoxButton;
     @FXML
-    private StackPane transactionListPanelPlaceholder;
+    private Button helpButton;
     @FXML
     private StackPane resultDisplayPlaceholder;
     @FXML
-    private StackPane savingsGoalPlaceholder;
-    @FXML
     private StackPane statusbarPlaceholder;
     @FXML
-    private Label panelLabel;
+    private Tab overviewTab;
     @FXML
-    private Label rightPanelLabel;
+    private Tab incomeTab;
     @FXML
-    private Tab menuHelpTab;
+    private Tab expenseTab;
     @FXML
-    private Tab menuOverviewTab;
-    @FXML
-    private Tab menuIncomeTab;
-    @FXML
-    private Tab menuExpenseTab;
-    @FXML
-    private Tab menuAnalyticsTab;
+    private Tab analyticsTab;
     @FXML
     private TabPane tabPane;
     @FXML
@@ -112,24 +98,6 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     public void fillInnerParts() {
-        incomePanel = new IncomePanel(logic.getFilteredIncomeList());
-        transactionListPanelPlaceholder.getChildren().add(incomePanel.getRoot());
-
-        expensePanel = new ExpensePanel(logic.getFilteredExpenseList());
-        transactionListPanelPlaceholder.getChildren().add(expensePanel.getRoot());
-
-        frequentExpensePanel = new FrequentExpensePanel(logic.getFilteredFrequentExpenseList());
-        savingsGoalPlaceholder.getChildren().add(frequentExpensePanel.getRoot());
-
-        frequentIncomePanel = new FrequentIncomePanel(logic.getFilteredFrequentIncomeList());
-        savingsGoalPlaceholder.getChildren().add(frequentIncomePanel.getRoot());
-
-        transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
-        transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
-
-        savingsGoalPanel = new SavingsGoalPanel(logic.getMonthlyBudget());
-        savingsGoalPlaceholder.getChildren().add(savingsGoalPanel.getRoot());
-
         resultDisplay = new ResultDisplay();
         resultDisplay.setFeedbackToUser(WELCOME_MESSAGE);
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -139,36 +107,36 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
-
-        SelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-        selectionModel.select(menuOverviewTab);
-
-        onOverview();
     }
 
     /**
-     * Sets up all the action handlers for the tabs on the tab pane.
+     * Initialize the contents of each tab.
      */
-    public void setActionHandlers() {
-        menuOverviewTab.setOnSelectionChanged(event -> {
-            handleOverview();
-        });
+    public void initializeTabs() {
+        OverviewTabPane overviewTabPane =
+                new OverviewTabPane(logic.getFilteredTransactionList(), logic.getMonthlyBudget());
+        overviewTab.setContent(overviewTabPane.getRoot());
 
-        menuHelpTab.setOnSelectionChanged(event -> {
-            handleTabHelp();
-        });
+        IncomeTabPane incomeTabPane =
+                new IncomeTabPane(logic.getFilteredIncomeList(), logic.getFilteredFrequentIncomeList());
+        incomeTab.setContent(incomeTabPane.getRoot());
 
-        menuIncomeTab.setOnSelectionChanged(event -> {
-            handleIncome();
-        });
+        ExpenseTabPane expenseTabPane =
+                new ExpenseTabPane(logic.getFilteredExpenseList(), logic.getFilteredFrequentExpenseList());
+        expenseTab.setContent(expenseTabPane.getRoot());
 
-        menuExpenseTab.setOnSelectionChanged(event -> {
-            handleExpense();
-        });
+        AnalyticsTabPane analyticsTabPane = new AnalyticsTabPane();
+        analyticsTab.setContent(analyticsTabPane.getRoot());
 
-        menuAnalyticsTab.setOnSelectionChanged(event -> {
-            handleAnalytics();
-        });
+        SelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        selectionModel.select(overviewTab);
+
+        // Set the bottom anchor after the tabs have been initialized.
+        AnchorPane.setBottomAnchor(tabPane, 0.0);
+
+        // Update UI state on tab change.
+        tabPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldTabIndex, newTabIndex) ->
+                uiState.setCurrentTab(UiState.Tab.values()[newTabIndex.intValue()]));
     }
 
     /**
@@ -184,97 +152,11 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens the help window or focuses on it if it's already opened.
+     * Displays the help message in the result display.
      */
     @FXML
-    public void handleTabHelp() {
-        if (menuHelpTab.isSelected()) {
-            resultDisplay.setFeedbackToUser(HELP_MESSAGE);
-        }
-    }
-
-    @FXML void handleCommandHelp() {
+    public void handleHelp() {
         resultDisplay.setFeedbackToUser(HELP_MESSAGE);
-    }
-
-    /**
-     * Opens the income window.
-     */
-    @FXML
-    private void handleIncome() {
-        if (menuIncomeTab.isSelected()) {
-            panelLabel.setText("Incomes");
-            rightPanelLabel.setText("Frequent Incomes");
-
-            incomePanel = new IncomePanel(logic.getFilteredIncomeList());
-            transactionListPanelPlaceholder.getChildren().add(incomePanel.getRoot());
-            incomePanel.getRoot().toFront();
-
-            frequentIncomePanel = new FrequentIncomePanel(logic.getFilteredFrequentIncomeList());
-            savingsGoalPlaceholder.getChildren().add(frequentIncomePanel.getRoot());
-        }
-        onIncome();
-        uiState.setCurrentTab(UiState.Tab.INCOME);
-    }
-
-    /**
-     * Opens the overview window.
-     */
-    @FXML
-    private void handleOverview() {
-        if (menuOverviewTab.isSelected()) {
-            panelLabel.setText("Overview");
-            rightPanelLabel.setText("Savings Summary");
-
-            transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
-            transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
-            transactionListPanel.getRoot().toFront();
-
-            savingsGoalPanel = new SavingsGoalPanel(logic.getMonthlyBudget());
-            savingsGoalPlaceholder.getChildren().add(savingsGoalPanel.getRoot());
-        }
-        onOverview();
-        uiState.setCurrentTab(UiState.Tab.OVERVIEW);
-    }
-
-    /**
-     * Opens the analytics window.
-     */
-    @FXML
-    private void handleAnalytics() {
-        if (menuAnalyticsTab.isSelected()) {
-            panelLabel.setText("Analytics");
-            rightPanelLabel.setText("Savings Summary");
-
-            transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
-            transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
-            transactionListPanel.getRoot().toFront();
-
-            savingsGoalPanel = new SavingsGoalPanel(logic.getMonthlyBudget());
-            savingsGoalPlaceholder.getChildren().add(savingsGoalPanel.getRoot());
-        }
-        onAnalytics();
-        uiState.setCurrentTab(UiState.Tab.ANALYTICS);
-    }
-
-    /**
-     * Opens the expense window.
-     */
-    @FXML
-    private void handleExpense() {
-        if (menuExpenseTab.isSelected()) {
-            panelLabel.setText("Expense");
-            rightPanelLabel.setText("Frequent Expenses");
-
-            expensePanel = new ExpensePanel(logic.getFilteredExpenseList());
-            transactionListPanelPlaceholder.getChildren().add(expensePanel.getRoot());
-            expensePanel.getRoot().toFront();
-
-            frequentExpensePanel = new FrequentExpensePanel((logic.getFilteredFrequentExpenseList()));
-            savingsGoalPlaceholder.getChildren().add(frequentExpensePanel.getRoot());
-        }
-        onExpense();
-        uiState.setCurrentTab(UiState.Tab.EXPENSES);
     }
 
     void show() {
@@ -292,10 +174,6 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.hide();
     }
 
-    public TransactionListPanel getTransactionListPanel() {
-        return transactionListPanel;
-    }
-
     /**
      * Executes the command and returns the result.
      *
@@ -308,7 +186,7 @@ public class MainWindow extends UiPart<Stage> {
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
             if (commandResult.isShowHelp()) {
-                handleCommandHelp();
+                handleHelp();
             }
 
             if (commandResult.isExit()) {
@@ -334,50 +212,6 @@ public class MainWindow extends UiPart<Stage> {
      */
     private void switchTabs(UiState.Tab tab) {
         requireNonNull(tab);
-        tabPane.getSelectionModel().select(tab.getTabIndex());
-    }
-
-    /**
-     * Changes the text color of the overview tab to white while the rest remains grey
-     */
-    private void onOverview() {
-        menuOverviewTab.setStyle("-tab-text-color: white");
-        menuIncomeTab.setStyle("-tab-text-color: #888888");
-        menuExpenseTab.setStyle("-tab-text-color: #888888");
-        menuAnalyticsTab.setStyle("-tab-text-color: #888888");
-        menuHelpTab.setStyle("-tab-text-color: #888888");
-    }
-
-    /**
-     * Changes the text color of the income tab to white while the rest remains grey.
-     */
-    private void onIncome() {
-        menuOverviewTab.setStyle("-tab-text-color: #888888");
-        menuIncomeTab.setStyle("-tab-text-color: white");
-        menuExpenseTab.setStyle("-tab-text-color: #888888");
-        menuAnalyticsTab.setStyle("-tab-text-color: #888888");
-        menuHelpTab.setStyle("-tab-text-color: #888888");
-    }
-
-    /**
-     * Changes the text color of the expense tab to white while the rest remains grey.
-     */
-    private void onExpense() {
-        menuOverviewTab.setStyle("-tab-text-color: #888888");
-        menuIncomeTab.setStyle("-tab-text-color: #888888");
-        menuExpenseTab.setStyle("-tab-text-color: white");
-        menuAnalyticsTab.setStyle("-tab-text-color: #888888");
-        menuHelpTab.setStyle("-tab-text-color: #888888");
-    }
-
-    /**
-     * Changes the text color of the analytics tab to white while the rest remains grey.
-     */
-    private void onAnalytics() {
-        menuOverviewTab.setStyle("-tab-text-color: #888888");
-        menuIncomeTab.setStyle("-tab-text-color: #888888");
-        menuExpenseTab.setStyle("-tab-text-color: #888888");
-        menuAnalyticsTab.setStyle("-tab-text-color: white");
-        menuHelpTab.setStyle("-tab-text-color: #888888");
+        tabPane.getSelectionModel().select(tab.getTabIndex().getZeroBased());
     }
 }
