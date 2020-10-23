@@ -38,6 +38,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.frequent.AddFrequentIncomeCo
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.frequent.ConvertFrequentExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.frequent.DeleteFrequentExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.frequent.EditFrequentExpenseCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.budgetparsers.SetExpenseLimitCommandParser;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.frequentparsers.AddFrequentExpenseCommandParser;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.frequentparsers.AddFrequentIncomeCommandParser;
@@ -166,7 +167,7 @@ public class FinanceTrackerParser {
 
         case SetExpenseLimitCommand.COMMAND_WORD:
         case SetExpenseLimitCommand.COMMAND_ALIAS:
-            return new SetExpenseLimitCommand(arguments.trim());
+            return new SetExpenseLimitCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:
             switch (uiCurrentTab) {

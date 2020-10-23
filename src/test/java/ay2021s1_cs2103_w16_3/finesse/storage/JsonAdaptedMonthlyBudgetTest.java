@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.exceptions.IllegalValueException;
 import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
-import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyExpenseLimit;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.testutil.MonthlyBudgetBuilder;
 
 public class JsonAdaptedMonthlyBudgetTest {
@@ -23,7 +23,7 @@ public class JsonAdaptedMonthlyBudgetTest {
     @Test
     public void toModelType_invalidMonthlyExpenseLimit_throwsIllegalValueException() {
         JsonAdaptedMonthlyBudget monthlyBudget = new JsonAdaptedMonthlyBudget(INVALID_AMOUNT);
-        String expectedMessage = MonthlyExpenseLimit.MESSAGE_CONSTRAINTS;
+        String expectedMessage = Amount.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, monthlyBudget::toModelType);
     }
 

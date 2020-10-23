@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.exceptions.IllegalValueException;
 import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
-import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyExpenseLimit;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
 
@@ -30,7 +30,7 @@ class JsonAdaptedMonthlyBudget {
      * Converts a given {@code Expense} into this class for Jackson use.
      */
     public JsonAdaptedMonthlyBudget(MonthlyBudget source) {
-        expenseLimit = source.getMonthlyExpenseLimit().getObservableValue().get().toString();
+        expenseLimit = source.getMonthlyExpenseLimit().getObservableAmount().get().toString();
     }
 
     /**
@@ -44,11 +44,11 @@ class JsonAdaptedMonthlyBudget {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Title.class.getSimpleName()));
         }
 
-        if (!MonthlyExpenseLimit.isValidAmount(expenseLimit)) {
-            throw new IllegalValueException(MonthlyExpenseLimit.MESSAGE_CONSTRAINTS);
+        if (!Amount.isValidAmount(expenseLimit)) {
+            throw new IllegalValueException(Amount.MESSAGE_CONSTRAINTS);
         }
 
-        monthlyBudget.setMonthlyExpenseLimit(expenseLimit);
+        monthlyBudget.setMonthlyExpenseLimit(new Amount(expenseLimit));
         return monthlyBudget;
     }
 

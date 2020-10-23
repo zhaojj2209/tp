@@ -116,7 +116,8 @@ public interface Model {
     /** Returns the monthly budget. */
     MonthlyBudget getMonthlyBudget();
 
-    void setExpenseLimit(String limit);
+    /** Sets an expense limit. */
+    void setExpenseLimit(Amount limit);
 
     /** Returns an unmodifiable view of the filtered transaction list. */
     ObservableList<Transaction> getFilteredTransactionList();

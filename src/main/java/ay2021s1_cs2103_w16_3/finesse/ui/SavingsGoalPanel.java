@@ -36,9 +36,9 @@ public class SavingsGoalPanel extends UiPart<Region> {
         savingsGoalHeader.setText(header);
         StringBinding expenseLimitBinding = Bindings.createStringBinding(() ->
                         String.format(
-                                "Monthly Expense Limit: $%s",
-                                monthlyBudget.getMonthlyExpenseLimit().getValue().toString()),
-                monthlyBudget.getMonthlyExpenseLimit().getObservableValue());
+                                "Monthly Expense Limit: %s",
+                                monthlyBudget.getMonthlyExpenseLimit().getAmount().toString()),
+                monthlyBudget.getMonthlyExpenseLimit().getObservableAmount());
         savingsGoalContent.textProperty().bind(expenseLimitBinding);
     }
 }
