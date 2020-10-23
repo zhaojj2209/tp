@@ -24,5 +24,4 @@
     </HBox>
     <Region VBox.vgrow="ALWAYS"/>
     <ImageView fx:id="savingsPicture" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"/>
-    <Label text="\$100.00" styleClass="right-panel-content"/>
 </VBox>
