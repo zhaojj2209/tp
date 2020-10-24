@@ -76,8 +76,8 @@ public class EditCommand extends Command {
         return editTransactionDescriptor;
     }
 
-    protected boolean isAmountEdited() {
-        return editTransactionDescriptor.isAmountEdited();
+    protected boolean isAmountOrDateEdited() {
+        return editTransactionDescriptor.isAmountOrDateEdited();
     }
 
     @Override
@@ -94,7 +94,8 @@ public class EditCommand extends Command {
 
         model.setTransaction(transactionToEdit, editedTransaction);
         model.updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction), isAmountEdited());
+        return new CommandResult(String.format(MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction),
+                isAmountOrDateEdited());
     }
 
     /**
@@ -168,10 +169,10 @@ public class EditCommand extends Command {
         }
 
         /**
-         * Returns true if the amount is edited.
+         * Returns true if the amount or date is edited.
          */
-        public boolean isAmountEdited() {
-            return amount != null;
+        public boolean isAmountOrDateEdited() {
+            return amount != null || date != null;
         }
 
         public void setTitle(Title title) {

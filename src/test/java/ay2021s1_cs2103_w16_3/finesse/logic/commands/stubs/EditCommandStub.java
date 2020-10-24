@@ -36,8 +36,8 @@ public class EditCommandStub extends EditCommand {
     }
 
     @Override
-    protected boolean isAmountEdited() {
-        return editTransactionDescriptor.isAmountEdited();
+    protected boolean isAmountOrDateEdited() {
+        return editTransactionDescriptor.isAmountOrDateEdited();
     }
 
     @Override

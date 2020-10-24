@@ -56,6 +56,10 @@ public class Date implements Comparable<Date> {
         }
     }
 
+    public LocalDate getDate() {
+        return value;
+    }
+
     /**
      * Returns a String representation of this Date that can be used to construct an identical Date.
      * @return A String representation of this Date.

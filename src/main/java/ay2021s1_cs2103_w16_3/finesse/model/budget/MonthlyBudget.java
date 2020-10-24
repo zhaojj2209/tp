@@ -1,6 +1,7 @@
 package ay2021s1_cs2103_w16_3.finesse.model.budget;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
@@ -97,11 +98,14 @@ public class MonthlyBudget {
     public void calculateBudgetInfo(TransactionList transactions) {
         totalExpenses = BigDecimal.ZERO;
         totalIncomes = BigDecimal.ZERO;
+        int thisMonth = LocalDate.now().getMonthValue();
         for (Transaction transaction: transactions) {
-            if (transaction instanceof Expense) {
-                totalExpenses = totalExpenses.add(transaction.getAmount().getValue());
-            } else {
-                totalIncomes = totalIncomes.add(transaction.getAmount().getValue());
+            if (transaction.getDate().getDate().getMonthValue() == thisMonth) {
+                if (transaction instanceof Expense) {
+                    totalExpenses = totalExpenses.add(transaction.getAmount().getValue());
+                } else {
+                    totalIncomes = totalIncomes.add(transaction.getAmount().getValue());
+                }
             }
         }
         calculateRemainingBudget();

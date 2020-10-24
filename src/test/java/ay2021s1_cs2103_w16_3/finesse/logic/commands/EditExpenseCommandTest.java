@@ -48,11 +48,12 @@ public class EditExpenseCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(model.getFilteredExpenseList().get(0), editedExpense);
-        if (descriptor.isAmountEdited()) {
+        if (descriptor.isAmountOrDateEdited()) {
             expectedModel.calculateBudgetInfo();
         }
 
-        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
+        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel,
+                descriptor.isAmountOrDateEdited());
     }
 
     @Test
@@ -74,11 +75,12 @@ public class EditExpenseCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(lastExpense, editedExpense);
-        if (descriptor.isAmountEdited()) {
+        if (descriptor.isAmountOrDateEdited()) {
             expectedModel.calculateBudgetInfo();
         }
 
-        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
+        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel,
+                descriptor.isAmountOrDateEdited());
     }
 
     @Test
@@ -111,11 +113,12 @@ public class EditExpenseCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(model.getFilteredExpenseList().get(0), editedExpense);
-        if (descriptor.isAmountEdited()) {
+        if (descriptor.isAmountOrDateEdited()) {
             expectedModel.calculateBudgetInfo();
         }
 
-        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
+        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel,
+                descriptor.isAmountOrDateEdited());
     }
 
     @Test
