@@ -145,7 +145,14 @@ Switched to overview tab.
 ```
 
 ### 4.3 Expense
-[Overview of feature]
+An **expense** represents you *paying for something*.
+It could be textbooks for the new semester, that cup of bubble tea you drank the other day, or even just taking public transport.
+
+To help you manage your finances, Fine\$\$e records the following information about each of your expenses:
+1. **Title**: A descriptive title, to remind you what the expense was about.
+1. **Amount**: How much money you paid, to calculate how much you have spent in total.
+1. **Date**: The date the payment took place, to track your spending over periods of time.
+1. **Categories**: Any number of categories, to help you group related expenses together.
 
 #### 4.3.1 Add Expense
 
@@ -153,34 +160,60 @@ Adds an expense to the finance tracker.
 
 Format: `add-expense t/TITLE a/AMOUNT d/DATE [c/CATEGORY]...`
 
-Shortcut: `adde t/TITLE a/AMOUNT d/DATE [c/CATEGORY]...`
+- `TITLE` should consist of <abbr title="Alphanumeric characters, space, and the special characters !&quot;#$%&'()*+,-./:;&lt;=&gt;?@[\]^_`{\|}~">printable ASCII characters</abbr>,
+and cannot begin with a space.
+- `AMOUNT` should be a number with 0 or 2 decimal places, with an optional `$` in front.
+- `DATE` should be in `dd/mm/yyyy` format, and cannot be later than the current date.
+- `CATEGORY` is optional. Multiple `c/` prefixes can be used to specify multiple categories.
+Each category name should consist of <abbr title="Alphanumeric characters, space, and the special characters !&quot;#$%&'()*+,-./:;&lt;=&gt;?@[\]^_`{\|}~">printable ASCII characters</abbr>,
+and cannot begin with a space.
 
-* `AMOUNT` should be a number with 0 or 2 decimal places, with an optional `$` in front.
-* `DATE` should be in `dd/mm/yyyy` format.
+Shortcut: `adde`, (when on the [Expenses tab](#)) `add`
 
 Examples:
-* `add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage` adds an expense with the title `Bubble Tea`, amount `$5.00`, date `03/10/2020` and category `Food & Beverage` to the finance tracker.
-* `adde t/Taxi home from school a/$13.50 d/10/10/2020 c/Transport c/School` adds an expense with the title `Taxi home from school`, amount `$13.50`, date `03/10/2020` and categories `Transport` and `School` to the finance tracker.
+- `add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage`
+adds a new expense titled `Bubble Tea`, with amount `$5.00`, date `03/10/2020`, and a single category `Food & Beverage`.
+- `adde t/Taxi Home from School a/$13.50 d/10/10/2020 c/Transport c/School`
+adds a new expense titled `Taxi Home from School`, with amount `$13.50`, date `10/10/2020`, and two categories `Transport` and `School`.
 
 Example Usage:
+```
+add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage
+```
 
 Expected Outcome:
+```
+New expense added: Bubble Tea Amount: $5.00 Date: 03/10/2020 Categories: [Food & Beverage]
+```
 
 #### 4.3.2 Edit Expense
 
 Edits an expense in the finance tracker.
 
-Format:
+Format: (when on the [Expenses tab](#)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY]...`
 
-Shortcut:
+- `INDEX` allows you to choose which expense to edit by specifying its position in the expenses list.
+- `TITLE`, `AMOUNT`, `DATE`, `CATEGORY` allow you to specify the updated expense information. None of them are mandatory, but at least one must be specified.
+  For parameters that have been omitted, the value will remain unchanged.
+  - The restrictions on the input values are identical to the [Add Expense](#431-add-expense) feature above.
 
-[Description of parameters]
+> :bulb: To specify an edit that removes all categories, use the parameter `c/` with no category name.
 
 Examples:
+- `edit 1 a/5 d/22/09/2020` edits the first expense in the expenses list to have amount `$5.00` and date `22/09/2020`.
+The rest of the expense information remains unchanged.
+- `edit 3 a/$2000 c/` edits the third expense in the expenses list to have amount `$2000.00` and no categories.
+The rest of the expense information remains unchanged.
 
 Example Usage:
+```
+edit 1 a/5 d/22/09/2020
+```
 
 Expected Outcome:
+```
+Edited Expense: Artificial Intelligence: A Modern Approach Amount: $5.00 Date: 22/09/2020 Categories: [Textbook]
+```
 
 #### 4.3.3 Delete Expense
 
@@ -244,7 +277,14 @@ Expected Outcome:
 
 ### 4.4 Income
 
-[Summary of feature]
+An **income** represents *you being paid for something*.
+It could be your internship allowance, prize money you won from a pitching competition, even just red packets that you receive over Chinese New Year.
+
+To help you manage your finances, Fine\$\$e records the following information about each of your incomes:
+1. **Title**: A descriptive title, to remind you what the income was about.
+1. **Amount**: How much money you earned, to calculate how much you have earned in total.
+1. **Date**: The date you were paid, to track your income over periods of time.
+1. **Categories**: Any number of categories, to help you group related incomes together.
 
 #### 4.4.1 Add Income
 
@@ -252,34 +292,60 @@ Adds an income to the finance tracker.
 
 Format: `add-income t/TITLE a/AMOUNT d/DATE [c/CATEGORY]...`
 
-Shortcut: `addi t/TITLE a/AMOUNT d/DATE [c/CATEGORY]...`
+- `TITLE` should consist of <abbr title="Alphanumeric characters, space, and the special characters !&quot;#$%&'()*+,-./:;&lt;=&gt;?@[\]^_`{\|}~">printable ASCII characters</abbr>,
+and cannot begin with a space.
+- `AMOUNT` should be a number with 0 or 2 decimal places, with an optional `$` in front.
+- `DATE` should be in `dd/mm/yyyy` format, and cannot be later than the current date.
+- `CATEGORY` is optional. Multiple `c/` prefixes can be used to specify multiple categories.
+Each category name should consist of <abbr title="Alphanumeric characters, space, and the special characters !&quot;#$%&'()*+,-./:;&lt;=&gt;?@[\]^_`{\|}~">printable ASCII characters</abbr>,
+and cannot begin with a space.
 
-* `AMOUNT` should be a number with 0 or 2 decimal places, with an optional `$` in front.
-* `DATE` should be in `dd/mm/yyyy` format.
+Shortcut: `addi`, (when on the [Income tab](#)) `add`
 
 Examples:
-* `add-income t/Internship a/560 d/03/10/2020 c/Work` adds an income with the title `Internship`, amount `$560.00`, date `03/10/2020` and category `Work` to the finance tracker.
-* `addi t/Angpao money a/$20 d/25/01/2020 c/CNY c/Gift` adds an income with the title `Angpao money`, amount `$20.00`, date `25/01/2020` and categories `CNY` and `Gift` to the finance tracker.
+- `add-income t/Internship a/560 d/03/10/2020 c/Work`
+adds a new income titled `Internship`, with amount `$560.00`, date `03/10/2020`, and a single category `Work`.
+- `addi t/Angpao money a/$20 d/25/01/2020 c/CNY c/Gift`
+adds a new income titled `Angpao money`, with amount `$20.00`, date `25/01/2020`, and two categories `CNY` and `Gift`.
 
 Example Usage:
+```
+add-income t/Internship a/560 d/03/10/2020 c/Work
+```
 
 Expected Outcome:
+```
+New income added: Internship Amount: $560.00 Date: 03/10/2020 Categories: [Work]
+```
 
 #### 4.4.2 Edit Income
 
-Edits an income in the finance tracker.
+Edits an expense in the finance tracker.
 
-Format:
+Format: (when on the [Income tab](#)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY]...`
 
-Shortcut:
+- `INDEX` allows you to choose which income to edit by specifying its position in the incomes list.
+- `TITLE`, `AMOUNT`, `DATE`, `CATEGORY` allow you to specify the updated income information. None of them are mandatory, but at least one must be specified.
+  For parameters that have been omitted, the value will remain unchanged.
+  - The restrictions on the input values are identical to the [Add Income](#441-add-income) feature above.
 
-[Description of parameters]
+> :bulb: To specify an edit that removes all categories, use the parameter `c/` with no category name.
 
 Examples:
+- `edit 3 a/$2000 c/` edits the third income in the incomes list to have amount `$2000.00` and no categories.
+The rest of the income information remains unchanged.
+- `edit 1 a/5 d/22/09/2020` edits the first income in the incomes list to have amount `$5.00` and date `22/09/2020`.
+The rest of the income information remains unchanged.
 
 Example Usage:
+```
+edit 3 a/$2000 c/
+```
 
 Expected Outcome:
+```
+Edited Income: Teaching Assistant Amount: $2000.00 Date: 18/10/2020 Categories:
+```
 
 #### 4.4.3 Delete Income
 
