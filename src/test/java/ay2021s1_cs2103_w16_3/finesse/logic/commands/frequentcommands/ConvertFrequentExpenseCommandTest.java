@@ -42,7 +42,7 @@ public class ConvertFrequentExpenseCommandTest {
         String expectedMessage = String.format(ConvertFrequentExpenseCommand.MESSAGE_CONVERT_FREQUENT_EXPENSE_SUCCESS,
                 convertedExpense);
 
-        assertCommandSuccess(convertFrequentExpenseCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(convertFrequentExpenseCommand, model, expectedMessage, expectedModel, true);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ConvertFrequentExpenseCommandTest {
         String expectedMessage = String.format(ConvertFrequentExpenseCommand.MESSAGE_CONVERT_FREQUENT_EXPENSE_SUCCESS,
                 convertedExpense);
 
-        assertCommandSuccess(convertFrequentExpenseCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(convertFrequentExpenseCommand, model, expectedMessage, expectedModel, true);
     }
 
     @Test

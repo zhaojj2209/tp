@@ -134,6 +134,8 @@ public interface Model {
     /** Sets a savings goal. */
     void setSavingsGoal(Amount goal);
 
+    void calculateBudgetInfo();
+
     /** Returns an unmodifiable view of the filtered transaction list. */
     ObservableList<Transaction> getFilteredTransactionList();
 

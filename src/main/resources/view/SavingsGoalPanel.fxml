@@ -22,6 +22,30 @@
         </padding>
         <Label fx:id="monthlySavingsGoal" wrapText="true" styleClass="right-panel-content"/>
     </HBox>
+    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="10" top="10"/>
+        </padding>
+        <Label fx:id="remainingBudget" wrapText="true" styleClass="right-panel-content"/>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="10" top="10"/>
+        </padding>
+        <Label fx:id="currentSavings" wrapText="true" styleClass="right-panel-content"/>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="10" top="10"/>
+        </padding>
+        <Label fx:id="budgetDeficit" wrapText="true" styleClass="right-panel-content"/>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="10" top="10"/>
+        </padding>
+        <Label fx:id="savingsDeficit" wrapText="true" styleClass="right-panel-content"/>
+    </HBox>
     <Region VBox.vgrow="ALWAYS"/>
     <ImageView fx:id="savingsPicture" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"/>
 </VBox>

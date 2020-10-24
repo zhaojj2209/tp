@@ -40,7 +40,7 @@ public class EditIncomeCommand extends EditCommand {
 
         model.setTransaction(incomeToEdit, editedIncome);
         model.updateFilteredIncomeList(PREDICATE_SHOW_ALL_TRANSACTIONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_INCOME_SUCCESS, editedIncome));
+        return new CommandResult(String.format(MESSAGE_EDIT_INCOME_SUCCESS, editedIncome), isAmountOrDateEdited());
     }
 
     /**

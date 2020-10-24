@@ -46,7 +46,7 @@ public class AddExpenseCommand extends Command {
         requireNonNull(model);
 
         model.addExpense(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), true);
     }
 
     @Override

@@ -30,6 +30,6 @@ public class SetExpenseLimitCommandTest {
         ModelManager expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.setExpenseLimit(amountToSet);
 
-        assertCommandSuccess(setExpenseLimitCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(setExpenseLimitCommand, model, expectedMessage, expectedModel, true);
     }
 }

@@ -40,7 +40,7 @@ public class EditExpenseCommand extends EditCommand {
 
         model.setTransaction(expenseToEdit, editedExpense);
         model.updateFilteredExpenseList(PREDICATE_SHOW_ALL_TRANSACTIONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_EXPENSE_SUCCESS, editedExpense));
+        return new CommandResult(String.format(MESSAGE_EDIT_EXPENSE_SUCCESS, editedExpense), isAmountOrDateEdited());
     }
 
     /**

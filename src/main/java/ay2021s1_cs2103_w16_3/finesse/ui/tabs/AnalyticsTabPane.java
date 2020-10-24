@@ -1,5 +1,6 @@
 package ay2021s1_cs2103_w16_3.finesse.ui.tabs;
 
+import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiPart;
 import javafx.scene.canvas.Canvas;
 
@@ -12,7 +13,7 @@ public class AnalyticsTabPane extends UiPart<Canvas> {
     /**
      * Creates an {@code AnalyticsTabPane}.
      */
-    public AnalyticsTabPane() {
+    public AnalyticsTabPane(MonthlyBudget monthlyBudget) {
         super(FXML);
     }
 

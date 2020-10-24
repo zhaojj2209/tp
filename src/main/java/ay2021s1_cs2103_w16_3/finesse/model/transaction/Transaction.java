@@ -2,6 +2,7 @@ package ay2021s1_cs2103_w16_3.finesse.model.transaction;
 
 import static ay2021s1_cs2103_w16_3.finesse.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -48,6 +49,10 @@ public abstract class Transaction {
 
     public Date getDate() {
         return date;
+    }
+
+    public LocalDate getDateValue() {
+        return date.getDate();
     }
 
     /**

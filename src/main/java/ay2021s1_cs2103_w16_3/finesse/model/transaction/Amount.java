@@ -38,6 +38,13 @@ public class Amount {
     }
 
     /**
+     * Returns the value of the amount to be used in budget calculations.
+     */
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    /**
      * Returns a String representation of this Amount that can be used to construct an identical Amount.
      * @return A String representation of this Amount.
      */

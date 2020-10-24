@@ -36,7 +36,7 @@ public class SetExpenseLimitCommand extends Command {
         requireNonNull(model);
 
         model.setExpenseLimit(amount);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, amount));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, amount), true);
     }
 
     @Override

@@ -31,6 +31,9 @@ public interface Logic {
      */
     CommandResult execute(String commandText, UiState uiState) throws CommandException, ParseException;
 
+    /** Calculates the budget information in the finance tracker. */
+    void calculateBudgetInfo();
+
     /**
      * Returns the FinanceTracker.
      *
