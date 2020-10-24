@@ -2,7 +2,8 @@ package ay2021s1_cs2103_w16_3.finesse.model.budget;
 
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
-import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
@@ -18,6 +19,7 @@ import javafx.collections.ObservableList;
 public class MonthlyBudget {
     private static final Amount ZERO_AMOUNT = new Amount("0");
     private static final String[] MONTHS = new DateFormatSymbols().getMonths();
+    private static final int NUM_OF_MONTHS = 12;
 
     private ObservableAmount monthlyExpenseLimit;
     private ObservableAmount monthlySavingsGoal;
@@ -126,14 +128,16 @@ public class MonthlyBudget {
         this.monthlyIncomes.clear();
         this.months.clear();
 
-        int thisMonthValue = LocalDate.now().getMonthValue();
+        YearMonth today = YearMonth.now();
+        int thisMonthValue = today.getMonthValue();
         BigDecimal[] monthlyExpenses = new BigDecimal[numOfMonths];
         BigDecimal[] monthlyIncomes = new BigDecimal[numOfMonths];
         Arrays.fill(monthlyExpenses, BigDecimal.ZERO);
         Arrays.fill(monthlyIncomes, BigDecimal.ZERO);
 
         for (Transaction transaction: transactions) {
-            int monthsBeforeToday = thisMonthValue - transaction.getDateValue().getMonthValue();
+            int monthsBeforeToday = (int) ChronoUnit.MONTHS.between(YearMonth.from(transaction.getDateValue()), today);
+            System.out.println(monthsBeforeToday);
             if (monthsBeforeToday < numOfMonths) {
                 if (transaction instanceof Expense) {
                     monthlyExpenses[numOfMonths - 1 - monthsBeforeToday] =
@@ -151,7 +155,8 @@ public class MonthlyBudget {
         this.monthlyIncomes.addAll(Arrays.asList(monthlyIncomes));
 
         for (int i = numOfMonths; i > 0; i--) {
-            months.add(MONTHS[thisMonthValue - i]);
+            int monthIndex = thisMonthValue - i < 0 ? NUM_OF_MONTHS - (thisMonthValue - i) : thisMonthValue - i;
+            months.add(MONTHS[monthIndex]);
         }
 
         calculateBudget();
