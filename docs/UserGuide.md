@@ -3,13 +3,16 @@ layout: page
 title: User Guide
 ---
 
-* Table of Contents
-{:toc}
+<div class="toc-no-bullet-points">
+  * Table of Contents
+  {:toc}
+</div>
 
 --------------------------------------------------------------------------------------------------------------------
 ## 1. Introduction
 
 ### 1.1 About Fine$$e
+
 Welcome to Fine$$e!
 
 Looking for an all-in-one solution to help you develop good financial habits? Look no further!
@@ -26,6 +29,7 @@ If you want to better manage your finances while cultivating good financial habi
 Explore our User Guide to find out more about Fine\$\$e’s amazing features.
 
 ### 1.2 Navigating the User Guide
+
 The aim of the User Guide is to provide you with all of the necessary information required for you to utilize Fine$$e.
 We understand that a Command Line Interface (CLI) might not be the easiest to use, hence we have ensured that the information provided is concise and easily readable.
 
@@ -41,13 +45,42 @@ Do take note of the following symbols and formatting used throughout this docume
 
 --------------------------------------------------------------------------------------------------------------------
 ## 2. Quick start
+
 This section will show you the various components that make up Fine<span>$</span><span>$</span>e's user interface.
 You can also follow our step-by-step guide on how to install Fine<span>$</span><span>$</span>e and get it to work on your computer.
 Let's get started!
 
 ### 2.1 Layout of Fine$$e's Interface
 
-[To be added]
+The user interface of Fine$$e is divided into 4 tabs, each serving a specific purpose.
+
+#### 2.1.1 Overview Tab
+
+Displays a list of all recent transactions ([incomes](#44-income)/[expenses](#43-expense)), along with a summary of the current [savings goals](#48-savings-goal).
+This tab provides you with an overview of your most recent activities and allows you to track your savings.
+
+![Overview Tab](images/userguide/OverviewTab.png)
+
+#### 2.1.2 Incomes Tab
+
+Displays a list of [incomes](#44-income) and [bookmarked incomes](#46-frequent-income).
+This tab allows you to keep track of all your sources of income.
+
+![Incomes Tab](images/userguide/IncomesTab.png)
+
+#### 2.1.3 Expenses Tab
+
+Displays a list of [expenses](#43-expense) and [bookmarked expenses](#45-frequent-expense).
+This tab allows you to keep track of all your sources of expenditure.
+
+![Expenses Tab](images/userguide/ExpensesTab.png)
+
+#### 2.1.4 Analytics Tab
+
+Displays visualizations of your financial habits.
+This tab allows you analyze your spending and saving habits through charts.
+
+![Analytics Tab](images/userguide/AnalyticsTab.png)
 
 ### 2.2 Installation
 
@@ -78,11 +111,15 @@ The GUI similar to the below should appear in a few seconds, with sample data in
 > :bulb: If you have any questions, you can check out our [Section 7. FAQ](#7-faq).
 
 --------------------------------------------------------------------------------------------------------------------
+
 ## 3. Overview of Features
+
 [To be added]
 
 --------------------------------------------------------------------------------------------------------------------
+
 ## 4. Features
+
 This section aims to provide you with in-depth details on Fine\$\$e's unique features, as well as provide you with example usages of the features.
 
 <div markdown="block" class="alert alert-info">
@@ -104,6 +141,7 @@ This section aims to provide you with in-depth details on Fine\$\$e's unique fea
 </div>
 
 ### 4.1 Viewing Help
+
 Shows a message with instructions on how to access the user guide.
 
 Format: `help`
@@ -118,10 +156,17 @@ Expected Outcome:
 Refer to the user guide: https://ay2021s1-cs2103t-w16-3.github.io/tp/UserGuide.html.
 Please copy the url and paste it in your favourite browser to view all valid commands.
 ```
-### 4.2 Tabs
-[Brief Overview of this feature]
 
-#### 4.2.1 Switch Tab
+### 4.2 Tabs
+
+Fine$$e consists of the following 4 tabs, each of which serves a different purpose:
+* [Overview Tab](#211-overview-tab)
+* [Incomes Tab](#212-incomes-tab)
+* [Expenses Tab](#213-expenses-tab)
+* [Analytics Tab](#214-analytics-tab)
+
+#### 4.2.1 Switch Tabs
+
 Switches the current tab on Fine$$e.
 
 Format: `tab INDEX`
@@ -145,6 +190,7 @@ Switched to overview tab.
 ```
 
 ### 4.3 Expense
+
 An **expense** represents you *paying for something*.
 It could be textbooks for the new semester, that cup of bubble tea you drank the other day, or even just taking public transport.
 
@@ -168,7 +214,7 @@ and cannot begin with a space.
 Each category name should consist of <abbr title="Alphanumeric characters, space, and the special characters !&quot;#$%&'()*+,-./:;&lt;=&gt;?@[\]^_`{\|}~">printable ASCII characters</abbr>,
 and cannot begin with a space.
 
-Shortcut: `adde`, (when on the [Expenses tab](#)) `add`
+Shortcut: `adde`, (when on the [Expenses tab](#213-expenses-tab)) `add`
 
 Examples:
 - `add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage`
@@ -190,7 +236,7 @@ New expense added: Bubble Tea Amount: $5.00 Date: 03/10/2020 Categories: [Food &
 
 Edits an expense in the finance tracker.
 
-Format: (when on the [Expenses tab](#)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY]...`
+Format: (when on the [Expenses tab](#213-expenses-tab)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY]...`
 
 - `INDEX` allows you to choose which expense to edit by specifying its position in the expenses list.
 - `TITLE`, `AMOUNT`, `DATE`, `CATEGORY` allow you to specify the updated expense information. None of them are mandatory, but at least one must be specified.
@@ -219,17 +265,22 @@ Edited Expense: Artificial Intelligence: A Modern Approach Amount: $5.00 Date: 2
 
 Deletes the specified expense from the finance tracker.
 
-Format:
+Format: (when on the [Expenses tab](#213-expenses-tab)) `delete INDEX`
 
-Shortcut:
-
-[Description of parameters]
+* `INDEX` allows you to choose which expense to delete by specifying its position in the expenses list.
 
 Examples:
+* `delete 3` deletes the third expense in the expenses list.
 
 Example Usage:
+```
+delete 3
+```
 
 Expected Outcome:
+```
+Deleted Expense: Bubble Tea Amount: $4.80 Date: 14/10/2020 Categories: [Food & Beverage]
+```
 
 #### 4.3.4 List Expense
 
@@ -300,7 +351,7 @@ and cannot begin with a space.
 Each category name should consist of <abbr title="Alphanumeric characters, space, and the special characters !&quot;#$%&'()*+,-./:;&lt;=&gt;?@[\]^_`{\|}~">printable ASCII characters</abbr>,
 and cannot begin with a space.
 
-Shortcut: `addi`, (when on the [Income tab](#)) `add`
+Shortcut: `addi`, (when on the [Income tab](#212-incomes-tab)) `add`
 
 Examples:
 - `add-income t/Internship a/560 d/03/10/2020 c/Work`
@@ -322,7 +373,7 @@ New income added: Internship Amount: $560.00 Date: 03/10/2020 Categories: [Work]
 
 Edits an expense in the finance tracker.
 
-Format: (when on the [Income tab](#)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY]...`
+Format: (when on the [Income tab](#212-incomes-tab)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY]...`
 
 - `INDEX` allows you to choose which income to edit by specifying its position in the incomes list.
 - `TITLE`, `AMOUNT`, `DATE`, `CATEGORY` allow you to specify the updated income information. None of them are mandatory, but at least one must be specified.
@@ -351,9 +402,22 @@ Edited Income: Teaching Assistant Amount: $2000.00 Date: 18/10/2020 Categories:
 
 Deletes the specified income from the finance tracker.
 
-Format:
+Format: (when on the [Incomes tab](#212-incomes-tab)) `delete INDEX`
 
-Shortcut:
+* `INDEX` allows you to choose which income to delete by specifying its position in the incomes list.
+
+Examples:
+* `delete 3` deletes the third income in the incomes list.
+
+Example Usage:
+```
+delete 3
+```
+
+Expected Outcome:
+```
+Deleted Income: Teaching Assistant Amount: $1920.00 Date: 18/10/2020 Categories: [CS2103T][CS1101S]
+```
 
 #### 4.4.4 List Income
 
@@ -609,6 +673,7 @@ Fine$$e data is saved in the hard disk automatically after any command that chan
 There is no need to save manually.
 
 --------------------------------------------------------------------------------------------------------------------
+
 ## 5. Command Summary
 
 Action | Format | Examples
@@ -624,11 +689,13 @@ Help | `help`
 Exit | `exit`
 
 --------------------------------------------------------------------------------------------------------------------
+
 ## 6. Glossary
 
 [To be added]
 
 --------------------------------------------------------------------------------------------------------------------
+
 ## 7. FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
