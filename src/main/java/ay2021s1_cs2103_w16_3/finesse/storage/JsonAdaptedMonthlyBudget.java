@@ -16,13 +16,16 @@ class JsonAdaptedMonthlyBudget {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Monthly Budget's %s field is missing!";
 
     private final String expenseLimit;
+    private final String savingsGoal;
 
     /**
      * Constructs a {@code JsonAdaptedMonthlyBudget} with the given transaction details.
      */
     @JsonCreator
-    public JsonAdaptedMonthlyBudget(@JsonProperty("expenseLimit") String expenseLimit) {
+    public JsonAdaptedMonthlyBudget(@JsonProperty("expenseLimit") String expenseLimit,
+                                    @JsonProperty("savingsGoal") String savingsGoal) {
         this.expenseLimit = expenseLimit;
+        this.savingsGoal = savingsGoal;
     }
 
     /**
@@ -30,6 +33,7 @@ class JsonAdaptedMonthlyBudget {
      */
     public JsonAdaptedMonthlyBudget(MonthlyBudget source) {
         expenseLimit = source.getMonthlyExpenseLimit().getObservableAmount().get().toString();
+        savingsGoal = source.getMonthlySavingsGoal().getObservableAmount().get().toString();
     }
 
     /**
@@ -39,15 +43,16 @@ class JsonAdaptedMonthlyBudget {
      */
     public MonthlyBudget toModelType() throws IllegalValueException {
         final MonthlyBudget monthlyBudget = new MonthlyBudget();
-        if (expenseLimit == null) {
+        if (expenseLimit == null || savingsGoal == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Title.class.getSimpleName()));
         }
 
-        if (!Amount.isValidAmount(expenseLimit)) {
+        if (!Amount.isValidAmount(expenseLimit) || !Amount.isValidAmount(savingsGoal)) {
             throw new IllegalValueException(Amount.MESSAGE_CONSTRAINTS);
         }
 
         monthlyBudget.setMonthlyExpenseLimit(new Amount(expenseLimit));
+        monthlyBudget.setMonthlySavingsGoal(new Amount(savingsGoal));
         return monthlyBudget;
     }
 

@@ -90,6 +90,7 @@
     "categories": [ "Work" ]
   } ],
   "monthlyBudget" : {
-    "expenseLimit" : "500.00"
+    "expenseLimit" : "500.00",
+    "savingsGoal" : "500.00"
   }
 }

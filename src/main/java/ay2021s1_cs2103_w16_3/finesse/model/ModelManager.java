@@ -171,6 +171,11 @@ public class ModelManager implements Model {
         monthlyBudget.setMonthlyExpenseLimit(limit);
     }
 
+    @Override
+    public void setSavingsGoal(Amount goal) {
+        monthlyBudget.setMonthlySavingsGoal(goal);
+    }
+
     //=========== Filtered Transaction List Accessors =============================================================
 
     /**

@@ -7,9 +7,14 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
  */
 public class MonthlyBudget {
     private MonthlyExpenseLimit monthlyExpenseLimit;
+    private MonthlySavingsGoal monthlySavingsGoal;
 
+    /**
+     * Creates a {@code MonthlyBudget} with an expense limit and savings goal of $0.
+     */
     public MonthlyBudget() {
         monthlyExpenseLimit = new MonthlyExpenseLimit(new Amount("0"));
+        monthlySavingsGoal = new MonthlySavingsGoal(new Amount("0"));
     }
 
     public MonthlyExpenseLimit getMonthlyExpenseLimit() {
@@ -18,6 +23,14 @@ public class MonthlyBudget {
 
     public void setMonthlyExpenseLimit(Amount limit) {
         monthlyExpenseLimit.setValue(limit);
+    }
+
+    public MonthlySavingsGoal getMonthlySavingsGoal() {
+        return monthlySavingsGoal;
+    }
+
+    public void setMonthlySavingsGoal(Amount goal) {
+        monthlySavingsGoal.setValue(goal);
     }
 
     @Override

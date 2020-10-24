@@ -151,8 +151,13 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
         monthlyBudget.setMonthlyExpenseLimit(limit);
     }
 
+    public void setSavingsGoal(Amount goal) {
+        monthlyBudget.setMonthlySavingsGoal(goal);
+    }
+
     public void setMonthlyBudget(MonthlyBudget budget) {
         monthlyBudget.setMonthlyExpenseLimit(budget.getMonthlyExpenseLimit().getAmount());
+        monthlyBudget.setMonthlySavingsGoal(budget.getMonthlySavingsGoal().getAmount());
     }
 
     //// util methods
