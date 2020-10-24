@@ -14,10 +14,11 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.DuplicateFrequentTransactionException;
-import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.FrequentExpenseNotFoundException;
+import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.FrequentTransactionNotFoundException;
 import ay2021s1_cs2103_w16_3.finesse.testutil.FrequentTransactionBuilder;
 
 public class FrequentExpenseListTest {
+
     private final FrequentExpenseList frequentExpenseList = new FrequentExpenseList();
 
     @Test
@@ -26,7 +27,7 @@ public class FrequentExpenseListTest {
     }
 
     @Test
-    public void add_duplicateFrequentExpense_throwsDuplicateFrequentExpenseException() {
+    public void add_duplicateFrequentExpense_throwsDuplicateFrequentTransactionException() {
         FrequentExpense frequentExpense = new FrequentTransactionBuilder(PHONE_BILL)
                 .withCategories(VALID_CATEGORY_UTILITIES).buildFrequentExpense();
 
@@ -51,7 +52,7 @@ public class FrequentExpenseListTest {
 
     @Test
     public void setFrequentExpense_targetFrequentExpenseNotInList_throwsTransactionNotFoundException() {
-        assertThrows(FrequentExpenseNotFoundException.class, ()
+        assertThrows(FrequentTransactionNotFoundException.class, ()
             -> frequentExpenseList.setFrequentExpense(PHONE_BILL, PHONE_BILL));
     }
 
@@ -91,7 +92,7 @@ public class FrequentExpenseListTest {
 
     @Test
     public void remove_frequentExpenseDoesNotExist_throwsTransactionNotFoundException() {
-        assertThrows(FrequentExpenseNotFoundException.class, () -> frequentExpenseList.remove(PHONE_BILL));
+        assertThrows(FrequentTransactionNotFoundException.class, () -> frequentExpenseList.remove(PHONE_BILL));
     }
 
     @Test

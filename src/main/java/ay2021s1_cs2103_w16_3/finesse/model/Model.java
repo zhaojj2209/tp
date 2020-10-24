@@ -77,9 +77,15 @@ public interface Model {
 
     /**
      * Deletes the given frequent expense.
-     * The transaction must exist in the finance tracker.
+     * The frequent expense must exist in the finance tracker.
      */
     void deleteFrequentExpense(FrequentExpense target);
+
+    /**
+     * Deletes the given frequent income.
+     * The frequent income must exist in the finance tracker.
+     */
+    void deleteFrequentIncome(FrequentIncome target);
 
     /**
      * Adds the given expense.
@@ -112,6 +118,12 @@ public interface Model {
      * {@code target} must exist in the finance tracker.
      */
     void setFrequentExpense(FrequentExpense target, FrequentExpense editedFrequentExpense);
+
+    /**
+     * Replaces the given frequent income {@code target} with {@code editedFrequentIncome}.
+     * {@code target} must exist in the finance tracker.
+     */
+    void setFrequentIncome(FrequentIncome target, FrequentIncome editedFrequentIncome);
 
     /** Returns the monthly budget. */
     MonthlyBudget getMonthlyBudget();
@@ -160,4 +172,10 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredFrequentExpenseList(Predicate<FrequentExpense> predicate);
+
+    /**
+     * Updates the filter of the filtered frequent income list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredFrequentIncomeList(Predicate<FrequentIncome> predicate);
 }

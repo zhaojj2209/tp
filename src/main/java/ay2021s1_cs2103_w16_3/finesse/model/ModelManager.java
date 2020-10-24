@@ -155,6 +155,11 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void deleteFrequentIncome(FrequentIncome frequentIncome) {
+        financeTracker.removeFrequentIncome(frequentIncome);
+    }
+
+    @Override
     public void setFrequentExpense(FrequentExpense target, FrequentExpense editedFrequentExpense) {
         requireAllNonNull(target, editedFrequentExpense);
 
@@ -162,10 +167,24 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void setFrequentIncome(FrequentIncome target, FrequentIncome editedFrequentIncome) {
+        requireAllNonNull(target, editedFrequentIncome);
+
+        financeTracker.setFrequentIncome(target, editedFrequentIncome);
+    }
+
+    @Override
     public void updateFilteredFrequentExpenseList(Predicate<FrequentExpense> predicate) {
         requireNonNull(predicate);
 
         filteredFrequentExpenses.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateFilteredFrequentIncomeList(Predicate<FrequentIncome> predicate) {
+        requireNonNull(predicate);
+
+        filteredFrequentIncomes.setPredicate(predicate);
     }
 
     //=========== Budget ===========================================================================================

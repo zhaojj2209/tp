@@ -7,14 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.DuplicateFrequentTransactionException;
-import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.FrequentExpenseNotFoundException;
+import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.FrequentTransactionNotFoundException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
  * A list of frequent expenses that does not allow nulls.
- * The removal of a transaction uses FrequentExpense#equals(Object) so as to ensure that the transaction with exactly
- * the same fields will be removed.
+ * The removal of a frequent expense uses FrequentExpense#equals(Object) so as to ensure that the frequent expense
+ * with exactly the same fields will be removed.
  *
  * Supports a minimal set of list operations.
  */
@@ -53,7 +53,7 @@ public class FrequentExpenseList implements Iterable<FrequentExpense> {
 
         int index = internalFrequentExpenseList.indexOf(target);
         if (index == -1) {
-            throw new FrequentExpenseNotFoundException();
+            throw new FrequentTransactionNotFoundException();
         }
 
         internalFrequentExpenseList.set(index, editedFrequentExpense);
@@ -66,7 +66,7 @@ public class FrequentExpenseList implements Iterable<FrequentExpense> {
     public void remove(FrequentExpense toRemove) {
         requireNonNull(toRemove);
         if (!(internalFrequentExpenseList.remove(toRemove))) {
-            throw new FrequentExpenseNotFoundException();
+            throw new FrequentTransactionNotFoundException();
         }
     }
 
