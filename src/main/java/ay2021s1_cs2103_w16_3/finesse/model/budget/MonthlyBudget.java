@@ -17,7 +17,6 @@ import javafx.collections.ObservableList;
  */
 public class MonthlyBudget {
     private static final Amount ZERO_AMOUNT = new Amount("0");
-    private static final int THIS_MONTH_INDEX = 0;
     private static final String[] MONTHS = new DateFormatSymbols().getMonths();
 
     private ObservableAmount monthlyExpenseLimit;
@@ -167,7 +166,7 @@ public class MonthlyBudget {
      */
     public void calculateBudget() {
         BigDecimal expenseLimit = monthlyExpenseLimit.getAmount().getValue();
-        BigDecimal remainingBudget = expenseLimit.subtract(monthlyExpenses.get(THIS_MONTH_INDEX));
+        BigDecimal remainingBudget = expenseLimit.subtract(monthlyExpenses.get(monthlyExpenses.size() - 1));
         if (remainingBudget.signum() < 0) {
             setRemainingBudget(ZERO_AMOUNT);
             setBudgetDeficit(new Amount(remainingBudget.negate().toString()));
@@ -186,7 +185,7 @@ public class MonthlyBudget {
     public void calculateSavings() {
         monthlySavings.clear();
         for (int i = 0; i < monthlyIncomes.size(); i++) {
-            BigDecimal savings = monthlyIncomes.get(i).subtract(monthlyExpenses.get(THIS_MONTH_INDEX));
+            BigDecimal savings = monthlyIncomes.get(i).subtract(monthlyExpenses.get(i));
             monthlySavings.add(savings);
         }
         BigDecimal thisMonthSavings = monthlySavings.get(monthlyIncomes.size() - 1);
