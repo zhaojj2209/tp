@@ -57,8 +57,11 @@ public class EditCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(transactionToEdit, editedTransaction);
+        if (descriptor.isAmountEdited()) {
+            expectedModel.calculateBudgetInfo();
+        }
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
     }
 
     @Test
@@ -86,8 +89,11 @@ public class EditCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(lastTransaction, editedTransaction);
+        if (descriptor.isAmountEdited()) {
+            expectedModel.calculateBudgetInfo();
+        }
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
     }
 
     @Test

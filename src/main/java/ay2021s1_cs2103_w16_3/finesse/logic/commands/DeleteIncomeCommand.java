@@ -31,7 +31,7 @@ public class DeleteIncomeCommand extends DeleteCommand {
 
         Income incomeToDelete = lastShownList.get(getTargetIndex().getZeroBased());
         model.deleteTransaction(incomeToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_INCOME_SUCCESS, incomeToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_INCOME_SUCCESS, incomeToDelete), true);
     }
 
     @Override

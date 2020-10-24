@@ -48,8 +48,11 @@ public class EditExpenseCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(model.getFilteredExpenseList().get(0), editedExpense);
+        if (descriptor.isAmountEdited()) {
+            expectedModel.calculateBudgetInfo();
+        }
 
-        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
     }
 
     @Test
@@ -71,8 +74,11 @@ public class EditExpenseCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(lastExpense, editedExpense);
+        if (descriptor.isAmountEdited()) {
+            expectedModel.calculateBudgetInfo();
+        }
 
-        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
     }
 
     @Test
@@ -96,16 +102,20 @@ public class EditExpenseCommandTest {
                 .get(INDEX_FIRST.getZeroBased());
         Expense editedExpense =
                 new TransactionBuilder(expenseInFilteredList).withTitle(VALID_TITLE_INTERNSHIP).buildExpense();
-        EditCommandStub superCommand = new EditCommandStub(INDEX_FIRST,
-                new EditTransactionDescriptorBuilder().withTitle(VALID_TITLE_INTERNSHIP).build());
+        EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder()
+                .withTitle(VALID_TITLE_INTERNSHIP).build();
+        EditCommandStub superCommand = new EditCommandStub(INDEX_FIRST, descriptor);
         EditExpenseCommand editExpenseCommand = new EditExpenseCommand(superCommand);
 
         String expectedMessage = String.format(EditExpenseCommand.MESSAGE_EDIT_EXPENSE_SUCCESS, editedExpense);
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(model.getFilteredExpenseList().get(0), editedExpense);
+        if (descriptor.isAmountEdited()) {
+            expectedModel.calculateBudgetInfo();
+        }
 
-        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(editExpenseCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
     }
 
     @Test

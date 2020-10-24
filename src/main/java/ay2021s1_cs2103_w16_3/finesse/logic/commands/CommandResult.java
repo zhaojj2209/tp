@@ -14,6 +14,9 @@ public class CommandResult {
 
     private final String feedbackToUser;
 
+    /** Budget information should be recalculated. */
+    private final boolean calculateBudgetInfo;
+
     /** Help information should be shown to the user. */
     private final boolean showHelp;
 
@@ -31,8 +34,10 @@ public class CommandResult {
      * @param exit Whether the application should exit.
      * @param tabToSwitchTo The tab the UI should switch to.
      */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, Tab tabToSwitchTo) {
+    public CommandResult(String feedbackToUser, boolean calculateBudgetInfo,
+                         boolean showHelp, boolean exit, Tab tabToSwitchTo) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
+        this.calculateBudgetInfo = calculateBudgetInfo;
         this.showHelp = showHelp;
         this.exit = exit;
         this.tabToSwitchTo = Optional.ofNullable(tabToSwitchTo);
@@ -46,8 +51,8 @@ public class CommandResult {
      * @param showHelp Whether the help dialog should be shown to the user.
      * @param exit Whether the application should exit.
      */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, exit, null);
+    public CommandResult(String feedbackToUser, boolean calculateBudgetInfo, boolean showHelp, boolean exit) {
+        this(feedbackToUser, calculateBudgetInfo, showHelp, exit, null);
     }
 
     /**
@@ -58,7 +63,7 @@ public class CommandResult {
      * @param tabToSwitchTo The tab the UI should switch to.
      */
     public CommandResult(String feedbackToUser, Tab tabToSwitchTo) {
-        this(feedbackToUser, false, false, tabToSwitchTo);
+        this(feedbackToUser, false, false, false, tabToSwitchTo);
     }
 
     /**
@@ -68,11 +73,26 @@ public class CommandResult {
      * @param feedbackToUser The feedback to be displayed to the user.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false);
+        this(feedbackToUser, false, false, false);
+    }
+
+    /**
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
+     * the boolean to determine whether budget information should be recalculated,
+     * and other fields set to their default value.
+     *
+     * @param feedbackToUser The feedback to be displayed to the user.
+     */
+    public CommandResult(String feedbackToUser, boolean calculateBudgetInfo) {
+        this(feedbackToUser, calculateBudgetInfo, false, false);
     }
 
     public String getFeedbackToUser() {
         return feedbackToUser;
+    }
+
+    public boolean isCalculateBudgetInfo() {
+        return calculateBudgetInfo;
     }
 
     public boolean isShowHelp() {
@@ -100,6 +120,7 @@ public class CommandResult {
 
         CommandResult otherCommandResult = (CommandResult) other;
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
+                && calculateBudgetInfo == otherCommandResult.calculateBudgetInfo
                 && showHelp == otherCommandResult.showHelp
                 && exit == otherCommandResult.exit
                 && tabToSwitchTo.equals(otherCommandResult.tabToSwitchTo);
@@ -107,7 +128,7 @@ public class CommandResult {
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit, tabToSwitchTo);
+        return Objects.hash(feedbackToUser, calculateBudgetInfo, showHelp, exit, tabToSwitchTo);
     }
 
 }

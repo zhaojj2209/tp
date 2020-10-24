@@ -36,6 +36,11 @@ public class EditCommandStub extends EditCommand {
     }
 
     @Override
+    protected boolean isAmountEdited() {
+        return editTransactionDescriptor.isAmountEdited();
+    }
+
+    @Override
     public CommandResult execute(Model model) {
         throw new AssertionError("This method should not be called.");
     }

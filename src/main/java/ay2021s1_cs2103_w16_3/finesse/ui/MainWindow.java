@@ -193,6 +193,10 @@ public class MainWindow extends UiPart<Stage> {
                 handleExit();
             }
 
+            if (commandResult.isCalculateBudgetInfo()) {
+                logic.calculateBudgetInfo();
+            }
+
             Optional<UiState.Tab> tabToSwitchTo = commandResult.getTabToSwitchTo();
             tabToSwitchTo.ifPresent(this::switchTabs);
 
@@ -213,5 +217,8 @@ public class MainWindow extends UiPart<Stage> {
     private void switchTabs(UiState.Tab tab) {
         requireNonNull(tab);
         tabPane.getSelectionModel().select(tab.getTabIndex().getZeroBased());
+        if (tab.equals(UiState.Tab.OVERVIEW)) {
+            logic.calculateBudgetInfo();
+        }
     }
 }

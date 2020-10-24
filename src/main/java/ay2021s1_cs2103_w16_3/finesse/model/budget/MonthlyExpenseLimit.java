@@ -8,7 +8,14 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 public class MonthlyExpenseLimit extends ObservableAmount {
 
     /**
-     * Constructs a {@code MonthlyExpenseLimit}.
+     * Constructs a {@code MonthlyExpenseLimit} with an amount of $0.
+     */
+    public MonthlyExpenseLimit() {
+        super();
+    }
+
+    /**
+     * Constructs a {@code MonthlyExpenseLimit} with the specified limit.
      *
      * @param limit A valid limit.
      */

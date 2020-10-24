@@ -76,6 +76,10 @@ public class EditCommand extends Command {
         return editTransactionDescriptor;
     }
 
+    protected boolean isAmountEdited() {
+        return editTransactionDescriptor.isAmountEdited();
+    }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -90,7 +94,7 @@ public class EditCommand extends Command {
 
         model.setTransaction(transactionToEdit, editedTransaction);
         model.updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction));
+        return new CommandResult(String.format(MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction), isAmountEdited());
     }
 
     /**
@@ -161,6 +165,13 @@ public class EditCommand extends Command {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(title, amount, date, categories);
+        }
+
+        /**
+         * Returns true if at least one field is edited.
+         */
+        public boolean isAmountEdited() {
+            return amount != null;
         }
 
         public void setTitle(Title title) {

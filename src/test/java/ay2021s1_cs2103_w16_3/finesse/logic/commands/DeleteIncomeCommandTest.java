@@ -38,7 +38,7 @@ public class DeleteIncomeCommandTest {
         ModelManager expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.deleteTransaction(incomeToDelete);
 
-        assertCommandSuccess(deleteIncomeCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteIncomeCommand, model, expectedMessage, expectedModel, true);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DeleteIncomeCommandTest {
         expectedModel.deleteTransaction(incomeToDelete);
         showNoIncomes(expectedModel);
 
-        assertCommandSuccess(deleteIncomeCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteIncomeCommand, model, expectedMessage, expectedModel, true);
     }
 
     @Test

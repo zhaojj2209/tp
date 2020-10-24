@@ -8,7 +8,14 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 public class MonthlySavingsGoal extends ObservableAmount {
 
     /**
-     * Constructs a {@code MonthlySavingsGoal}.
+     * Constructs a {@code MonthlySavingsGoal} with an amount of $0.
+     */
+    public MonthlySavingsGoal() {
+        super();
+    }
+
+    /**
+     * Constructs a {@code MonthlySavingsGoal} with the specified goal.
      *
      * @param goal A valid goal.
      */

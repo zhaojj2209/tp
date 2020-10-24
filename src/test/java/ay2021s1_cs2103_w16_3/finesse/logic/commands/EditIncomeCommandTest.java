@@ -48,8 +48,11 @@ public class EditIncomeCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(model.getFilteredIncomeList().get(0), editedIncome);
+        if (descriptor.isAmountEdited()) {
+            expectedModel.calculateBudgetInfo();
+        }
 
-        assertCommandSuccess(editIncomeCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(editIncomeCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
     }
 
     @Test
@@ -71,8 +74,11 @@ public class EditIncomeCommandTest {
 
         Model expectedModel = new ModelManager(new FinanceTracker(model.getFinanceTracker()), new UserPrefs());
         expectedModel.setTransaction(lastIncome, editedIncome);
+        if (descriptor.isAmountEdited()) {
+            expectedModel.calculateBudgetInfo();
+        }
 
-        assertCommandSuccess(editIncomeCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(editIncomeCommand, model, expectedMessage, expectedModel, descriptor.isAmountEdited());
     }
 
     @Test

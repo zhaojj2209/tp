@@ -38,7 +38,7 @@ public class DeleteExpenseCommandTest {
         ModelManager expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.deleteTransaction(expenseToDelete);
 
-        assertCommandSuccess(deleteExpenseCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteExpenseCommand, model, expectedMessage, expectedModel, true);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DeleteExpenseCommandTest {
         expectedModel.deleteTransaction(expenseToDelete);
         showNoExpenses(expectedModel);
 
-        assertCommandSuccess(deleteExpenseCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteExpenseCommand, model, expectedMessage, expectedModel, true);
     }
 
     @Test

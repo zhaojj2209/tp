@@ -15,7 +15,14 @@ public abstract class ObservableAmount {
     private final ObjectProperty<Amount> observableAmount;
 
     /**
-     * Constructs a {@code ObservableAmount}.
+     * Constructs a {@code ObservableAmount} with an amount of $0.
+     */
+    public ObservableAmount() {
+        observableAmount = new SimpleObjectProperty<>(new Amount("0"));
+    }
+
+    /**
+     * Constructs a {@code ObservableAmount} with the specified amount.
      *
      * @param amount A valid amount.
      */
