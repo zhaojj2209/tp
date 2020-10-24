@@ -41,7 +41,7 @@ public class ConvertFrequentIncomeCommandTest {
         String expectedMessage = String.format(ConvertFrequentIncomeCommand.MESSAGE_CONVERT_FREQUENT_INCOME_SUCCESS,
                 convertedIncome);
 
-        assertCommandSuccess(convertFrequentIncomeCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(convertFrequentIncomeCommand, model, expectedMessage, expectedModel, true);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ConvertFrequentIncomeCommandTest {
         String expectedMessage = String.format(ConvertFrequentIncomeCommand.MESSAGE_CONVERT_FREQUENT_INCOME_SUCCESS,
                 convertedIncome);
 
-        assertCommandSuccess(convertFrequentIncomeCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(convertFrequentIncomeCommand, model, expectedMessage, expectedModel, true);
     }
 
     @Test

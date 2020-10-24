@@ -55,7 +55,7 @@ public class ConvertFrequentIncomeCommand extends Command {
         FrequentIncome frequentIncomeToBeConverted = lastShownList.get(targetIndex.getZeroBased());
         Income newIncomeToAdd = frequentIncomeToBeConverted.convert(date);
         model.addIncome(newIncomeToAdd);
-        return new CommandResult(String.format(MESSAGE_CONVERT_FREQUENT_INCOME_SUCCESS, newIncomeToAdd));
+        return new CommandResult(String.format(MESSAGE_CONVERT_FREQUENT_INCOME_SUCCESS, newIncomeToAdd), true);
     }
 
     @Override
