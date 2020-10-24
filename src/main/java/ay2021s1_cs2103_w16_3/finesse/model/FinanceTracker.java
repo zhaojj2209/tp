@@ -180,7 +180,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     }
 
     public void calculateBudgetInfo() {
-        monthlyBudget.calculateRemainingBudget(transactions);
+        monthlyBudget.calculateBudgetInfo(transactions);
     }
 
     //// util methods

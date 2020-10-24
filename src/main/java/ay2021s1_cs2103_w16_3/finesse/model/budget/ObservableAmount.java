@@ -2,6 +2,8 @@ package ay2021s1_cs2103_w16_3.finesse.model.budget;
 
 import static java.util.Objects.requireNonNull;
 
+import java.math.BigDecimal;
+
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -10,7 +12,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * An abstract class representing currency values.
  * Guarantees: mutable; has a valid Amount that is being observed
  */
-public abstract class ObservableAmount {
+public class ObservableAmount {
 
     private final ObjectProperty<Amount> observableAmount;
 
@@ -41,6 +43,10 @@ public abstract class ObservableAmount {
 
     public Amount getAmount() {
         return observableAmount.get();
+    }
+
+    public BigDecimal getAmountValue() {
+        return getAmount().getValue();
     }
 
     @Override

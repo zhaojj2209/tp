@@ -78,7 +78,7 @@ public class CommandResult {
 
     /**
      * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
-     * the boolean to determine whether budget information should be recalculated,
+     * the specified boolean to determine whether budget information should be recalculated,
      * and other fields set to their default value.
      *
      * @param feedbackToUser The feedback to be displayed to the user.

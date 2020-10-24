@@ -30,6 +30,6 @@ public class SetSavingsGoalCommandTest {
         ModelManager expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.setSavingsGoal(amountToSet);
 
-        assertCommandSuccess(setSavingsGoalCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(setSavingsGoalCommand, model, expectedMessage, expectedModel, true);
     }
 }

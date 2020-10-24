@@ -168,7 +168,7 @@ public class EditCommand extends Command {
         }
 
         /**
-         * Returns true if at least one field is edited.
+         * Returns true if the amount is edited.
          */
         public boolean isAmountEdited() {
             return amount != null;

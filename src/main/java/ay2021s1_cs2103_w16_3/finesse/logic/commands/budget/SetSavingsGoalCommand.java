@@ -36,7 +36,7 @@ public class SetSavingsGoalCommand extends Command {
         requireNonNull(model);
 
         model.setSavingsGoal(amount);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, amount));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, amount), true);
     }
 
     @Override

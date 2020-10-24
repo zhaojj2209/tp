@@ -87,6 +87,7 @@ class JsonSerializableFinanceTracker {
         }
         MonthlyBudget budget = monthlyBudget.toModelType();
         financeTracker.setMonthlyBudget(budget);
+        financeTracker.calculateBudgetInfo();
         return financeTracker;
     }
 

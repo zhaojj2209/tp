@@ -20,6 +20,12 @@ public class SavingsGoalPanel extends UiPart<Region> {
     private Label monthlySavingsGoal;
     @FXML
     private Label remainingBudget;
+    @FXML
+    private Label currentSavings;
+    @FXML
+    private Label budgetDeficit;
+    @FXML
+    private Label savingsDeficit;
 
     /**
      * Constructor of SavingsGoalPanel.
@@ -41,8 +47,26 @@ public class SavingsGoalPanel extends UiPart<Region> {
                                 "Remaining Budget: %s",
                                 monthlyBudget.getRemainingBudget().getAmount().toString()),
                 monthlyBudget.getRemainingBudget().getObservableAmount());
+        StringBinding currentSavingsBinding = Bindings.createStringBinding(() ->
+                        String.format(
+                                "Current Savings: %s",
+                                monthlyBudget.getCurrentSavings().getAmount().toString()),
+                monthlyBudget.getCurrentSavings().getObservableAmount());
+        StringBinding budgetDeficitBinding = Bindings.createStringBinding(() ->
+                        String.format(
+                                "Budget Deficit: %s",
+                                monthlyBudget.getBudgetDeficit().getAmount().toString()),
+                monthlyBudget.getBudgetDeficit().getObservableAmount());
+        StringBinding savingsDeficitBinding = Bindings.createStringBinding(() ->
+                        String.format(
+                                "Savings Deficit: %s",
+                                monthlyBudget.getSavingsDeficit().getAmount().toString()),
+                monthlyBudget.getSavingsDeficit().getObservableAmount());
         monthlyExpenseLimit.textProperty().bind(expenseLimitBinding);
         monthlySavingsGoal.textProperty().bind(savingsGoalBinding);
         remainingBudget.textProperty().bind(monthlyBudgetBinding);
+        currentSavings.textProperty().bind(currentSavingsBinding);
+        budgetDeficit.textProperty().bind(budgetDeficitBinding);
+        savingsDeficit.textProperty().bind(savingsDeficitBinding);
     }
 }
