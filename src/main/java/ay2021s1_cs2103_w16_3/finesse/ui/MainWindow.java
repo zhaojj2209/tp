@@ -125,7 +125,7 @@ public class MainWindow extends UiPart<Stage> {
                 new ExpenseTabPane(logic.getFilteredExpenseList(), logic.getFilteredFrequentExpenseList());
         expenseTab.setContent(expenseTabPane.getRoot());
 
-        AnalyticsTabPane analyticsTabPane = new AnalyticsTabPane();
+        AnalyticsTabPane analyticsTabPane = new AnalyticsTabPane(logic.getMonthlyBudget());
         analyticsTab.setContent(analyticsTabPane.getRoot());
 
         SelectionModel<Tab> selectionModel = tabPane.getSelectionModel();

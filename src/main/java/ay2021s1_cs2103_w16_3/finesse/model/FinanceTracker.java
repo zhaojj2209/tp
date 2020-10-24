@@ -22,6 +22,8 @@ import javafx.collections.ObservableList;
  */
 public class FinanceTracker implements ReadOnlyFinanceTracker {
 
+    private static final int NUM_OF_MONTHS = 3;
+
     private final TransactionList transactions;
     private final FrequentExpenseList frequentExpenses;
     private final FrequentIncomeList frequentIncomes;
@@ -180,7 +182,7 @@ public class FinanceTracker implements ReadOnlyFinanceTracker {
     }
 
     public void calculateBudgetInfo() {
-        monthlyBudget.calculateBudgetInfo(transactions);
+        monthlyBudget.calculateBudgetInfo(transactions, NUM_OF_MONTHS);
     }
 
     //// util methods

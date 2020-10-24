@@ -2,17 +2,21 @@ package ay2021s1_cs2103_w16_3.finesse.model.budget;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TransactionList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Represents the monthly budget in the finance tracker.
  */
 public class MonthlyBudget {
     private static final Amount ZERO_AMOUNT = new Amount("0");
+    private static final int THIS_MONTH_INDEX = 0;
 
     private ObservableAmount monthlyExpenseLimit;
     private ObservableAmount monthlySavingsGoal;
@@ -20,8 +24,9 @@ public class MonthlyBudget {
     private ObservableAmount currentSavings;
     private ObservableAmount budgetDeficit;
     private ObservableAmount savingsDeficit;
-    private BigDecimal totalExpenses;
-    private BigDecimal totalIncomes;
+    private ObservableList<BigDecimal> monthlyExpenses;
+    private ObservableList<BigDecimal> monthlyIncomes;
+    private ObservableList<BigDecimal> monthlySavings;
 
     /**
      * Creates a {@code MonthlyBudget} with an expense limit and savings goal of $0.
@@ -33,8 +38,9 @@ public class MonthlyBudget {
         currentSavings = new ObservableAmount();
         budgetDeficit = new ObservableAmount();
         savingsDeficit = new ObservableAmount();
-        totalExpenses = BigDecimal.ZERO;
-        totalIncomes = BigDecimal.ZERO;
+        monthlyExpenses = FXCollections.observableArrayList();
+        monthlyIncomes = FXCollections.observableArrayList();
+        monthlySavings = FXCollections.observableArrayList();
     }
 
     public ObservableAmount getMonthlyExpenseLimit() {
@@ -85,31 +91,51 @@ public class MonthlyBudget {
         savingsDeficit.setValue(deficit);
     }
 
+    public ObservableList<BigDecimal> getMonthlyExpenses() {
+        return FXCollections.unmodifiableObservableList(monthlyExpenses);
+    }
+
+    public ObservableList<BigDecimal> getMonthlyIncomes() {
+        return FXCollections.unmodifiableObservableList(monthlyIncomes);
+    }
+
+    public ObservableList<BigDecimal> getMonthlySavings() {
+        return FXCollections.unmodifiableObservableList(monthlySavings);
+    }
+
     /**
      * Calculates all information related to the user's savings.
      * These are:
-     * 1. Remaining budget for this month
-     * 2. Amount saved for this month currently
-     * 3. Budget deficit (if remaining budget is negative)
-     * 4. Savings deficit (if amount saved is negative)
+     * 1. Expenses for the past number of months specified by the user
+     * 2. Incomes for the past number of months specified by user
+     * 3. Savings for the past number of months specified by user
      *
      * @param transactions The current list of transactions.
      */
-    public void calculateBudgetInfo(TransactionList transactions) {
-        totalExpenses = BigDecimal.ZERO;
-        totalIncomes = BigDecimal.ZERO;
+    public void calculateBudgetInfo(TransactionList transactions, int numOfMonths) {
+        this.monthlyExpenses.clear();
+        this.monthlyIncomes.clear();
         int thisMonth = LocalDate.now().getMonthValue();
+        BigDecimal[] monthlyExpenses = new BigDecimal[numOfMonths];
+        BigDecimal[] monthlyIncomes = new BigDecimal[numOfMonths];
+        Arrays.fill(monthlyExpenses, BigDecimal.ZERO);
+        Arrays.fill(monthlyIncomes, BigDecimal.ZERO);
         for (Transaction transaction: transactions) {
-            if (transaction.getDate().getDate().getMonthValue() == thisMonth) {
+            int monthsBeforeToday = thisMonth - transaction.getDateValue().getMonthValue();
+            if (monthsBeforeToday < numOfMonths) {
                 if (transaction instanceof Expense) {
-                    totalExpenses = totalExpenses.add(transaction.getAmount().getValue());
+                    monthlyExpenses[monthsBeforeToday] =
+                            monthlyExpenses[monthsBeforeToday].add(transaction.getAmount().getValue());
                 } else {
-                    totalIncomes = totalIncomes.add(transaction.getAmount().getValue());
+                    monthlyIncomes[monthsBeforeToday] =
+                            monthlyIncomes[monthsBeforeToday].add(transaction.getAmount().getValue());
                 }
             }
         }
-        calculateRemainingBudget();
-        calculateCurrentSavings();
+        this.monthlyExpenses.addAll(Arrays.asList(monthlyExpenses));
+        this.monthlyIncomes.addAll(Arrays.asList(monthlyIncomes));
+        calculateBudget();
+        calculateSavings();
     }
 
     /**
@@ -119,9 +145,9 @@ public class MonthlyBudget {
      * 2. For each expense in the list of transactions, deduct its amount from the remaining budget.
      * 3. The minimum remaining budget is capped at 0.
      */
-    public void calculateRemainingBudget() {
+    public void calculateBudget() {
         BigDecimal expenseLimit = monthlyExpenseLimit.getAmount().getValue();
-        BigDecimal remainingBudget = expenseLimit.subtract(totalExpenses);
+        BigDecimal remainingBudget = expenseLimit.subtract(monthlyExpenses.get(THIS_MONTH_INDEX));
         if (remainingBudget.signum() < 0) {
             setRemainingBudget(ZERO_AMOUNT);
             setBudgetDeficit(new Amount(remainingBudget.negate().toString()));
@@ -138,13 +164,18 @@ public class MonthlyBudget {
      * 2. For each expense in the list of transactions, deduct its amount from the remaining budget.
      * 3. The minimum remaining budget is capped at 0.
      */
-    public void calculateCurrentSavings() {
-        BigDecimal savings = totalIncomes.subtract(totalExpenses);
-        if (savings.signum() < 0) {
+    public void calculateSavings() {
+        monthlySavings.clear();
+        for (int i = 0; i < monthlyIncomes.size(); i++) {
+            BigDecimal savings = monthlyIncomes.get(i).subtract(monthlyExpenses.get(THIS_MONTH_INDEX));
+            monthlySavings.add(savings);
+        }
+        BigDecimal thisMonthSavings = monthlySavings.get(0);
+        if (thisMonthSavings.signum() < 0) {
             setCurrentSavings(ZERO_AMOUNT);
-            setSavingsDeficit(new Amount(savings.negate().toString()));
+            setSavingsDeficit(new Amount(thisMonthSavings.negate().toString()));
         } else {
-            setCurrentSavings(new Amount(savings.toString()));
+            setCurrentSavings(new Amount(thisMonthSavings.toString()));
             setSavingsDeficit(ZERO_AMOUNT);
         }
     }
