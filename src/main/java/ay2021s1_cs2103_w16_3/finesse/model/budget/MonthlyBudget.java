@@ -137,11 +137,13 @@ public class MonthlyBudget {
             int monthsBeforeToday = thisMonthValue - transaction.getDateValue().getMonthValue();
             if (monthsBeforeToday < numOfMonths) {
                 if (transaction instanceof Expense) {
-                    monthlyExpenses[monthsBeforeToday] =
-                            monthlyExpenses[monthsBeforeToday].add(transaction.getAmount().getValue());
+                    monthlyExpenses[numOfMonths - 1 - monthsBeforeToday] =
+                            monthlyExpenses[numOfMonths - 1 - monthsBeforeToday]
+                                    .add(transaction.getAmount().getValue());
                 } else {
-                    monthlyIncomes[monthsBeforeToday] =
-                            monthlyIncomes[monthsBeforeToday].add(transaction.getAmount().getValue());
+                    monthlyIncomes[numOfMonths - 1 - monthsBeforeToday] =
+                            monthlyIncomes[numOfMonths - 1 - monthsBeforeToday]
+                                    .add(transaction.getAmount().getValue());
                 }
             }
         }
@@ -149,8 +151,8 @@ public class MonthlyBudget {
         this.monthlyExpenses.addAll(Arrays.asList(monthlyExpenses));
         this.monthlyIncomes.addAll(Arrays.asList(monthlyIncomes));
 
-        for (int i = 0; i < numOfMonths; i++) {
-            months.add(MONTHS[thisMonthValue - i - 1]);
+        for (int i = numOfMonths; i > 0; i--) {
+            months.add(MONTHS[thisMonthValue - i]);
         }
 
         calculateBudget();
@@ -187,7 +189,7 @@ public class MonthlyBudget {
             BigDecimal savings = monthlyIncomes.get(i).subtract(monthlyExpenses.get(THIS_MONTH_INDEX));
             monthlySavings.add(savings);
         }
-        BigDecimal thisMonthSavings = monthlySavings.get(0);
+        BigDecimal thisMonthSavings = monthlySavings.get(monthlyIncomes.size() - 1);
         if (thisMonthSavings.signum() < 0) {
             setCurrentSavings(ZERO_AMOUNT);
             setSavingsDeficit(new Amount(thisMonthSavings.negate().toString()));
