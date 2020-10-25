@@ -29,8 +29,7 @@ If you want to better manage your finances while cultivating good financial habi
 Explore our User Guide to find out more about Fine\$\$e’s amazing features.
 
 ### 1.2 Navigating the User Guide
-
-The aim of the User Guide is to provide you with all of the necessary information required for you to utilize Fine$$e.
+The aim of the User Guide is to provide you with all the necessary information required for you to utilize Fine$$e.
 We understand that a Command Line Interface (CLI) might not be the easiest to use, hence we have ensured that the information provided is concise and easily readable.
 
 If you require help on setting up Fine$$e, you can go to [Section 2. "Quick Start"](#2-quick-start).
@@ -285,19 +284,19 @@ Deleted Expense: Bubble Tea Amount: $4.80 Date: 14/10/2020 Categories: [Food & B
 #### 4.3.4 List Expense
 
 Shows a list of all the expenses in the finance tracker.
+This effectively resets any current filtering of the expense list, such as those made by `find`.
 
-Format:
-
-Shortcut:
-
-[Description of parameters]
-
-Examples:
+Format: (when on the [Expenses tab](#)) `list`
 
 Example Usage:
+```
+list
+```
 
 Expected Outcome:
-
+```
+Listed all expenses.
+```
 
 #### 4.3.5 Find Expense
 
@@ -422,18 +421,20 @@ Deleted Income: Teaching Assistant Amount: $1920.00 Date: 18/10/2020 Categories:
 #### 4.4.4 List Income
 
 Shows a list of all the incomes in the finance tracker.
+This effectively resets any current filtering of the income list, such as those made by `find`.
 
-Format:
-
-Shortcut:
-
-[Description of parameters]
-
-Examples:
+Format: (when on the [Income tab](#)) `list`
 
 Example Usage:
+```
+list
+```
 
 Expected Outcome:
+```
+Listed all incomes.
+```
+
 
 #### 4.4.5 Find Income
 
@@ -658,9 +659,17 @@ New monthly savings goal set: $50.00
 
 ### 4.9 Analytics
 
-[Summary of feature]
+Want to see your spending/saving trends?
+The Analytics feature will allow you to view a variety of trends based on the incomes/expenses you have entered into the Finance Tracker.
+These analytics will give you a better overview and help you better understand your incomes/expenses and make the targeted changes to your habits if need be.
 
-[Sub section for your commands]
+There are three bar charts that show the following data over the past three months:
+* Total monthly expenses
+* Total monthly incomes
+* Total monthly savings
+
+The data in the bar charts are automatically updated to include any recent modifications you have made in the Finance Tracker every time you switch to the [Analytics Tab]().
+This will ensure that you will always see the latest information about your spending and saving trends.
 
 ### 4.10 Exiting the Program
 Exits the program.
@@ -698,5 +707,6 @@ Exit | `exit`
 
 ## 7. FAQ
 
-**Q**: How do I transfer my data to another Computer?<br>
+**Q**: How do I transfer my data to another Computer?
+
 **A**: Install the app on the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Fine$$e finance tracker in the home folder.
