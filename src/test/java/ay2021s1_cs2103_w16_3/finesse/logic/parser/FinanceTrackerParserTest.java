@@ -7,8 +7,10 @@ import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalIndexes.INDEX_FIRST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionUtil;
@@ -270,35 +273,41 @@ public class FinanceTrackerParserTest {
     public void parseCommand_findWhenOverviewTab() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream()
-                        .collect(Collectors.joining(" ")), overviewUiStateStub);
-        assertEquals(new FindCommand(new TitleContainsKeywordsPredicate(keywords)), command);
+                FindCommand.COMMAND_WORD + " t/" + keywords.stream()
+                        .collect(Collectors.joining(" t/")), overviewUiStateStub);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(new TitleContainsKeywordsPredicate(keywords));
+        assertEquals(new FindCommand(predicateList), command);
     }
 
     @Test
     public void parseCommand_findWhenIncomeTab() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream()
-                        .collect(Collectors.joining(" ")), incomeUiStateStub);
-        assertEquals(new FindCommand(new TitleContainsKeywordsPredicate(keywords)), command);
+                FindCommand.COMMAND_WORD + " t/" + keywords.stream()
+                        .collect(Collectors.joining(" t/")), incomeUiStateStub);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(new TitleContainsKeywordsPredicate(keywords));
+        assertEquals(new FindCommand(predicateList), command);
     }
 
     @Test
     public void parseCommand_findWhenExpensesTab() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream()
-                        .collect(Collectors.joining(" ")), expensesUiStateStub);
-        assertEquals(new FindCommand(new TitleContainsKeywordsPredicate(keywords)), command);
+                FindCommand.COMMAND_WORD + " t/" + keywords.stream()
+                        .collect(Collectors.joining(" t/")), expensesUiStateStub);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(new TitleContainsKeywordsPredicate(keywords));
+        assertEquals(new FindCommand(predicateList), command);
     }
 
     @Test
     public void parseCommand_findWhenAnalyticsTab() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         assertThrows(ParseException.class, () -> parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream()
-                        .collect(Collectors.joining(" ")), analyticsUiStateStub));
+                FindCommand.COMMAND_WORD + " t/" + keywords.stream()
+                        .collect(Collectors.joining(" t/")), analyticsUiStateStub));
     }
 
     @Test

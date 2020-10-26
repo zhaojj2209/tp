@@ -277,6 +277,32 @@ public class ModelManager implements Model {
         refreshTransactionLists();
     }
 
+    @Override
+    public void updateFilteredTransactionList(List<Predicate<Transaction>> predicates) {
+        requireNonNull(predicates);
+        Predicate<Transaction> combinedPredicate = predicates.stream()
+                .reduce(PREDICATE_SHOW_ALL_TRANSACTIONS, Predicate::and);
+        filteredTransactions.setPredicate(combinedPredicate);
+    }
+
+    @Override
+    public void updateFilteredExpenseList(List<Predicate<Transaction>> predicates) {
+        requireNonNull(predicates);
+        Predicate<Transaction> combinedPredicate = predicates.stream()
+                .reduce(PREDICATE_SHOW_ALL_EXPENSES, Predicate::and);
+        filteredExpenses.setPredicate(combinedPredicate);
+        refreshTransactionLists();
+    }
+
+    @Override
+    public void updateFilteredIncomeList(List<Predicate<Transaction>> predicates) {
+        requireNonNull(predicates);
+        Predicate<Transaction> combinedPredicate = predicates.stream()
+                .reduce(PREDICATE_SHOW_ALL_INCOMES, Predicate::and);
+        filteredIncomes.setPredicate(combinedPredicate);
+        refreshTransactionLists();
+    }
+
     /**
      * Casts a FilteredList into a List of the filtered subtype.
      * Precondition: The given FilteredList must be either the expense list or income list.

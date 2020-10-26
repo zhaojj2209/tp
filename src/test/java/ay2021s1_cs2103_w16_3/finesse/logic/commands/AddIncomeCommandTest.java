@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -221,6 +222,21 @@ public class AddIncomeCommandTest {
 
         @Override
         public void updateFilteredIncomeList(Predicate<Transaction> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredTransactionList(List<Predicate<Transaction>> predicates) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredExpenseList(List<Predicate<Transaction>> predicates) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredIncomeList(List<Predicate<Transaction>> predicates) {
             throw new AssertionError("This method should not be called.");
         }
 

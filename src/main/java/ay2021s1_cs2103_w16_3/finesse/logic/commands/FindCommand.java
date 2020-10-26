@@ -2,9 +2,12 @@ package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 import ay2021s1_cs2103_w16_3.finesse.commons.core.Messages;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
  * Finds and lists all transactions in the finance tracker whose title contains any of the argument keywords
@@ -26,20 +29,20 @@ public class FindCommand extends Command {
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
-    private final TitleContainsKeywordsPredicate predicate;
+    private final List<Predicate<Transaction>> predicates;
 
-    public FindCommand(TitleContainsKeywordsPredicate predicate) {
-        this.predicate = predicate;
+    public FindCommand(List<Predicate<Transaction>> predicates) {
+        this.predicates = predicates;
     }
 
-    protected TitleContainsKeywordsPredicate getPredicate() {
-        return predicate;
+    protected List<Predicate<Transaction>> getPredicates() {
+        return predicates;
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredTransactionList(predicate);
+        model.updateFilteredTransactionList(predicates);
         return new CommandResult(
                 String.format(Messages.MESSAGE_TRANSACTIONS_LISTED_OVERVIEW,
                         model.getFilteredTransactionList().size()));
@@ -49,6 +52,6 @@ public class FindCommand extends Command {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof FindCommand // instanceof handles nulls
-                && predicate.equals(((FindCommand) other).predicate)); // state check
+                && predicates.equals(((FindCommand) other).predicates)); // state check
     }
 }

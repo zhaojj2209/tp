@@ -13,13 +13,13 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 public class FindTransactionCommand extends FindCommand {
 
     public FindTransactionCommand(FindCommand superCommand) {
-        super(superCommand.getPredicate());
+        super(superCommand.getPredicates());
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredTransactionList(getPredicate());
+        model.updateFilteredTransactionList(getPredicates());
         return new CommandResult(
                 String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW,
                         model.getFilteredTransactionList().size()));
@@ -29,6 +29,6 @@ public class FindTransactionCommand extends FindCommand {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof FindTransactionCommand // instanceof handles nulls
-                && getPredicate().equals(((FindTransactionCommand) other).getPredicate())); // state check
+                && getPredicates().equals(((FindTransactionCommand) other).getPredicates())); // state check
     }
 }

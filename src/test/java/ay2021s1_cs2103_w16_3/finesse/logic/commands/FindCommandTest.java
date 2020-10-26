@@ -13,8 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +25,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
 /**
@@ -37,15 +41,21 @@ public class FindCommandTest {
                 new TitleContainsKeywordsPredicate(Collections.singletonList("first"));
         TitleContainsKeywordsPredicate secondPredicate =
                 new TitleContainsKeywordsPredicate(Collections.singletonList("second"));
+        List<Predicate<Transaction>> firstPredicateList = new ArrayList<>();
+        firstPredicateList.add(firstPredicate);
+        List<Predicate<Transaction>> secondPredicateList = new ArrayList<>();
+        secondPredicateList.add(secondPredicate);
 
-        FindCommand findFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findSecondCommand = new FindCommand(secondPredicate);
+        FindCommand findFirstCommand = new FindCommand(firstPredicateList);
+        FindCommand findSecondCommand = new FindCommand(secondPredicateList);
 
         // same object -> returns true
         assertTrue(findFirstCommand.equals(findFirstCommand));
 
+        List<Predicate<Transaction>> firstPredicateListCopy = new ArrayList<>();
+        firstPredicateListCopy.add(firstPredicate);
         // same values -> returns true
-        FindCommand findFirstCommandCopy = new FindCommand(firstPredicate);
+        FindCommand findFirstCommandCopy = new FindCommand(firstPredicateListCopy);
         assertTrue(findFirstCommand.equals(findFirstCommandCopy));
 
         // different types -> returns false
@@ -62,8 +72,10 @@ public class FindCommandTest {
     public void execute_zeroKeywords_noTransactionsFound() {
         String expectedMessage = String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW, 0);
         TitleContainsKeywordsPredicate predicate = preparePredicate(" ");
-        FindCommand command = new FindCommand(predicate);
-        expectedModel.updateFilteredTransactionList(predicate);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(predicate);
+        FindCommand command = new FindCommand(predicateList);
+        expectedModel.updateFilteredTransactionList(predicateList);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredTransactionList());
     }
@@ -72,17 +84,19 @@ public class FindCommandTest {
     public void execute_multipleKeywords_multipleTransactionsFound() {
         String expectedMessage = String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW, 6);
         TitleContainsKeywordsPredicate predicate = preparePredicate("gst carl's artificial internship pen teaching");
-        FindCommand command = new FindCommand(predicate);
-        expectedModel.updateFilteredTransactionList(predicate);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(predicate);
+        FindCommand command = new FindCommand(predicateList);
+        expectedModel.updateFilteredTransactionList(predicateList);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         // Ordered by date, then by title.
         assertEquals(Arrays.asList(
-                new TransactionBuilder(TEACHING_ASSISTANT).buildIncome(),
                 new TransactionBuilder(AIMA).buildExpense(),
                 new TransactionBuilder(CARLS_JR).buildExpense(),
                 new TransactionBuilder(GST_VOUCHER).buildIncome(),
                 new TransactionBuilder(INTERNSHIP).buildIncome(),
-                new TransactionBuilder(PEN_REFILLS).buildExpense()
+                new TransactionBuilder(PEN_REFILLS).buildExpense(),
+                new TransactionBuilder(TEACHING_ASSISTANT).buildIncome()
         ), model.getFilteredTransactionList());
     }
 

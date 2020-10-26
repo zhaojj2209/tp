@@ -10,8 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +23,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindExpenseCommand}.
@@ -34,35 +38,40 @@ public class FindExpenseCommandTest {
                 new TitleContainsKeywordsPredicate(Collections.singletonList("first"));
         TitleContainsKeywordsPredicate secondPredicate =
                 new TitleContainsKeywordsPredicate(Collections.singletonList("second"));
+        List<Predicate<Transaction>> firstPredicateList = new ArrayList<>();
+        firstPredicateList.add(firstPredicate);
+        List<Predicate<Transaction>> secondPredicateList = new ArrayList<>();
+        secondPredicateList.add(secondPredicate);
 
-        FindCommandStub firstSuperCommand = new FindCommandStub(firstPredicate);
-        FindExpenseCommand firstFindExpenseCommand = new FindExpenseCommand(firstSuperCommand);
-        FindCommandStub secondSuperCommand = new FindCommandStub(secondPredicate);
-        FindExpenseCommand secondFindExpenseCommand = new FindExpenseCommand(secondSuperCommand);
+        FindCommand findFirstCommand = new FindCommand(firstPredicateList);
+        FindCommand findSecondCommand = new FindCommand(secondPredicateList);
 
         // same object -> returns true
-        assertTrue(firstFindExpenseCommand.equals(firstFindExpenseCommand));
+        assertTrue(findFirstCommand.equals(findFirstCommand));
 
+        List<Predicate<Transaction>> firstPredicateListCopy = new ArrayList<>();
+        firstPredicateListCopy.add(firstPredicate);
         // same values -> returns true
-        FindCommandStub firstSuperCommandCopy = new FindCommandStub(firstPredicate);
-        FindExpenseCommand firstFindExpenseCommandCopy = new FindExpenseCommand(firstSuperCommandCopy);
-        assertTrue(firstFindExpenseCommand.equals(firstFindExpenseCommandCopy));
+        FindCommand findFirstCommandCopy = new FindCommand(firstPredicateListCopy);
+        assertTrue(findFirstCommand.equals(findFirstCommandCopy));
 
         // different types -> returns false
-        assertFalse(firstFindExpenseCommand.equals(1));
+        assertFalse(findFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(firstFindExpenseCommand.equals(null));
+        assertFalse(findFirstCommand.equals(null));
 
         // different predicates -> returns false
-        assertFalse(firstFindExpenseCommand.equals(secondFindExpenseCommand));
+        assertFalse(findFirstCommand.equals(findSecondCommand));
     }
 
     @Test
     public void execute_zeroKeywords_noExpensesFound() {
         String expectedMessage = String.format(MESSAGE_EXPENSES_LISTED_OVERVIEW, 0);
         TitleContainsKeywordsPredicate predicate = preparePredicate(" ");
-        FindCommandStub superCommand = new FindCommandStub(predicate);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(predicate);
+        FindCommandStub superCommand = new FindCommandStub(predicateList);
         FindExpenseCommand findExpenseCommand = new FindExpenseCommand(superCommand);
         expectedModel.updateFilteredExpenseList(predicate);
         assertCommandSuccess(findExpenseCommand, model, expectedMessage, expectedModel);
@@ -73,7 +82,9 @@ public class FindExpenseCommandTest {
     public void execute_multipleKeywords_multipleExpensesFound() {
         String expectedMessage = String.format(MESSAGE_EXPENSES_LISTED_OVERVIEW, 3);
         TitleContainsKeywordsPredicate predicate = preparePredicate("carl's artificial pen");
-        FindCommandStub superCommand = new FindCommandStub(predicate);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(predicate);
+        FindCommandStub superCommand = new FindCommandStub(predicateList);
         FindExpenseCommand findExpenseCommand = new FindExpenseCommand(superCommand);
         expectedModel.updateFilteredExpenseList(predicate);
         assertCommandSuccess(findExpenseCommand, model, expectedMessage, expectedModel);

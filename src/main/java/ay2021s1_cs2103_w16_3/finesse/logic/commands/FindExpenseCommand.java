@@ -13,13 +13,13 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 public class FindExpenseCommand extends FindCommand {
 
     public FindExpenseCommand(FindCommand superCommand) {
-        super(superCommand.getPredicate());
+        super(superCommand.getPredicates());
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredExpenseList(getPredicate());
+        model.updateFilteredExpenseList(getPredicates());
         return new CommandResult(
                 String.format(MESSAGE_EXPENSES_LISTED_OVERVIEW,
                         model.getFilteredExpenseList().size()));
@@ -29,6 +29,6 @@ public class FindExpenseCommand extends FindCommand {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof FindExpenseCommand // instanceof handles nulls
-                && getPredicate().equals(((FindExpenseCommand) other).getPredicate())); // state check
+                && getPredicates().equals(((FindExpenseCommand) other).getPredicates())); // state check
     }
 }
