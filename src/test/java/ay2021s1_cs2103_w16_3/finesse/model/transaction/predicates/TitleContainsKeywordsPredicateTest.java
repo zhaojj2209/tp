@@ -1,4 +1,4 @@
-package ay2021s1_cs2103_w16_3.finesse.model.transaction;
+package ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeywordsPredicate;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
 public class TitleContainsKeywordsPredicateTest {
