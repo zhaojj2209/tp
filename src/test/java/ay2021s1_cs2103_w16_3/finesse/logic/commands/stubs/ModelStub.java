@@ -8,9 +8,9 @@ import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyUserPrefs;
+import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkExpense;
+import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkIncome;
 import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
-import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
-import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
@@ -62,12 +62,12 @@ public class ModelStub implements Model {
     }
 
     @Override
-    public void addFrequentExpense(FrequentExpense frequentExpense) {
+    public void addBookmarkExpense(BookmarkExpense bookmarkExpense) {
         throw new AssertionError("This method should not be called.");
     }
 
     @Override
-    public void addFrequentIncome(FrequentIncome frequentIncome) {
+    public void addBookmarkIncome(BookmarkIncome bookmarkIncome) {
         throw new AssertionError("This method should not be called.");
     }
 
@@ -87,12 +87,12 @@ public class ModelStub implements Model {
     }
 
     @Override
-    public void deleteFrequentExpense(FrequentExpense target) {
+    public void deleteBookmarkExpense(BookmarkExpense target) {
         throw new AssertionError("This method should not be called.");
     }
 
     @Override
-    public void deleteFrequentIncome(FrequentIncome target) {
+    public void deleteBookmarkIncome(BookmarkIncome target) {
         throw new AssertionError("This method should not be called.");
     }
 
@@ -102,12 +102,12 @@ public class ModelStub implements Model {
     }
 
     @Override
-    public void setFrequentExpense(FrequentExpense target, FrequentExpense editedFrequentExpense) {
+    public void setBookmarkExpense(BookmarkExpense target, BookmarkExpense editedBookmarkExpense) {
         throw new AssertionError("This method should not be called.");
     }
 
     @Override
-    public void setFrequentIncome(FrequentIncome target, FrequentIncome editedFrequentIncome) {
+    public void setBookmarkIncome(BookmarkIncome target, BookmarkIncome editedBookmarkIncome) {
         throw new AssertionError("This method should not be called.");
     }
 
@@ -147,12 +147,12 @@ public class ModelStub implements Model {
     }
 
     @Override
-    public ObservableList<FrequentExpense> getFilteredFrequentExpenseList() {
+    public ObservableList<BookmarkExpense> getFilteredBookmarkExpenseList() {
         throw new AssertionError("This method should not be called.");
     }
 
     @Override
-    public ObservableList<FrequentIncome> getFilteredFrequentIncomeList() {
+    public ObservableList<BookmarkIncome> getFilteredBookmarkIncomeList() {
         throw new AssertionError("This method should not be called.");
     }
 
@@ -187,12 +187,12 @@ public class ModelStub implements Model {
     }
 
     @Override
-    public void updateFilteredFrequentExpenseList(Predicate<FrequentExpense> predicate) {
+    public void updateFilteredBookmarkExpenseList(Predicate<BookmarkExpense> predicate) {
         throw new AssertionError("This method should not be called.");
     }
 
     @Override
-    public void updateFilteredFrequentIncomeList(Predicate<FrequentIncome> predicate) {
+    public void updateFilteredBookmarkIncomeList(Predicate<BookmarkIncome> predicate) {
         throw new AssertionError("This method should not be called.");
     }
 }
