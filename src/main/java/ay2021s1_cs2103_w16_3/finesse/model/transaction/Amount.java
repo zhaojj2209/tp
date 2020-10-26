@@ -13,7 +13,7 @@ public class Amount implements Comparable<Amount> {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Amounts should only contain numbers, with an optional 2 decimal places or '$' prefix";
+            "Amounts should only contain non-negative numbers, with an optional 2 decimal places or '$' prefix";
     public static final String VALIDATION_REGEX = "^\\$?\\d+(\\.\\d{2})?$";
     private final BigDecimal value;
 

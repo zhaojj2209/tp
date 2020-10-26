@@ -63,16 +63,30 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         if (argMultimap.getValue(PREFIX_AMOUNT_FROM).isPresent()
                 || argMultimap.getValue(PREFIX_AMOUNT_TO).isPresent()) {
-            Optional<Amount> amountFrom = argMultimap.getValue(PREFIX_AMOUNT_FROM).map(Amount::new);
-            Optional<Amount> amountTo = argMultimap.getValue(PREFIX_AMOUNT_TO).map(Amount::new);
-            predicateList.add(new InAmountRangePredicate(amountFrom, amountTo));
+            Amount amountFrom = null;
+            Amount amountTo = null;
+            if (argMultimap.getValue(PREFIX_AMOUNT_FROM).isPresent()) {
+                amountFrom = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT_FROM).get());
+            }
+            if (argMultimap.getValue(PREFIX_AMOUNT_TO).isPresent()) {
+                amountTo = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT_TO).get());
+            }
+            predicateList.add(new InAmountRangePredicate(Optional.ofNullable(amountFrom),
+                    Optional.ofNullable(amountTo)));
         }
 
         if (argMultimap.getValue(PREFIX_DATE_FROM).isPresent()
                 || argMultimap.getValue(PREFIX_DATE_TO).isPresent()) {
-            Optional<Date> dateFrom = argMultimap.getValue(PREFIX_DATE_FROM).map(Date::new);
-            Optional<Date> dateTo = argMultimap.getValue(PREFIX_DATE_TO).map(Date::new);
-            predicateList.add(new InDateRangePredicate(dateFrom, dateTo));
+            Date dateFrom = null;
+            Date dateTo = null;
+            if (argMultimap.getValue(PREFIX_DATE_FROM).isPresent()) {
+                dateFrom = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE_FROM).get());
+            }
+            if (argMultimap.getValue(PREFIX_DATE_TO).isPresent()) {
+                dateTo = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE_TO).get());
+            }
+            predicateList.add(new InDateRangePredicate(Optional.ofNullable(dateFrom),
+                    Optional.ofNullable(dateTo)));
         }
 
         if (!argMultimap.getPreamble().isEmpty() || predicateList.isEmpty()) {
