@@ -11,8 +11,10 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentIncome;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.DuplicateFrequentTransactionException;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 public class AddFrequentIncomeCommand extends Command {
+
     public static final String COMMAND_WORD = "add-frequent-income";
     public static final String COMMAND_ALIAS = "addfi";
 
@@ -49,7 +51,7 @@ public class AddFrequentIncomeCommand extends Command {
             throw new CommandException(e.getMessage());
         }
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), Tab.INCOME);
     }
 
     @Override
@@ -58,4 +60,5 @@ public class AddFrequentIncomeCommand extends Command {
                 || (other instanceof AddFrequentIncomeCommand // instanceof handles nulls
                 && toAdd.equals(((AddFrequentIncomeCommand) other).toAdd));
     }
+
 }

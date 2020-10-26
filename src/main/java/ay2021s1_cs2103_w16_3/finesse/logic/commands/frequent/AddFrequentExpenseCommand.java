@@ -11,8 +11,10 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.FrequentExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.frequent.exceptions.DuplicateFrequentTransactionException;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 public class AddFrequentExpenseCommand extends Command {
+
     public static final String COMMAND_WORD = "add-frequent-expense";
     public static final String COMMAND_ALIAS = "addfe";
 
@@ -47,7 +49,7 @@ public class AddFrequentExpenseCommand extends Command {
         } catch (DuplicateFrequentTransactionException e) {
             throw new CommandException(e.getMessage());
         }
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), Tab.EXPENSES);
     }
 
     @Override
@@ -56,4 +58,5 @@ public class AddFrequentExpenseCommand extends Command {
                 || (other instanceof AddFrequentExpenseCommand // instanceof handles nulls
                 && toAdd.equals(((AddFrequentExpenseCommand) other).toAdd));
     }
+
 }
