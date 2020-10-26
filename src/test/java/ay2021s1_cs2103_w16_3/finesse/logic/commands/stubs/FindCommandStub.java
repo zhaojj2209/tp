@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindCommand;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**

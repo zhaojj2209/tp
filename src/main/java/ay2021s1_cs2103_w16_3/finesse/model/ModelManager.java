@@ -264,10 +264,26 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void updateFilteredTransactionList(List<Predicate<Transaction>> predicates) {
+        requireNonNull(predicates);
+        Predicate<Transaction> combinedPredicate = predicates.stream()
+                .reduce(PREDICATE_SHOW_ALL_TRANSACTIONS, Predicate::and);
+        updateFilteredTransactionList(combinedPredicate);
+    }
+
+    @Override
     public void updateFilteredExpenseList(Predicate<Transaction> predicate) {
         requireNonNull(predicate);
         filteredExpenses.setPredicate(t -> predicate.test(t) && PREDICATE_SHOW_ALL_EXPENSES.test(t));
         refreshTransactionLists();
+    }
+
+    @Override
+    public void updateFilteredExpenseList(List<Predicate<Transaction>> predicates) {
+        requireNonNull(predicates);
+        Predicate<Transaction> combinedPredicate = predicates.stream()
+                .reduce(PREDICATE_SHOW_ALL_EXPENSES, Predicate::and);
+        updateFilteredExpenseList(combinedPredicate);
     }
 
     @Override
@@ -278,29 +294,11 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void updateFilteredTransactionList(List<Predicate<Transaction>> predicates) {
-        requireNonNull(predicates);
-        Predicate<Transaction> combinedPredicate = predicates.stream()
-                .reduce(PREDICATE_SHOW_ALL_TRANSACTIONS, Predicate::and);
-        filteredTransactions.setPredicate(combinedPredicate);
-    }
-
-    @Override
-    public void updateFilteredExpenseList(List<Predicate<Transaction>> predicates) {
-        requireNonNull(predicates);
-        Predicate<Transaction> combinedPredicate = predicates.stream()
-                .reduce(PREDICATE_SHOW_ALL_EXPENSES, Predicate::and);
-        filteredExpenses.setPredicate(combinedPredicate);
-        refreshTransactionLists();
-    }
-
-    @Override
     public void updateFilteredIncomeList(List<Predicate<Transaction>> predicates) {
         requireNonNull(predicates);
         Predicate<Transaction> combinedPredicate = predicates.stream()
                 .reduce(PREDICATE_SHOW_ALL_INCOMES, Predicate::and);
-        filteredIncomes.setPredicate(combinedPredicate);
-        refreshTransactionLists();
+        updateFilteredIncomeList(combinedPredicate);
     }
 
     /**

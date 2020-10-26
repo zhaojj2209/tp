@@ -1,7 +1,5 @@
 package ay2021s1_cs2103_w16_3.finesse.model;
 
-import static java.util.Objects.requireNonNull;
-
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
@@ -161,28 +159,28 @@ public interface Model {
     void updateFilteredTransactionList(Predicate<Transaction> predicate);
 
     /**
-     * Updates the filter of the filtered expense list to filter by the given {@code predicate}.
-     * @throws NullPointerException if {@code predicate} is null.
-     */
-    void updateFilteredExpenseList(Predicate<Transaction> predicate);
-
-    /**
-     * Updates the filter of the filtered income list to filter by the given {@code predicate}.
-     * @throws NullPointerException if {@code predicate} is null.
-     */
-    void updateFilteredIncomeList(Predicate<Transaction> predicate);
-
-    /**
      * Updates the filter of the filtered transaction list to filter by the given list of {@code predicates}.
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredTransactionList(List<Predicate<Transaction>> predicates);
 
     /**
+     * Updates the filter of the filtered expense list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredExpenseList(Predicate<Transaction> predicate);
+
+    /**
      * Updates the filter of the filtered expense list to filter by the given list of {@code predicates}.
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredExpenseList(List<Predicate<Transaction>> predicates);
+
+    /**
+     * Updates the filter of the filtered income list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredIncomeList(Predicate<Transaction> predicate);
 
     /**
      * Updates the filter of the filtered income list to filter by the given list of {@code predicates}.
