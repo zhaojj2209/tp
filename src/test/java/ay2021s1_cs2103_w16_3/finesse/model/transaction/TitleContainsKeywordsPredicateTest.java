@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeywordsPredicate;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
 public class TitleContainsKeywordsPredicateTest {

@@ -1,9 +1,10 @@
-package ay2021s1_cs2103_w16_3.finesse.model.transaction;
+package ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.util.StringUtil;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
  * Tests that a {@code Transaction}'s {@code Title} matches any of the keywords given.
