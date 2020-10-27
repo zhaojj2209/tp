@@ -16,6 +16,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
  */
 public class SetExpenseLimitCommandParser implements Parser<SetExpenseLimitCommand> {
 
+    public static final String MESSAGE_CONSTRAINTS = "Only one amount should be input as the expense limit.";
     /**
      * Parses the given {@code String} of arguments in the context of the SetExpenseLimitCommand
      * and returns a SetExpenseLimitCommand object for execution.
@@ -28,6 +29,12 @@ public class SetExpenseLimitCommandParser implements Parser<SetExpenseLimitComma
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetExpenseLimitCommand.MESSAGE_USAGE));
         }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CONSTRAINTS));
+        }
+
         Amount amount = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT).get());
         return new SetExpenseLimitCommand(amount);
     }

@@ -2,6 +2,7 @@ package ay2021s1_cs2103_w16_3.finesse.logic.parser.budget;
 
 import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.AMOUNT_DESC_INTERNSHIP;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.AMOUNT_DESC_PART_TIME;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_AMOUNT_INTERNSHIP;
@@ -33,6 +34,9 @@ public class SetSavingsGoalCommandParserTest {
         // preamble before amount prefix
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + AMOUNT_DESC_INTERNSHIP,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetSavingsGoalCommand.MESSAGE_USAGE));
+        // multiple amounts
+        assertParseFailure(parser, PREAMBLE_WHITESPACE + AMOUNT_DESC_INTERNSHIP + AMOUNT_DESC_PART_TIME,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetSavingsGoalCommandParser.MESSAGE_CONSTRAINTS));
     }
 
     @Test

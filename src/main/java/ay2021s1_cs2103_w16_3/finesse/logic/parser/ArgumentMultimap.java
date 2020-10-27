@@ -60,6 +60,13 @@ public class ArgumentMultimap {
     }
 
     /**
+     * Returns true if the prefix contains more than one value.
+     */
+    public boolean moreThanOneValuePresent(Prefix prefix) {
+        return getAllValues(prefix).size() > 1;
+    }
+
+    /**
      * Returns the preamble (text before the first valid prefix). Trims any leading/trailing spaces.
      */
     public String getPreamble() {

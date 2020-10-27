@@ -33,6 +33,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
 public class AddExpenseCommandParserTest {
@@ -45,18 +46,6 @@ public class AddExpenseCommandParserTest {
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP
-                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE, new AddExpenseCommand(expectedExpense));
-
-        // multiple titles - last title accepted
-        assertParseSuccess(parser, TITLE_DESC_BUBBLE_TEA + TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP
-                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE, new AddExpenseCommand(expectedExpense));
-
-        // multiple amounts - last amount accepted
-        assertParseSuccess(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_BUBBLE_TEA + AMOUNT_DESC_INTERNSHIP
-                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE, new AddExpenseCommand(expectedExpense));
-
-        // multiple dates - last date accepted
-        assertParseSuccess(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP + DATE_DESC_BUBBLE_TEA
                 + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE, new AddExpenseCommand(expectedExpense));
 
         // multiple categories - all accepted
@@ -113,6 +102,21 @@ public class AddExpenseCommandParserTest {
         // invalid category
         assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP + DATE_DESC_INTERNSHIP
                 + INVALID_CATEGORY_DESC + VALID_CATEGORY_FOOD_BEVERAGE, Category.MESSAGE_CONSTRAINTS);
+
+        // multiple titles
+        assertParseFailure(parser, TITLE_DESC_BUBBLE_TEA + TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP
+                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_TITLE_CONSTRAINTS));
+
+        // multiple amounts
+        assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_BUBBLE_TEA + AMOUNT_DESC_INTERNSHIP
+                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_AMOUNT_CONSTRAINTS));
+
+        // multiple dates
+        assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP + DATE_DESC_BUBBLE_TEA
+                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_TITLE_DESC + AMOUNT_DESC_INTERNSHIP + INVALID_DATE_DESC,
