@@ -1,9 +1,12 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.commands.stubs;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindCommand;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
  * A {@code FindCommand} stub that takes in a {@code TitleContainsKeywordsPredicate}
@@ -11,21 +14,21 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPred
  * method is called. All of its other methods fail when called.
  */
 public class FindCommandStub extends FindCommand {
-    private final TitleContainsKeywordsPredicate predicate;
+    private final List<Predicate<Transaction>> predicates;
 
     /**
      * Constructs a {@code DeleteCommandStub} object.
      *
-     * @param predicate The predicate to filter the displayed list by.
+     * @param predicates The list of predicates to filter the displayed list by.
      */
-    public FindCommandStub(TitleContainsKeywordsPredicate predicate) {
-        super(predicate);
-        this.predicate = predicate;
+    public FindCommandStub(List<Predicate<Transaction>> predicates) {
+        super(predicates);
+        this.predicates = predicates;
     }
 
     @Override
-    protected TitleContainsKeywordsPredicate getPredicate() {
-        return predicate;
+    protected List<Predicate<Transaction>> getPredicates() {
+        return predicates;
     }
 
     @Override

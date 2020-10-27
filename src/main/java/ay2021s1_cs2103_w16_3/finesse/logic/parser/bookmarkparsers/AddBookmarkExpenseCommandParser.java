@@ -6,14 +6,12 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_CATEGO
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
 
 import java.util.Set;
-import java.util.stream.Stream;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.AddBookmarkExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.ArgumentMultimap;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.ArgumentTokenizer;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.Parser;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.ParserUtil;
-import ay2021s1_cs2103_w16_3.finesse.logic.parser.Prefix;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkExpense;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
@@ -34,8 +32,7 @@ public class AddBookmarkExpenseCommandParser implements Parser<AddBookmarkExpens
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_TITLE, PREFIX_AMOUNT, PREFIX_CATEGORY);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_TITLE, PREFIX_AMOUNT)
-                || !argMultimap.getPreamble().isEmpty()) {
+        if (!argMultimap.arePrefixesPresent(PREFIX_TITLE, PREFIX_AMOUNT) || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     AddBookmarkExpenseCommand.MESSAGE_USAGE));
         }
@@ -48,11 +45,4 @@ public class AddBookmarkExpenseCommandParser implements Parser<AddBookmarkExpens
         return new AddBookmarkExpenseCommand(bookmarkExpense);
     }
 
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
 }

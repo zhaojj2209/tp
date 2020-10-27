@@ -7,7 +7,6 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
 
 import java.util.Set;
-import java.util.stream.Stream;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.AddExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
@@ -31,7 +30,7 @@ public class AddExpenseCommandParser implements Parser<AddExpenseCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_TITLE, PREFIX_AMOUNT, PREFIX_DATE, PREFIX_CATEGORY);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_TITLE, PREFIX_AMOUNT, PREFIX_DATE)
+        if (!argMultimap.arePrefixesPresent(PREFIX_TITLE, PREFIX_AMOUNT, PREFIX_DATE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddExpenseCommand.MESSAGE_USAGE));
         }
@@ -44,14 +43,6 @@ public class AddExpenseCommandParser implements Parser<AddExpenseCommand> {
         Expense expense = new Expense(title, amount, date, categoryList);
 
         return new AddExpenseCommand(expense);
-    }
-
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 }

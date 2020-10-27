@@ -13,13 +13,13 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 public class FindIncomeCommand extends FindCommand {
 
     public FindIncomeCommand(FindCommand superCommand) {
-        super(superCommand.getPredicate());
+        super(superCommand.getPredicates());
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredIncomeList(getPredicate());
+        model.updateFilteredIncomeList(getPredicates());
         return new CommandResult(
                 String.format(MESSAGE_INCOMES_LISTED_OVERVIEW,
                         model.getFilteredIncomeList().size()));
@@ -29,6 +29,6 @@ public class FindIncomeCommand extends FindCommand {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof FindIncomeCommand // instanceof handles nulls
-                && getPredicate().equals(((FindIncomeCommand) other).getPredicate())); // state check
+                && getPredicates().equals(((FindIncomeCommand) other).getPredicates())); // state check
     }
 }

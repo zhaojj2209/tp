@@ -4,15 +4,12 @@ import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALI
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
 import static java.util.Objects.requireNonNull;
 
-import java.util.stream.Stream;
-
 import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.ConvertBookmarkIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.ArgumentMultimap;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.ArgumentTokenizer;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.Parser;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.ParserUtil;
-import ay2021s1_cs2103_w16_3.finesse.logic.parser.Prefix;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
 
@@ -29,12 +26,7 @@ public class ConvertBookmarkIncomeCommandParser implements Parser<ConvertBookmar
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_DATE);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_DATE)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ConvertBookmarkIncomeCommand.MESSAGE_USAGE));
-        }
-
-        if (argMultimap.getPreamble().isEmpty()) {
+        if (!argMultimap.arePrefixesPresent(PREFIX_DATE) || argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     ConvertBookmarkIncomeCommand.MESSAGE_USAGE));
         }
@@ -52,7 +44,4 @@ public class ConvertBookmarkIncomeCommandParser implements Parser<ConvertBookmar
         return new ConvertBookmarkIncomeCommand(index, date);
     }
 
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
 }

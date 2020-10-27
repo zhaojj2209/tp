@@ -10,5 +10,9 @@ public class CliSyntax {
     public static final Prefix PREFIX_AMOUNT = new Prefix("a/");
     public static final Prefix PREFIX_DATE = new Prefix("d/");
     public static final Prefix PREFIX_CATEGORY = new Prefix("c/");
+    public static final Prefix PREFIX_AMOUNT_FROM = new Prefix("af/");
+    public static final Prefix PREFIX_AMOUNT_TO = new Prefix("at/");
+    public static final Prefix PREFIX_DATE_FROM = new Prefix("df/");
+    public static final Prefix PREFIX_DATE_TO = new Prefix("dt/");
 
 }

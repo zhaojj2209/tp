@@ -264,6 +264,14 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void updateFilteredTransactionList(List<Predicate<Transaction>> predicates) {
+        requireNonNull(predicates);
+        Predicate<Transaction> combinedPredicate = predicates.stream()
+                .reduce(PREDICATE_SHOW_ALL_TRANSACTIONS, Predicate::and);
+        updateFilteredTransactionList(combinedPredicate);
+    }
+
+    @Override
     public void updateFilteredExpenseList(Predicate<Transaction> predicate) {
         requireNonNull(predicate);
         filteredExpenses.setPredicate(t -> predicate.test(t) && PREDICATE_SHOW_ALL_EXPENSES.test(t));
@@ -271,10 +279,26 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void updateFilteredExpenseList(List<Predicate<Transaction>> predicates) {
+        requireNonNull(predicates);
+        Predicate<Transaction> combinedPredicate = predicates.stream()
+                .reduce(PREDICATE_SHOW_ALL_EXPENSES, Predicate::and);
+        updateFilteredExpenseList(combinedPredicate);
+    }
+
+    @Override
     public void updateFilteredIncomeList(Predicate<Transaction> predicate) {
         requireNonNull(predicate);
         filteredIncomes.setPredicate(t -> predicate.test(t) && PREDICATE_SHOW_ALL_INCOMES.test(t));
         refreshTransactionLists();
+    }
+
+    @Override
+    public void updateFilteredIncomeList(List<Predicate<Transaction>> predicates) {
+        requireNonNull(predicates);
+        Predicate<Transaction> combinedPredicate = predicates.stream()
+                .reduce(PREDICATE_SHOW_ALL_INCOMES, Predicate::and);
+        updateFilteredIncomeList(combinedPredicate);
     }
 
     /**

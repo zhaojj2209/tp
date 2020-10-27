@@ -1,4 +1,4 @@
-package ay2021s1_cs2103_w16_3.finesse.model.transaction;
+package ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

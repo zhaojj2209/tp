@@ -10,8 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +22,8 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.stubs.FindCommandStub;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeywordsPredicate;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindIncomeCommand}.
@@ -34,35 +38,40 @@ public class FindIncomeCommandTest {
                 new TitleContainsKeywordsPredicate(Collections.singletonList("first"));
         TitleContainsKeywordsPredicate secondPredicate =
                 new TitleContainsKeywordsPredicate(Collections.singletonList("second"));
+        List<Predicate<Transaction>> firstPredicateList = new ArrayList<>();
+        firstPredicateList.add(firstPredicate);
+        List<Predicate<Transaction>> secondPredicateList = new ArrayList<>();
+        secondPredicateList.add(secondPredicate);
 
-        FindCommandStub firstSuperCommand = new FindCommandStub(firstPredicate);
-        FindIncomeCommand firstFindIncomeCommand = new FindIncomeCommand(firstSuperCommand);
-        FindCommandStub secondSuperCommand = new FindCommandStub(secondPredicate);
-        FindIncomeCommand secondFindIncomeCommand = new FindIncomeCommand(secondSuperCommand);
+        FindCommand findFirstCommand = new FindCommand(firstPredicateList);
+        FindCommand findSecondCommand = new FindCommand(secondPredicateList);
 
         // same object -> returns true
-        assertTrue(firstFindIncomeCommand.equals(firstFindIncomeCommand));
+        assertTrue(findFirstCommand.equals(findFirstCommand));
 
+        List<Predicate<Transaction>> firstPredicateListCopy = new ArrayList<>();
+        firstPredicateListCopy.add(firstPredicate);
         // same values -> returns true
-        FindCommandStub firstSuperCommandCopy = new FindCommandStub(firstPredicate);
-        FindIncomeCommand firstFindIncomeCommandCopy = new FindIncomeCommand(firstSuperCommandCopy);
-        assertTrue(firstFindIncomeCommand.equals(firstFindIncomeCommandCopy));
+        FindCommand findFirstCommandCopy = new FindCommand(firstPredicateListCopy);
+        assertTrue(findFirstCommand.equals(findFirstCommandCopy));
 
         // different types -> returns false
-        assertFalse(firstFindIncomeCommand.equals(1));
+        assertFalse(findFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(firstFindIncomeCommand.equals(null));
+        assertFalse(findFirstCommand.equals(null));
 
         // different predicates -> returns false
-        assertFalse(firstFindIncomeCommand.equals(secondFindIncomeCommand));
+        assertFalse(findFirstCommand.equals(findSecondCommand));
     }
 
     @Test
     public void execute_zeroKeywords_noIncomesFound() {
         String expectedMessage = String.format(MESSAGE_INCOMES_LISTED_OVERVIEW, 0);
         TitleContainsKeywordsPredicate predicate = preparePredicate(" ");
-        FindCommandStub superCommand = new FindCommandStub(predicate);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(predicate);
+        FindCommandStub superCommand = new FindCommandStub(predicateList);
         FindIncomeCommand findIncomeCommand = new FindIncomeCommand(superCommand);
         expectedModel.updateFilteredIncomeList(predicate);
         assertCommandSuccess(findIncomeCommand, model, expectedMessage, expectedModel);
@@ -73,12 +82,14 @@ public class FindIncomeCommandTest {
     public void execute_multipleKeywords_multipleIncomesFound() {
         String expectedMessage = String.format(MESSAGE_INCOMES_LISTED_OVERVIEW, 3);
         TitleContainsKeywordsPredicate predicate = preparePredicate("gst internship teaching");
-        FindCommandStub superCommand = new FindCommandStub(predicate);
+        List<Predicate<Transaction>> predicateList = new ArrayList<>();
+        predicateList.add(predicate);
+        FindCommandStub superCommand = new FindCommandStub(predicateList);
         FindIncomeCommand findIncomeCommand = new FindIncomeCommand(superCommand);
         expectedModel.updateFilteredIncomeList(predicate);
         assertCommandSuccess(findIncomeCommand, model, expectedMessage, expectedModel);
         // Ordered by date, then by title.
-        assertEquals(Arrays.asList(TEACHING_ASSISTANT, GST_VOUCHER, INTERNSHIP), model.getFilteredIncomeList());
+        assertEquals(Arrays.asList(GST_VOUCHER, INTERNSHIP, TEACHING_ASSISTANT), model.getFilteredIncomeList());
     }
 
     /**

@@ -9,11 +9,11 @@ import java.math.BigDecimal;
  * Represents a Transaction's amount in the finance tracker.
  * Guarantees: immutable; is valid as declared in {@link #isValidAmount(String)}
  */
-public class Amount {
+public class Amount implements Comparable<Amount> {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Amounts should only contain numbers, with an optional 2 decimal places or '$' prefix";
+            "Amounts should only contain non-negative numbers, with an optional 2 decimal places or '$' prefix";
     public static final String VALIDATION_REGEX = "^\\$?\\d+(\\.\\d{2})?$";
     private final BigDecimal value;
 
@@ -58,6 +58,11 @@ public class Amount {
         return other == this // short circuit if same object
                 || (other instanceof Amount // instanceof handles nulls
                 && (value.compareTo(((Amount) other).value)) == 0); // state check
+    }
+
+    @Override
+    public int compareTo(Amount other) {
+        return value.compareTo(other.value);
     }
 
     @Override

@@ -26,6 +26,10 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
     /**
      * Returns true if a given string is a valid category name.
      */
