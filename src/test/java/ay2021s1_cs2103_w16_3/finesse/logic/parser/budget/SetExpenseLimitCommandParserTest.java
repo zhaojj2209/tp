@@ -1,6 +1,9 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.parser.budget;
 
 import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.AMOUNT_DESC_INTERNSHIP;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_AMOUNT_INTERNSHIP;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -22,18 +25,21 @@ public class SetExpenseLimitCommandParserTest {
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "a/20", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                SetExpenseLimitCommand.MESSAGE_USAGE));
-        assertParseFailure(parser, "hello a/-5", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                SetExpenseLimitCommand.MESSAGE_USAGE));
+        // no whitespace in front
+        assertParseFailure(parser, PREFIX_AMOUNT + VALID_AMOUNT_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetExpenseLimitCommand.MESSAGE_USAGE));
+        // preamble before amount prefix
+        assertParseFailure(parser, "hello" + AMOUNT_DESC_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetExpenseLimitCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_validArgs_returnsSetExpenseLimitCommand() {
-        assertParseSuccess(parser, " a/500", new SetExpenseLimitCommand(new Amount("500")));
-        assertParseSuccess(parser, " a/314.15", new SetExpenseLimitCommand(new Amount("314.15")));
-        assertParseSuccess(parser, " a/$300", new SetExpenseLimitCommand(new Amount("$300")));
-        assertParseSuccess(parser, " a/$123.45", new SetExpenseLimitCommand(new Amount("$123.45")));
+        assertParseSuccess(parser, AMOUNT_DESC_INTERNSHIP,
+                new SetExpenseLimitCommand(new Amount(VALID_AMOUNT_INTERNSHIP)));
+        // whitespaces before/after keywords
+        assertParseSuccess(parser, "   " + AMOUNT_DESC_INTERNSHIP + "   ",
+                new SetExpenseLimitCommand(new Amount(VALID_AMOUNT_INTERNSHIP)));
     }
 
 }
