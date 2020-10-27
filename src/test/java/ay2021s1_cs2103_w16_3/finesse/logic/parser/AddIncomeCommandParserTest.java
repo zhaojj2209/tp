@@ -117,7 +117,7 @@ public class AddIncomeCommandParserTest {
                 + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_AMOUNT_CONSTRAINTS));
 
-        // multiple dates -
+        // multiple dates
         assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP + DATE_DESC_BUBBLE_TEA
                 + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
