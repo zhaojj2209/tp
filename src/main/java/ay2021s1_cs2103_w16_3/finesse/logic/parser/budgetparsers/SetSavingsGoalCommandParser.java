@@ -16,6 +16,8 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
  */
 public class SetSavingsGoalCommandParser implements Parser<SetSavingsGoalCommand> {
 
+    public static final String MESSAGE_CONSTRAINTS = "Only one amount should be input as the savings goal.";
+
     /**
      * Parses the given {@code String} of arguments in the context of the SetSavingsGoalCommand
      * and returns a SetSavingsGoalCommand object for execution.
@@ -28,6 +30,12 @@ public class SetSavingsGoalCommandParser implements Parser<SetSavingsGoalCommand
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetSavingsGoalCommand.MESSAGE_USAGE));
         }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CONSTRAINTS));
+        }
+
         Amount amount = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT).get());
         return new SetSavingsGoalCommand(amount);
     }

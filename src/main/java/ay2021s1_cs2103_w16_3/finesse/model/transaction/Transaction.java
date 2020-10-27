@@ -20,6 +20,10 @@ public abstract class Transaction {
     public static final Comparator<Transaction> TRANSACTION_COMPARATOR =
             Comparator.comparing((Transaction t) -> t.date).reversed().thenComparing(t -> t.title);
 
+    public static final String MESSAGE_TITLE_CONSTRAINTS = "Transactions should only contain one title.";
+    public static final String MESSAGE_AMOUNT_CONSTRAINTS = "Transactions should only contain one amount.";
+    public static final String MESSAGE_DATE_CONSTRAINTS = "Transactions should only contain one date.";
+
     // Identity fields
     private final Title title;
     private final Amount amount;

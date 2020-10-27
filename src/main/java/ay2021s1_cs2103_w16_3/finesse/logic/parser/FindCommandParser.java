@@ -32,6 +32,44 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsK
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
+    public static final String MESSAGE_AMOUNT_RANGE_USAGE =
+            "To search for transactions within a range of amounts, please use " + PREFIX_AMOUNT_FROM
+                    + " to indicate the lower bound, and/or " + PREFIX_AMOUNT_TO + " to indicate the upper bound.";
+
+    public static final String MESSAGE_DATE_RANGE_USAGE =
+            "To search for transactions within a range of dates, please use " + PREFIX_DATE_FROM
+                    + " to indicate the lower bound, and/or " + PREFIX_DATE_TO + " to indicate the upper bound.";
+
+    public static final String MESSAGE_AMOUNT_CONSTRAINTS =
+            "Only one amount can be input for a search of transactions containing an exact amount.\n"
+                    + MESSAGE_AMOUNT_RANGE_USAGE;
+
+    public static final String MESSAGE_DATE_CONSTRAINTS =
+            "Only one date can be input for a search of transactions occurring on an exact date.\n"
+                    + MESSAGE_DATE_RANGE_USAGE;
+
+    public static final String MESSAGE_AMOUNT_FROM_CONSTRAINTS =
+            "Only one amount can be input as the lower bound for a search of transactions within a range of amounts.\n"
+                    + MESSAGE_AMOUNT_RANGE_USAGE;
+
+    public static final String MESSAGE_AMOUNT_TO_CONSTRAINTS =
+            "Only one amount can be input as the upper bound for a search of transactions within a range of amounts.\n"
+                    + MESSAGE_AMOUNT_RANGE_USAGE;
+
+    public static final String MESSAGE_AMOUNT_RANGE_CONSTRAINTS =
+            "The lower bound for the amount range cannot be larger than the upper bound.";
+
+    public static final String MESSAGE_DATE_FROM_CONSTRAINTS =
+            "Only one date can be input as the lower bound for a search of transactions "
+                    + "occurring within a range of dates.\n" + MESSAGE_DATE_RANGE_USAGE;
+
+    public static final String MESSAGE_DATE_TO_CONSTRAINTS =
+            "Only one date can be input as the upper bound for a search of transactions "
+                    + "occurring within a range of dates.\n" + MESSAGE_DATE_RANGE_USAGE;
+
+    public static final String MESSAGE_DATE_RANGE_CONSTRAINTS =
+            "The lower bound for the date range cannot be later than the upper bound.";
+
     /**
      * Parses the given {@code String} of arguments in the context of the FindCommand
      * and returns a FindCommand object for execution.
@@ -42,6 +80,40 @@ public class FindCommandParser implements Parser<FindCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_TITLE, PREFIX_AMOUNT, PREFIX_DATE, PREFIX_CATEGORY,
                         PREFIX_AMOUNT_FROM, PREFIX_AMOUNT_TO, PREFIX_DATE_FROM, PREFIX_DATE_TO);
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_AMOUNT_CONSTRAINTS));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_DATE)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_DATE_CONSTRAINTS));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT_FROM)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_AMOUNT_FROM_CONSTRAINTS));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT_TO)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_AMOUNT_TO_CONSTRAINTS));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_DATE_FROM)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_DATE_FROM_CONSTRAINTS));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_DATE_TO)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_DATE_TO_CONSTRAINTS));
+        }
+
+        if (!argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
 
         if (argMultimap.getValue(PREFIX_TITLE).isPresent()) {
             predicateList.add(new TitleContainsKeywordsPredicate(argMultimap.getAllValues(PREFIX_TITLE)));
@@ -71,6 +143,10 @@ public class FindCommandParser implements Parser<FindCommand> {
             if (argMultimap.getValue(PREFIX_AMOUNT_TO).isPresent()) {
                 amountTo = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT_TO).get());
             }
+            if (amountFrom != null && amountTo != null && amountFrom.compareTo(amountTo) > 0) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        MESSAGE_AMOUNT_RANGE_CONSTRAINTS));
+            }
             predicateList.add(new InAmountRangePredicate(Optional.ofNullable(amountFrom),
                     Optional.ofNullable(amountTo)));
         }
@@ -85,11 +161,15 @@ public class FindCommandParser implements Parser<FindCommand> {
             if (argMultimap.getValue(PREFIX_DATE_TO).isPresent()) {
                 dateTo = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE_TO).get());
             }
+            if (dateFrom != null && dateTo != null && dateFrom.compareTo(dateTo) > 0) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        MESSAGE_DATE_RANGE_CONSTRAINTS));
+            }
             predicateList.add(new InDateRangePredicate(Optional.ofNullable(dateFrom),
                     Optional.ofNullable(dateTo)));
         }
 
-        if (!argMultimap.getPreamble().isEmpty() || predicateList.isEmpty()) {
+        if (predicateList.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 

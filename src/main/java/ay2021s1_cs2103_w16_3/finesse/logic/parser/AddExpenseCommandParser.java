@@ -15,6 +15,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
  * Parses input arguments and creates a new AddExpenseCommand object
@@ -33,6 +34,21 @@ public class AddExpenseCommandParser implements Parser<AddExpenseCommand> {
         if (!argMultimap.arePrefixesPresent(PREFIX_TITLE, PREFIX_AMOUNT, PREFIX_DATE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddExpenseCommand.MESSAGE_USAGE));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_TITLE)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_TITLE_CONSTRAINTS));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_AMOUNT_CONSTRAINTS));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_DATE)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
         }
 
         Title title = ParserUtil.parseTitle(argMultimap.getValue(PREFIX_TITLE).get());
