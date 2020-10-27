@@ -1,8 +1,11 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.parser.budgetparsers;
 
 import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.budget.SetExpenseLimitCommand;
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.ArgumentMultimap;
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.ArgumentTokenizer;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.Parser;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.ParserUtil;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
@@ -19,13 +22,14 @@ public class SetExpenseLimitCommandParser implements Parser<SetExpenseLimitComma
      * @throws ParseException if the user input does not conform the expected format
      */
     public SetExpenseLimitCommand parse(String args) throws ParseException {
-        try {
-            Amount amount = ParserUtil.parseAmount(args);
-            return new SetExpenseLimitCommand(amount);
-        } catch (ParseException pe) {
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_AMOUNT);
+        if (!argMultimap.arePrefixesPresent(PREFIX_AMOUNT)
+                || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetExpenseLimitCommand.MESSAGE_USAGE), pe);
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetExpenseLimitCommand.MESSAGE_USAGE));
         }
+        Amount amount = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT).get());
+        return new SetExpenseLimitCommand(amount);
     }
 
 }

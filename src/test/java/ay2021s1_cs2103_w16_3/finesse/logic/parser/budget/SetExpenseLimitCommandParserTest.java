@@ -1,6 +1,11 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.parser.budget;
 
 import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.AMOUNT_DESC_INTERNSHIP;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_AMOUNT_INTERNSHIP;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -16,32 +21,27 @@ public class SetExpenseLimitCommandParserTest {
 
     @Test
     public void parse_emptyArg_throwsParseException() {
-        assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        assertParseFailure(parser, PREAMBLE_WHITESPACE, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 SetExpenseLimitCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                SetExpenseLimitCommand.MESSAGE_USAGE));
-        assertParseFailure(parser, "-5", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                SetExpenseLimitCommand.MESSAGE_USAGE));
-        assertParseFailure(parser, "$", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                SetExpenseLimitCommand.MESSAGE_USAGE));
-        assertParseFailure(parser, "123.4", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                SetExpenseLimitCommand.MESSAGE_USAGE));
-        assertParseFailure(parser, "567.890", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                SetExpenseLimitCommand.MESSAGE_USAGE));
-        assertParseFailure(parser, "2 hello", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                SetExpenseLimitCommand.MESSAGE_USAGE));
+        // no whitespace in front
+        assertParseFailure(parser, PREFIX_AMOUNT + VALID_AMOUNT_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetExpenseLimitCommand.MESSAGE_USAGE));
+        // preamble before amount prefix
+        assertParseFailure(parser, PREAMBLE_NON_EMPTY + AMOUNT_DESC_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetExpenseLimitCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_validArgs_returnsSetExpenseLimitCommand() {
-        assertParseSuccess(parser, "500", new SetExpenseLimitCommand(new Amount("500")));
-        assertParseSuccess(parser, "314.15", new SetExpenseLimitCommand(new Amount("314.15")));
-        assertParseSuccess(parser, "$300", new SetExpenseLimitCommand(new Amount("$300")));
-        assertParseSuccess(parser, "$123.45", new SetExpenseLimitCommand(new Amount("$123.45")));
+        assertParseSuccess(parser, AMOUNT_DESC_INTERNSHIP,
+                new SetExpenseLimitCommand(new Amount(VALID_AMOUNT_INTERNSHIP)));
+        // whitespaces before/after keywords
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + AMOUNT_DESC_INTERNSHIP + PREAMBLE_WHITESPACE,
+                new SetExpenseLimitCommand(new Amount(VALID_AMOUNT_INTERNSHIP)));
     }
 
 }
