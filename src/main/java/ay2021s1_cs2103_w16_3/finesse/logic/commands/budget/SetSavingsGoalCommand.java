@@ -1,5 +1,6 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.commands.budget;
 
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static java.util.Objects.requireNonNull;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.Command;
@@ -16,8 +17,8 @@ public class SetSavingsGoalCommand extends Command {
     public static final String COMMAND_ALIAS = "setsg";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sets the monthly savings goal. "
-            + "Parameters: AMOUNT\n"
-            + "Example: " + COMMAND_WORD + " 500";
+            + "Parameters: " + PREFIX_AMOUNT + "AMOUNT\n"
+            + "Example: " + COMMAND_WORD + " " + PREFIX_AMOUNT + "500";
 
     public static final String MESSAGE_SUCCESS = "New monthly savings goal set: %1$s";
 
