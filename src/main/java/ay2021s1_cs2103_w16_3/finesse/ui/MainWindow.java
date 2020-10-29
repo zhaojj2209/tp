@@ -56,8 +56,6 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private StackPane resultDisplayPlaceholder;
     @FXML
-    private StackPane statusbarPlaceholder;
-    @FXML
     private Tab overviewTab;
     @FXML
     private Tab incomeTab;
@@ -109,9 +107,6 @@ public class MainWindow extends UiPart<Stage> {
         resultDisplay = new ResultDisplay();
         resultDisplay.setFeedbackToUser(WELCOME_MESSAGE);
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
-
-        StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getFinanceTrackerFilePath());
-        statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());

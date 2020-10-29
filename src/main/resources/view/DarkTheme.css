@@ -130,18 +130,23 @@
     -fx-text-fill: white;
 }
 
-.cell_big_label {
+.cell-big-label {
     -fx-font-family: "Eczar";
     -fx-font-size: 14px;
     -fx-text-fill: #010504;
 }
 
-.cell_categories {
+.cell-categories {
     -fx-font-size: 14px;
     -fx-text-fill: #010504;
 }
 
-.cell_small_label {
+.cell-categories-scrollpane {
+    -fx-background: #3B3B44;
+    -fx-background-color: transparent;
+}
+
+.cell-small-label {
     -fx-font-family: "Eczar";
     -fx-font-size: 14px;
     -fx-text-fill: #010504;
@@ -163,7 +168,7 @@
      -fx-background-insets: 3, 3, 3, 3;
      -fx-background-radius: 10, 10, 10, 10;
      -fx-border-radius: 10, 10, 10, 10;
-     -fx-padding: 5 8 5 5;
+     -fx-padding: 0 8 0 5;
      -fx-border-insets: 5, 5, 5, 5;
      -fx-border-color: #3B3B44;
 }
@@ -257,7 +262,7 @@
     -fx-background-color: #2E2E36;
     -fx-border-color: #2E2E36;
     -fx-text-fill: #888888;
-    -fx-padding: 20, 0, 0, 0;
+    -fx-padding: 15, 0, 0, 0;
 }
 
 .tab:selected .tab-label {
@@ -273,7 +278,7 @@
     -fx-font-family: "Roboto Condensed";
     -fx-font-size: 24px;
     -fx-text-fill: #888888;
-    -fx-padding: 20, 0, 0, 0;
+    -fx-padding: 15, 0, 0, 0;
 }
 
 #userGuideButton:hover, #userGuideButton:selected {
@@ -380,7 +385,7 @@
 }
 
 .scroll-bar:horizontal .increment-arrow, .scroll-bar:horizontal .decrement-arrow {
-    -fx-padding: 8 1 8 1;
+    -fx-padding: 4 0 4 0;
 }
 
 #cardPane {
@@ -426,7 +431,7 @@
     -fx-font-family: "Eczar";
     -fx-text-fill: white;
     -fx-background-color: #4527A0;
-    -fx-padding: 3 7 3 7;
+    -fx-padding: 3 7 0 7;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-font-size: 13;

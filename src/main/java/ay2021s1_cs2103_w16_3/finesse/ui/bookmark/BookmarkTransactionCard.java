@@ -5,25 +5,23 @@ import java.util.Comparator;
 import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkTransaction;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiPart;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 
 public class BookmarkTransactionCard<T extends Transaction> extends UiPart<Region> {
 
-    private static final String FXML = "TransactionListCard.fxml";
-    private static final double PREFERRED_CARD_HEIGHT = 60.00;
-    private static final double PREFERRED_CARD_WIDTH = 100.00;
+    private static final String FXML = "BookmarkTransactionListCard.fxml";
 
     public final BookmarkTransaction<T> bookmarkTransaction;
 
     @FXML
-    private VBox cardPane;
+    private BorderPane cardPane;
     @FXML
     private Label title;
     @FXML
@@ -31,41 +29,47 @@ public class BookmarkTransactionCard<T extends Transaction> extends UiPart<Regio
     @FXML
     private Label amount;
     @FXML
-    private FlowPane categories;
+    private HBox categories;
     @FXML
     private GridPane transactionDetails;
+    @FXML
+    private ScrollPane scrollPane;
 
     /**
      * Creates a {@code BookmarkTransactionCard} with the given {@code BookmarkTransaction} and index to display.
-     * The font size of the content is set based on the given {@code fontSize}.
+     * Binds the width of the {@code BookmarkTransactionCard} to that of its containing list.
      */
-    public BookmarkTransactionCard(BookmarkTransaction<T> bookmarkTransaction, int displayedIndex, int fontSize) {
+    public BookmarkTransactionCard(BookmarkTransaction<T> bookmarkTransaction, int displayedIndex,
+                                   ReadOnlyDoubleProperty width) {
         super(FXML);
         this.bookmarkTransaction = bookmarkTransaction;
-        String fontSizeParsedToString = String.valueOf(fontSize);
-        String categoriesFontSizeParsedToString = String.valueOf(fontSize - 2);
-        cardPane.setPrefHeight(PREFERRED_CARD_HEIGHT);
-        cardPane.setPrefWidth(PREFERRED_CARD_WIDTH);
+        cardPane.maxWidthProperty().bind(width.subtract(32));
 
         id.setText(displayedIndex + ". ");
-        id.setStyle(String.format("-fx-font-size: %spx", fontSizeParsedToString));
-
         title.setText(bookmarkTransaction.getTitle().toString());
-        title.setStyle(String.format("-fx-font-size: %spx", fontSizeParsedToString));
-
         amount.setText(bookmarkTransaction.getAmount().toString());
-        amount.setStyle(String.format("-fx-font-size: %spx", fontSizeParsedToString));
 
         bookmarkTransaction.getCategories().stream()
                 .sorted(Comparator.comparing(category -> category.getCategoryName()))
                 .forEach(category -> {
                     Label newCategory = new Label(category.getCategoryName());
-                    newCategory.setStyle("-fx-font-family: Eczar");
-                    newCategory.setStyle(String.format("-fx-font-size: %spx", categoriesFontSizeParsedToString));
                     categories.getChildren().add(newCategory);
                 });
-        categories.setColumnHalignment(HPos.CENTER);
-        categories.setRowValignment(VPos.CENTER);
+
+        // Hijack scroll wheel for horizontal scrolling instead of vertical scrolling.
+        scrollPane.setOnScroll(scrollEvent -> {
+            if (scrollEvent.getDeltaY() != 0) {
+                scrollPane.setHvalue(scrollPane.getHvalue() - scrollEvent.getDeltaY() / categories.getWidth());
+                // Do not pass scroll event up to parent.
+                scrollEvent.consume();
+            }
+        });
+
+        // Hijack scroll events on category labels and pass on to scroll pane.
+        categories.setOnScroll(scrollEvent -> {
+            scrollPane.fireEvent(scrollEvent);
+            scrollEvent.consume();
+        });
     }
 
     @Override

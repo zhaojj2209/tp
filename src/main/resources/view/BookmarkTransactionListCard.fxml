@@ -36,8 +36,7 @@
   </center>
   <right>
     <HBox alignment="CENTER">
-      <Label fx:id="amount" styleClass="cell-small-label" style="-fx-padding: 0 0 0 20;" text="\$amount" />
-      <Label fx:id="date" styleClass="cell-small-label" style="-fx-padding: 0 10 0 30;" text="\$date" />
+      <Label fx:id="amount" styleClass="cell-small-label" style="-fx-padding: 0 10 0 20;" text="\$amount" />
     </HBox>
   </right>
   <padding>
