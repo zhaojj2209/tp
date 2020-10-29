@@ -714,18 +714,18 @@ Once the expense limit is set, it will be visible on the Overview tab along with
 
 Sets the monthly expense limit in the finance tracker.
 
-Format: `set-expense-limit AMOUNT`
+Format: `set-expense-limit a/AMOUNT`
 
-Shortcut: `setel AMOUNT`
+Shortcut: `setel a/AMOUNT`
 
 * `AMOUNT` should be a number with 0 or 2 decimal places, with an optional `$` in front.
 
 Example:
-* `set-expense-limit 500` sets the monthly expense limit in the finance tracker to be `$500.00`.
+* `set-expense-limit a/500` sets the monthly expense limit in the finance tracker to be `$500.00`.
 
 Example Usage:
 ```
-setel $400.00
+setel a/$400.00
 ```
 
 Expected Outcome:
@@ -743,18 +743,18 @@ Once the savings goal is set, it will be visible on the Overview tab along with 
 
 Sets the monthly savings goal in the finance tracker.
 
-Format: `set-savings-goal AMOUNT`
+Format: `set-savings-goal a/AMOUNT`
 
-Shortcut: `setsg AMOUNT`
+Shortcut: `setsg a/AMOUNT`
 
 * `AMOUNT` should be a number with 0 or 2 decimal places, with an optional `$` in front.
 
 Example:
-* `set-savings-goal 100` sets the monthly savings goal in the finance tracker to be `$100.00`.
+* `set-savings-goal a/100` sets the monthly savings goal in the finance tracker to be `$100.00`.
 
 Example Usage:
 ```
-setel $50.00
+setsg a/$50.00
 ```
 
 Expected Outcome:
