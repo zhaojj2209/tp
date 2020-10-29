@@ -6,11 +6,13 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.AMOUN
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.CATEGORY_DESC_FOOD_BEVERAGE;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.CATEGORY_DESC_WORK;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.DATE_DESC_BUBBLE_TEA;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.DATE_DESC_INTERNSHIP;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.INVALID_AMOUNT_DESC;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.INVALID_CATEGORY_DESC;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.INVALID_DATE_DESC;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.INVALID_TITLE_DESC;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.TITLE_DESC_BUBBLE_TEA;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.TITLE_DESC_INTERNSHIP;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_AMOUNT_BUBBLE_TEA;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_AMOUNT_INTERNSHIP;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_CATEGORY_FOOD_BEVERAGE;
@@ -33,6 +35,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 
 public class EditCommandParserTest {
@@ -131,13 +134,13 @@ public class EditCommandParserTest {
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
-        // amounts
+        // amount
         userInput = targetIndex.getOneBased() + AMOUNT_DESC_BUBBLE_TEA;
         descriptor = new EditTransactionDescriptorBuilder().withAmount(VALID_AMOUNT_BUBBLE_TEA).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
-        // dates
+        // date
         userInput = targetIndex.getOneBased() + DATE_DESC_BUBBLE_TEA;
         descriptor = new EditTransactionDescriptorBuilder().withDate(VALID_DATE_BUBBLE_TEA).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
@@ -148,6 +151,19 @@ public class EditCommandParserTest {
         descriptor = new EditTransactionDescriptorBuilder().withCategories(VALID_CATEGORY_FOOD_BEVERAGE).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_multipleRepeatedFields_failure() {
+        // multiple titles
+        assertParseFailure(parser, "1" + TITLE_DESC_BUBBLE_TEA + TITLE_DESC_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_TITLE_CONSTRAINTS));
+        // multiple amounts
+        assertParseFailure(parser, "1" + AMOUNT_DESC_BUBBLE_TEA + AMOUNT_DESC_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_AMOUNT_CONSTRAINTS));
+        // multiple dates
+        assertParseFailure(parser, "1" + DATE_DESC_BUBBLE_TEA + DATE_DESC_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
     }
 
     @Test

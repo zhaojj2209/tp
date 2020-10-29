@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.AddBookmarkIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.bookmarkparsers.AddBookmarkIncomeCommandParser;
 import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkIncome;
+import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkTransaction;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
@@ -99,4 +100,16 @@ public class AddBookmarkIncomeCommandParserTest {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddBookmarkIncomeCommand.MESSAGE_USAGE));
     }
 
+    @Test
+    public void parse_multipleRepeatedFields_failure() {
+        // multiple titles
+        assertParseFailure(parser, TITLE_DESC_PHONE_BILL + TITLE_DESC_PART_TIME
+                        + AMOUNT_DESC_PHONE_BILL + CATEGORY_DESC_UTILITIES,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_TITLE_CONSTRAINTS));
+
+        // multiple amounts
+        assertParseFailure(parser, TITLE_DESC_PHONE_BILL + AMOUNT_DESC_PHONE_BILL
+                        + AMOUNT_DESC_PART_TIME + CATEGORY_DESC_UTILITIES,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_AMOUNT_CONSTRAINTS));
+    }
 }
