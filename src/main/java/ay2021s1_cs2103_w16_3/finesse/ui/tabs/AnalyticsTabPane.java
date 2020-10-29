@@ -1,9 +1,14 @@
 package ay2021s1_cs2103_w16_3.finesse.ui.tabs;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import ay2021s1_cs2103_w16_3.finesse.model.budget.MonthlyBudget;
 import ay2021s1_cs2103_w16_3.finesse.ui.UiPart;
+import javafx.collections.ModifiableObservableListBase;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.chart.Axis;
@@ -51,6 +56,7 @@ public class AnalyticsTabPane extends UiPart<Canvas> {
         expenseAnalyticsBarChart = new BarChart<>(expenseAnalyticsStringAxis, expenseAnalyticsNumberAxis);
         expenseAnalyticsBarChart.setLegendVisible(false);
         expenseAnalyticsBarChart.setVerticalGridLinesVisible(false);
+        expenseAnalyticsBarChart.setAnimated(false);
         expenseAnalyticsBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         expenseAnalyticsPane.getChildren().add(expenseAnalyticsBarChart);
         expenseAnalyticsLabel.setText("EXPENSE");
@@ -60,6 +66,7 @@ public class AnalyticsTabPane extends UiPart<Canvas> {
         incomeAnalyticsBarChart = new BarChart<>(incomeAnalyticsStringAxis, incomeAnalyticsNumberAxis);
         incomeAnalyticsBarChart.setLegendVisible(false);
         incomeAnalyticsBarChart.setVerticalGridLinesVisible(false);
+        incomeAnalyticsBarChart.setAnimated(false);
         incomeAnalyticsBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         incomeAnalyticsPane.getChildren().add(incomeAnalyticsBarChart);
         incomeAnalyticsLabel.setText("INCOME");
@@ -69,6 +76,7 @@ public class AnalyticsTabPane extends UiPart<Canvas> {
         savingsAnalyticsBarChart = new BarChart<>(savingsAnalyticsStringAxis, savingsAnalyticsNumberAxis);
         savingsAnalyticsBarChart.setLegendVisible(false);
         savingsAnalyticsBarChart.setVerticalGridLinesVisible(false);
+        savingsAnalyticsBarChart.setAnimated(false);
         savingsAnalyticsBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         savingsAnalyticsPane.getChildren().add(savingsAnalyticsBarChart);
         savingsAnalyticsLabel.setText("SAVINGS");
@@ -77,21 +85,60 @@ public class AnalyticsTabPane extends UiPart<Canvas> {
     }
 
     private void populateData(MonthlyBudget monthlyBudget) {
-        populateDataIn(expenseAnalyticsBarChart, monthlyBudget.getMonths(), monthlyBudget.getMonthlyExpenses());
-        populateDataIn(incomeAnalyticsBarChart, monthlyBudget.getMonths(), monthlyBudget.getMonthlyIncomes());
-        populateDataIn(savingsAnalyticsBarChart, monthlyBudget.getMonths(), monthlyBudget.getMonthlySavings());
+        Stream.of(
+                populateDataIn(expenseAnalyticsBarChart, monthlyBudget.getMonths(), monthlyBudget.getMonthlyExpenses()),
+                populateDataIn(incomeAnalyticsBarChart, monthlyBudget.getMonths(), monthlyBudget.getMonthlyIncomes()),
+                populateDataIn(savingsAnalyticsBarChart, monthlyBudget.getMonths(), monthlyBudget.getMonthlySavings()))
+                .forEach(monthlyBudget::addChangeListener);
     }
 
-    private void populateDataIn(BarChart<String, Number> barChart, List<String> strings,
-                                List<? extends Number> values) {
+    private MonthlyBudget.ChangeListener populateDataIn(BarChart<String, Number> barChart,
+                                                        ObservableList<String> strings,
+                                                        ObservableList<? extends Number> values) {
         assert strings.size() == values.size();
 
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        class ZippedData extends ModifiableObservableListBase<XYChart.Data<String, Number>> {
+            private final List<XYChart.Data<String, Number>> data = new ArrayList<>();
 
-        for (int i = 0; i < strings.size(); i++) {
-            series.getData().add(new XYChart.Data<>(strings.get(i), values.get(i)));
+            {
+                updateList();
+            }
+
+            @Override
+            public XYChart.Data<String, Number> get(int index) {
+                return data.get(index);
+            }
+
+            @Override
+            public int size() {
+                return data.size();
+            }
+
+            @Override
+            protected void doAdd(int index, XYChart.Data<String, Number> element) {
+                data.add(index, element);
+            }
+
+            @Override
+            protected XYChart.Data<String, Number> doSet(int index, XYChart.Data<String, Number> element) {
+                return data.set(index, element);
+            }
+
+            @Override
+            protected XYChart.Data<String, Number> doRemove(int index) {
+                return data.remove(index);
+            }
+
+            public void updateList() {
+                this.clear();
+                IntStream.range(0, strings.size())
+                    .mapToObj(i -> new XYChart.Data<String, Number>(strings.get(i), values.get(i)))
+                    .forEach(this::add);
+            }
         }
 
-        barChart.getData().add(series);
+        ZippedData newData = new ZippedData();
+        barChart.getData().add(new XYChart.Series<>(newData));
+        return newData::updateList;
     }
 }
