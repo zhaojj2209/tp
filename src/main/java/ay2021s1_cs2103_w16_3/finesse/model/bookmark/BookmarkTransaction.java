@@ -14,6 +14,10 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public abstract class BookmarkTransaction<T extends Transaction> {
+
+    public static final String MESSAGE_TITLE_CONSTRAINTS = "Bookmark transactions should only contain one title.";
+    public static final String MESSAGE_AMOUNT_CONSTRAINTS = "Bookmark transactions should only contain one amount.";
+
     private final Title title;
     private final Amount amount;
     private final Set<Category> categories;

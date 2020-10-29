@@ -78,10 +78,6 @@ public class EditBookmarkExpenseCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_AMOUNT_DESC + CATEGORY_DESC_UTILITIES,
                 Amount.MESSAGE_CONSTRAINTS);
 
-        // valid amount followed by invalid amount. The test case for invalid amount followed by valid amount
-        // is tested at {@code parse_invalidValueFollowedByValidValue_success()}
-        assertParseFailure(parser, "1" + AMOUNT_DESC_PHONE_BILL + INVALID_AMOUNT_DESC, Amount.MESSAGE_CONSTRAINTS);
-
         // while parsing {@code PREFIX_CATEGORY} alone will reset the categories of the {@code BookmarkExpense} being
         // edited, parsing it together with a valid category results in error
         assertParseFailure(parser, "1" + CATEGORY_DESC_FOOD_BEVERAGE + CATEGORY_DESC_WORK + CATEGORY_EMPTY,

@@ -43,16 +43,6 @@ public class AddBookmarkIncomeCommandParserTest {
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + TITLE_DESC_PART_TIME + AMOUNT_DESC_PART_TIME
                 + CATEGORY_DESC_WORK, new AddBookmarkIncomeCommand(expectedBookmarkIncome));
 
-        // multiple titles - last title accepted
-        assertParseSuccess(parser, TITLE_DESC_PHONE_BILL + TITLE_DESC_PART_TIME
-                        + AMOUNT_DESC_PART_TIME + CATEGORY_DESC_WORK,
-                new AddBookmarkIncomeCommand(expectedBookmarkIncome));
-
-        // multiple amounts - last amount accepted
-        assertParseSuccess(parser, TITLE_DESC_PART_TIME
-                        + AMOUNT_DESC_PHONE_BILL + AMOUNT_DESC_PART_TIME + CATEGORY_DESC_WORK,
-                new AddBookmarkIncomeCommand(expectedBookmarkIncome));
-
         // multiple categories - all accepted
         BookmarkIncome expectedExpenseMultipleCategories = new BookmarkTransactionBuilder(PART_TIME)
                 .withCategories(VALID_CATEGORY_UTILITIES, VALID_CATEGORY_WORK).buildBookmarkIncome();
