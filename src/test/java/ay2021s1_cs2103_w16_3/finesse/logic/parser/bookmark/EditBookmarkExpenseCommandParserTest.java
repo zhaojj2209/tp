@@ -2,6 +2,7 @@ package ay2021s1_cs2103_w16_3.finesse.logic.parser.bookmark;
 
 import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.AMOUNT_DESC_PHONE_BILL;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.AMOUNT_DESC_SPOTIFY_SUBSCRIPTION;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.CATEGORY_DESC_FOOD_BEVERAGE;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.CATEGORY_DESC_MISCELLANEOUS;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.CATEGORY_DESC_UTILITIES;
@@ -29,6 +30,7 @@ import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.EditBookmarkExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.EditBookmarkTransactionDescriptor;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.bookmarkparsers.EditBookmarkExpenseCommandParser;
+import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkTransaction;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
@@ -77,10 +79,6 @@ public class EditBookmarkExpenseCommandParserTest {
         // invalid amount followed by valid category
         assertParseFailure(parser, "1" + INVALID_AMOUNT_DESC + CATEGORY_DESC_UTILITIES,
                 Amount.MESSAGE_CONSTRAINTS);
-
-        // valid amount followed by invalid amount. The test case for invalid amount followed by valid amount
-        // is tested at {@code parse_invalidValueFollowedByValidValue_success()}
-        assertParseFailure(parser, "1" + AMOUNT_DESC_PHONE_BILL + INVALID_AMOUNT_DESC, Amount.MESSAGE_CONSTRAINTS);
 
         // while parsing {@code PREFIX_CATEGORY} alone will reset the categories of the {@code BookmarkExpense} being
         // edited, parsing it together with a valid category results in error
@@ -143,6 +141,19 @@ public class EditBookmarkExpenseCommandParserTest {
         descriptor = new EditBookmarkTransactionDescriptorBuilder().withCategories(VALID_CATEGORY_UTILITIES).build();
         expectedCommand = new EditBookmarkExpenseCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_multipleRepeatedFields_failure() {
+        // multiple titles
+        assertParseFailure(parser, "1" + TITLE_DESC_PHONE_BILL + TITLE_DESC_SPOTIFY_SUBSCRIPTION
+                        + AMOUNT_DESC_PHONE_BILL + CATEGORY_DESC_UTILITIES,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_TITLE_CONSTRAINTS));
+
+        // multiple amounts
+        assertParseFailure(parser, "1" + TITLE_DESC_PHONE_BILL + AMOUNT_DESC_PHONE_BILL
+                        + AMOUNT_DESC_SPOTIFY_SUBSCRIPTION + CATEGORY_DESC_UTILITIES,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_AMOUNT_CONSTRAINTS));
     }
 
     @Test

@@ -110,21 +110,6 @@ public class AddExpenseCommandParserTest {
         assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP + DATE_DESC_INTERNSHIP
                 + INVALID_CATEGORY_DESC + VALID_CATEGORY_FOOD_BEVERAGE, Category.MESSAGE_CONSTRAINTS);
 
-        // multiple titles
-        assertParseFailure(parser, TITLE_DESC_BUBBLE_TEA + TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP
-                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_TITLE_CONSTRAINTS));
-
-        // multiple amounts
-        assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_BUBBLE_TEA + AMOUNT_DESC_INTERNSHIP
-                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_AMOUNT_CONSTRAINTS));
-
-        // multiple dates
-        assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP + DATE_DESC_BUBBLE_TEA
-                + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
-
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_TITLE_DESC + AMOUNT_DESC_INTERNSHIP + INVALID_DATE_DESC,
                 Title.MESSAGE_CONSTRAINTS);
@@ -133,5 +118,23 @@ public class AddExpenseCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP
                 + DATE_DESC_INTERNSHIP + CATEGORY_DESC_WORK + CATEGORY_DESC_FOOD_BEVERAGE,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddExpenseCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_multipleRepeatedFields_failure() {
+        // multiple titles
+        assertParseFailure(parser, TITLE_DESC_BUBBLE_TEA + TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP
+                        + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_TITLE_CONSTRAINTS));
+
+        // multiple amounts
+        assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_BUBBLE_TEA + AMOUNT_DESC_INTERNSHIP
+                        + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_AMOUNT_CONSTRAINTS));
+
+        // multiple dates
+        assertParseFailure(parser, TITLE_DESC_INTERNSHIP + AMOUNT_DESC_INTERNSHIP + DATE_DESC_BUBBLE_TEA
+                        + DATE_DESC_INTERNSHIP + CATEGORY_DESC_FOOD_BEVERAGE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
     }
 }

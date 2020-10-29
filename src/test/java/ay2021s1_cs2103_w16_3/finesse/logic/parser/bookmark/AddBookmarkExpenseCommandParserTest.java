@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.AddBookmarkExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.bookmarkparsers.AddBookmarkExpenseCommandParser;
 import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkExpense;
+import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkTransaction;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
@@ -41,16 +42,6 @@ public class AddBookmarkExpenseCommandParserTest {
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + TITLE_DESC_PHONE_BILL + AMOUNT_DESC_PHONE_BILL
                 + CATEGORY_DESC_UTILITIES, new AddBookmarkExpenseCommand(expectedBookmarkExpense));
-
-        // multiple titles - last title accepted
-        assertParseSuccess(parser, TITLE_DESC_SPOTIFY_SUBSCRIPTION + TITLE_DESC_PHONE_BILL
-                        + AMOUNT_DESC_PHONE_BILL + CATEGORY_DESC_UTILITIES,
-                new AddBookmarkExpenseCommand(expectedBookmarkExpense));
-
-        // multiple amounts - last amount accepted
-        assertParseSuccess(parser, TITLE_DESC_PHONE_BILL + AMOUNT_DESC_SPOTIFY_SUBSCRIPTION
-                + AMOUNT_DESC_PHONE_BILL + CATEGORY_DESC_UTILITIES,
-                new AddBookmarkExpenseCommand(expectedBookmarkExpense));
 
         // multiple categories - all accepted
         BookmarkExpense expectedExpenseMultipleCategories = new BookmarkTransactionBuilder(PHONE_BILL)
@@ -106,6 +97,19 @@ public class AddBookmarkExpenseCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + TITLE_DESC_PHONE_BILL
                         + CATEGORY_DESC_UTILITIES + CATEGORY_DESC_WORK,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddBookmarkExpenseCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_multipleRepeatedFields_failure() {
+        // multiple titles
+        assertParseFailure(parser, TITLE_DESC_PHONE_BILL + TITLE_DESC_SPOTIFY_SUBSCRIPTION
+                        + AMOUNT_DESC_PHONE_BILL + CATEGORY_DESC_UTILITIES,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_TITLE_CONSTRAINTS));
+
+        // multiple amounts
+        assertParseFailure(parser, TITLE_DESC_PHONE_BILL + AMOUNT_DESC_PHONE_BILL
+                        + AMOUNT_DESC_SPOTIFY_SUBSCRIPTION + CATEGORY_DESC_UTILITIES,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_AMOUNT_CONSTRAINTS));
     }
 
 }

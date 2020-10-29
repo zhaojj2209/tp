@@ -12,12 +12,12 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.INVAL
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.INVALID_DATE_DESC;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.INVALID_TITLE_DESC;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.TITLE_DESC_BUBBLE_TEA;
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.TITLE_DESC_INTERNSHIP;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_AMOUNT_BUBBLE_TEA;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_AMOUNT_INTERNSHIP;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_CATEGORY_FOOD_BEVERAGE;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_CATEGORY_WORK;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_DATE_BUBBLE_TEA;
-import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_DATE_INTERNSHIP;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_TITLE_BUBBLE_TEA;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -35,6 +35,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Title;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 
 public class EditCommandParserTest {
@@ -82,10 +83,6 @@ public class EditCommandParserTest {
 
         // invalid amount followed by valid date
         assertParseFailure(parser, "1" + INVALID_AMOUNT_DESC + DATE_DESC_BUBBLE_TEA, Amount.MESSAGE_CONSTRAINTS);
-
-        // valid amount followed by invalid amount. The test case for invalid amount followed by valid amount
-        // is tested at {@code parse_invalidValueFollowedByValidValue_success()}
-        assertParseFailure(parser, "1" + AMOUNT_DESC_INTERNSHIP + INVALID_AMOUNT_DESC, Amount.MESSAGE_CONSTRAINTS);
 
         // while parsing {@code PREFIX_CATEGORY} alone will reset the categories of the {@code Transaction} being
         // edited, parsing it together with a valid category results in error
@@ -137,13 +134,13 @@ public class EditCommandParserTest {
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
-        // amounts
+        // amount
         userInput = targetIndex.getOneBased() + AMOUNT_DESC_BUBBLE_TEA;
         descriptor = new EditTransactionDescriptorBuilder().withAmount(VALID_AMOUNT_BUBBLE_TEA).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
-        // dates
+        // date
         userInput = targetIndex.getOneBased() + DATE_DESC_BUBBLE_TEA;
         descriptor = new EditTransactionDescriptorBuilder().withDate(VALID_DATE_BUBBLE_TEA).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
@@ -157,37 +154,16 @@ public class EditCommandParserTest {
     }
 
     @Test
-    public void parse_multipleRepeatedFields_acceptsLast() {
-        Index targetIndex = INDEX_FIRST;
-        String userInput = targetIndex.getOneBased() + AMOUNT_DESC_BUBBLE_TEA + DATE_DESC_BUBBLE_TEA
-                + CATEGORY_DESC_FOOD_BEVERAGE + AMOUNT_DESC_BUBBLE_TEA + DATE_DESC_BUBBLE_TEA
-                + CATEGORY_DESC_FOOD_BEVERAGE + AMOUNT_DESC_INTERNSHIP + DATE_DESC_INTERNSHIP
-                + CATEGORY_DESC_WORK;
-
-        EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder()
-                .withAmount(VALID_AMOUNT_INTERNSHIP).withDate(VALID_DATE_INTERNSHIP)
-                .withCategories(VALID_CATEGORY_FOOD_BEVERAGE, VALID_CATEGORY_WORK).build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
-
-        assertParseSuccess(parser, userInput, expectedCommand);
-    }
-
-    @Test
-    public void parse_invalidValueFollowedByValidValue_success() {
-        // no other valid values specified
-        Index targetIndex = INDEX_FIRST;
-        String userInput = targetIndex.getOneBased() + INVALID_AMOUNT_DESC + AMOUNT_DESC_INTERNSHIP;
-        EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder()
-                .withAmount(VALID_AMOUNT_INTERNSHIP).build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
-        assertParseSuccess(parser, userInput, expectedCommand);
-
-        // other valid values specified
-        userInput = targetIndex.getOneBased() + DATE_DESC_INTERNSHIP + INVALID_AMOUNT_DESC + AMOUNT_DESC_INTERNSHIP;
-        descriptor = new EditTransactionDescriptorBuilder().withAmount(VALID_AMOUNT_INTERNSHIP)
-                .withDate(VALID_DATE_INTERNSHIP).build();
-        expectedCommand = new EditCommand(targetIndex, descriptor);
-        assertParseSuccess(parser, userInput, expectedCommand);
+    public void parse_multipleRepeatedFields_failure() {
+        // multiple titles
+        assertParseFailure(parser, "1" + TITLE_DESC_BUBBLE_TEA + TITLE_DESC_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_TITLE_CONSTRAINTS));
+        // multiple amounts
+        assertParseFailure(parser, "1" + AMOUNT_DESC_BUBBLE_TEA + AMOUNT_DESC_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_AMOUNT_CONSTRAINTS));
+        // multiple dates
+        assertParseFailure(parser, "1" + DATE_DESC_BUBBLE_TEA + DATE_DESC_INTERNSHIP,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
     }
 
     @Test
