@@ -17,7 +17,7 @@ Welcome to Fine$$e - your personal finance tracker!
 
 Looking for an all-in-one solution to help you develop good financial habits? Look no further!
 
-Fine\\$\\$e is an integrated platform fully customized for tertiary and university students with the aim of helping you to track your finances effectively.
+Fine\\$\\$e is an integrated platform fully customized for tertiary (including university) students with the aim of helping you to track your finances effectively.
 Fine\\$\\$e allows you to keep track of your incomes, expenses and savings with a few simple commands.
 Furthermore, to help you cultivate good financial habits, Fine$$e allows you to budget your finances by setting an expense limit and savings goal, as well as viewing your past spending and saving trends.
 
@@ -174,7 +174,15 @@ The formats of the parameters used in the rest of the document are as follows:
 mnopqrstuvwxyz !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
   ```
 * `AMOUNT`, `AMOUNT_FROM` and `AMOUNT_TO` should be non-negative numbers up to 8 digits with 0 or 2 decimal places, with an optional `$` in front.
-* `DATE`, `DATE_FROM` and `DATE_TO` should be in `dd/mm/yyyy` format, and cannot be later than the current date.
+* `DATE`, `DATE_FROM` and `DATE_TO` should be a valid calendar date in `dd/mm/yyyy` format, representing day, month, and year respectively.
+  * Valid ranges for days and months are governed by the rules of the [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar#Description).
+    * Months should only range from 1 to 12 (inclusive), representing the 12 months of a year.
+    * Days should only range from 1 to 28, 29, 30, or 31 (all inclusive),
+    depending on the number of days in the given month and whether the given year is a leap year.
+  * For day and month values, single-digit values must be padded with leading zeroes, meaning that a value of 5 should be written as `05` instead of `5`.
+  * For year values, it must be written in the standard 4-digit format, so 2019 should be written as `2019` and not just `19`.
+  * Dates cannot be earlier than 1 January 1970 (`01/01/1970`).
+  * Dates cannot be later than the current date.
 * `INDEX` should be a positive integer.
 
 Unless stated otherwise, only one input per parameter is allowed for each command.
