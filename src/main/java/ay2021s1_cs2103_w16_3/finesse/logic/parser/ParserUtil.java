@@ -50,6 +50,19 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String title} into a {@code Title}.
+     * Leading and trailing whitespaces will be trimmed.
+     * Any extra whitespaces between words will be removed.
+     *
+     * @throws ParseException if the given {@code title} is invalid.
+     */
+    public static Title parseTitleWithAdditionalWhitespace(String title) throws ParseException {
+        requireNonNull(title);
+        String removedExtraWhitespaceTitle = title.replaceAll("\\s{2,}", " ");
+        return parseTitle(removedExtraWhitespaceTitle);
+    }
+
+    /**
      * Parses a {@code String amount} into a {@code Amount}.
      * Leading and trailing whitespaces will be trimmed.
      *
