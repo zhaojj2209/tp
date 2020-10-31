@@ -557,6 +557,7 @@ To help you manage your finances, Fine\$\$e records the following information ab
 
 ![Bookmark Expense Overview](images/userguide/bookmark/AnnotatedBookmarkExpenseOverview.png)
 
+{:.image-caption}
 Bookmark Expenses List Panel in the Expenses Tab
 
 #### 4.5.1 Add Bookmark Expense: `add-bookmark-expense`
@@ -698,6 +699,7 @@ To help you manage your finances, Fine\$\$e records the following information ab
 
 ![Overview Bookmark Income Panel](images/userguide/bookmark/AnnotatedBookmarkIncomeOverview.png)
 
+{:.image-caption}
 Bookmark Incomes List Panel in the Incomes tab
 
 #### 4.6.1 Add Bookmark Income: `add-bookmark-income`
