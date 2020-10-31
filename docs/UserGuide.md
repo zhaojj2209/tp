@@ -166,13 +166,12 @@ This section aims to provide you with in-depth details on Fine\$\$e's unique fea
 **:warning: &nbsp; IMPORTANT &nbsp; :warning:**<br>
 
 The formats of the parameters used in the rest of the document are as follows:
-* `TITLE` and `CATEGORY` should consist of printable ASCII characters, and cannot begin with a space.
+* `TITLE`, `TITLE_KEYPHRASE` and `CATEGORY` should consist of printable ASCII characters, and cannot begin with a space.
   * The set of printable ASCII characters consists of alphanumeric characters, space, and several special characters.
     Below is an exhaustive list of printable ASCII characters (excluding line breaks):
-  ```
-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
-mnopqrstuvwxyz !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
-  ```
+    ```
+    0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+    ```
 * `AMOUNT`, `AMOUNT_FROM` and `AMOUNT_TO` should each be a non-negative number with up to 8 digits before the decimal point and with 0 or 2 decimal places.
   An optional `$` may be included in front as well.
 * `DATE`, `DATE_FROM` and `DATE_TO` should each be a valid calendar date in `dd/mm/yyyy` format, representing day, month, and year respectively.
@@ -348,21 +347,21 @@ Lists all expenses in the finance tracker.
 
 #### 4.3.5 Find Expense: `find`
 
-Finds expenses that match any of the given parameters, and displays the list of matching expenses.
+Finds expenses that match any of the given search parameters, and displays the list of matching expenses.
 
 Format: (when on the [Expenses tab](#223-expenses-tab)) `find [t/TITLE_KEYPHRASE...] [a/AMOUNT] [d/DATE] [c/CATEGORY...] [af/AMOUNT_FROM] [at/AMOUNT_TO] [df/DATE_FROM] [dt/DATE_TO]`
 
 > :bulb: &nbsp; When on the [Overview tab](#221-overview-tab), you can use `find` to search for all transactions (expenses and incomes).
 
-The available parameters and their uses are as follows:
+The available search parameters and their uses are as follows:
 
-* `t/TITLE_KEYPHRASE`: Searches for all expenses with titles containing the specified `TITLE_KEYPHRASE` keyphrase.
-  * The search is case-insensitive. e.g `taxi` will match `Taxi`
-  * More than one keyphrase can be given.
-  * The order of the keyphrases does not matter. e.g. `Bus Train` will match `Train Bus`
-  * Only full words will be matched. e.g. `Snack` will not match `Snacks`
+* `t/TITLE_KEYPHRASE`: Searches for all expenses with titles containing the specified `TITLE_KEYPHRASE` keyphrase exactly.
+  * The search is case-insensitive. e.g `t/taxi` will match `Taxi`
+  * A keyphrase can contain more than one word. e.g. `t/bubble tea` is considered as one keyphrase
+  * The order of the keyphrases does not matter. e.g. `t/Bus t/Train` will match `Train Bus`
+  * Partial matches are accepted. e.g. `t/Snack` will match `Snacks`
   * Titles matching at least one keyphrase will be returned (i.e. `OR` search).
-    e.g. `Tea Coffee` will return `Bubble Tea`, `Starbucks Coffee`
+    e.g. `t/Tea t/Coffee` will return `Bubble Tea`, `Starbucks Coffee`
 * `a/AMOUNT`: Searches for all expenses with the specified amount.
 * `d/DATE`: Searches for all expenses that occurred on the specified date.
 * `c/CATEGORY`: Searches for all expenses labelled with the specified category.
@@ -373,7 +372,7 @@ The available parameters and their uses are as follows:
 * `df/DATE_FROM`: Searches for all expenses that occurred on or later than the specified date.
 * `dt/DATE_TO`: Searches for all expenses that occurred on or before the specified date.
 
-None of the parameters are mandatory, but at least one must be specified.
+None of the search parameters are mandatory, but at least one must be specified.
 
 Examples:
 * `find t/tea d/22/09/2000`
@@ -503,21 +502,21 @@ Lists all incomes in the finance tracker.
 
 #### 4.4.5 Find Income: `find`
 
-Finds incomes that match any of the given parameters, and displays the list of matching incomes.
+Finds incomes that match any of the given search parameters, and displays the list of matching incomes.
 
 Format: (when on the [Incomes tab](#222-incomes-tab)) `find [t/TITLE_KEYPHRASE...] [a/AMOUNT] [d/DATE] [c/CATEGORY...] [af/AMOUNT_FROM] [at/AMOUNT_TO] [df/DATE_FROM] [dt/DATE_TO]`
 
 > :bulb: &nbsp; When on the [Overview tab](#221-overview-tab), you can use `find` to search for all transactions (expenses and incomes).
 
-The available parameters and their uses are as follows:
+The available search parameters and their uses are as follows:
 
-* `t/TITLE_KEYPHRASE`: Searches for all incomes with titles containing the specified `TITLE_KEYPHRASE` keyphrase.
-  * The search is case-insensitive. e.g `work` will match `Work`
-  * More than one keyphrase can be given.
-  * The order of the keyphrases does not matter. e.g. `TA part-time` will match `part-time TA`
-  * Only full words will be matched. e.g. `intern` will not match `internship`
+* `t/TITLE_KEYPHRASE`: Searches for all incomes with titles containing the specified `TITLE_KEYPHRASE` keyphrase exactly.
+  * The search is case-insensitive. e.g `t/work` will match `Work`
+  * A keyphrase can contain more than one word. e.g. `t/Shopee internship` is considered as one keyphrase
+  * The order of the keyphrases does not matter. e.g. `t/TA t/part-time` will match `part-time TA`
+  * Partial matches are accepted. e.g. `t/intern` will match `internship`
   * Titles matching at least one keyphrase will be returned (i.e. `OR` search).
-    e.g. `allowance prize` will return `Laptop Allowance`, `Hackathon Prize`
+    e.g. `t/allowance t/prize` will return `Laptop Allowance`, `Hackathon Prize`
 * `a/AMOUNT`: Searches for all incomes with the specified amount.
 * `d/DATE`: Searches for all incomes that occurred on the specified date.
 * `c/CATEGORY`: Searches for all incomes labelled with the specified category.
@@ -528,7 +527,7 @@ The available parameters and their uses are as follows:
 * `df/DATE_FROM`: Searches for all incomes that occurred on or later than the specified date.
 * `dt/DATE_TO`: Searches for all incomes that occurred on or before the specified date.
 
-None of the keywords are mandatory, but at least one must be specified.
+None of the search parameters are mandatory, but at least one must be specified.
 
 Examples:
 * `find t/allowance d/01/10/2020`
@@ -934,7 +933,7 @@ Add Expense | `add-expense t/TITLE a/AMOUNT [d/DATE] [c/CATEGORY...]` <br> `adde
 Add Income | `add-income t/TITLE a/AMOUNT [d/DATE] [c/CATEGORY...]` <br> `addi t/TITLE a/AMOUNT [d/DATE] [c/CATEGORY...]` <br> (On Income tab) `add t/TITLE a/AMOUNT [d/DATE] [c/CATEGORY...]` | `add-income t/Internship a/560 d/03/10/2020 c/Work` <br> `addi t/Angpao money a/$20 d/10/10/2020 c/CNY c/Gift`
 List Expenses | `ls-expense` <br> `lse` <br> (On Expenses tab) `list`
 List Incomes | `ls-income` <br> `lsi` <br> (On Incomes tab) `list`
-Find | `find KEYWORD [MORE_KEYWORDS...]` | `find c/Food & drink af/10` <br> `find t/allowance d/01/10/2020`
+Find | `find [t/TITLE_KEYPHRASE...] [a/AMOUNT] [d/DATE] [c/CATEGORY...] [af/AMOUNT_FROM] [at/AMOUNT_TO] [df/DATE_FROM] [dt/DATE_TO]` | `find c/Food & drink af/10` <br> `find t/allowance d/01/10/2020`
 Edit | `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY...]`| `edit 1 t/Brunch d/22/09/2020` <br> `edit 2 a/500 c/`
 Delete | `delete INDEX` | `delete 1`
 Add Bookmark Expense | `add-bookmark-expense t/TITLE a/AMOUNT [c/CATEGORY...]` <br> `addbe t/TITLE a/AMOUNT [c/CATEGORY...]` | `add-bookmark-expense t/Phone Bill a/60 c/Utilities c/Personal` <br> `addbe t/Bubble Tea a/$4.50 c/Food & Beverage`
@@ -954,7 +953,6 @@ Exit | `exit`
 
 Term | Definition
 -----|-----------
-ASCII | Characters that are recognised by a computer.
 Bookmark Expense | A template for an expense, which can be used to create expenses and add them to the finance tracker.
 Bookmark Income | A template for an income, which can be used to create incomes and add them to the finance tracker.
 Current date | The system date on the computer on which Fine$$e is set up.
