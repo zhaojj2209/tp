@@ -786,7 +786,7 @@ Sets the monthly expense limit in the finance tracker to be `$400.00`.
 
 ### 4.8 Savings Goal
 
-Want to save up for the new PS5 but can't seem to no matter what? Fine$$e has you covered!
+Want to save up for the new PlayStation 5 but can't seem to no matter what? Fine$$e has you covered!
 The savings goal feature allows you to save consistently by setting a monthly savings goal, so that you can save up bit by bit and build good financial habits.
 Once the savings goal is set, it will be visible on the Overview tab along with your current savings for this month.
 
@@ -832,7 +832,23 @@ Exits the program.
 
 Format: `exit`
 
-### 4.11 Saving the data
+### 4.11 Command History
+
+Accidentally entered the wrong command and wish to modify it without typing it out again fully?
+Simply press the ↑ or ↓ arrow keys on your keyboard to navigate through your command history.
+
+* The command history keeps track of the latest 50 commands entered.
+* The command input box must be focused on, i.e. ensure that the text cursor is blinking in the command input box.
+* Press the ↑ arrow key to retrieve the previous commands.
+  * Each press of the ↑ arrow key retrieves the command immediately preceding the current command.
+  * If the current command is the earliest command that is being tracked, then pressing the ↑ arrow key does nothing.
+* Press the ↓ arrow key to retrieve the next commands.
+  * Each press of the ↓ arrow key retrieves the command immediately succeeding the current command.
+  * If the current command is the latest command that has been entered, then the command input box will be cleared upon pressing the ↓ arrow key.
+
+> :warning: &nbsp; Pressing either the ↑ or ↓ arrow keys will cause whatever text is currently in the command box to be overwritten.
+
+### 4.12 Saving the Data
 
 Fine$$e data is saved in the hard disk automatically after any command that changes the data.
 There is no need to save manually.
@@ -865,12 +881,13 @@ Exit | `exit`
 
 ## 6. Glossary
 
-* Expense: A one-time transaction that results in a decrease in the amount of money you have.
-* Income: A one-time transaction that results in an increase in the amount of money you have.
 * ASCII: Characters that are recognised by a computer.
-* Current date: The system date on the computer on which Fine$$e is set up.
 * Bookmark Expense: A template for an expense, which can be used to create expenses and add them to the finance tracker.
 * Bookmark Income: A template for an income, which can be used to create incomes and add them to the finance tracker.
+* Current date: The system date on the computer on which Fine$$e is set up.
+* Expense: A one-time transaction that results in a decrease in the amount of money you have.
+* Income: A one-time transaction that results in an increase in the amount of money you have.
+* Text cursor: A blinking vertical line that indicates where text will be placed when entered.
 
 --------------------------------------------------------------------------------------------------------------------
 
