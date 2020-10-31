@@ -62,10 +62,29 @@ public class TransactionCard extends UiPart<Region> {
                 });
         date.setText(transaction.getDate().toString());
 
+        // 'categories' HBox cannot be scrolled down on when empty.
+        if (categories.getChildren().size() == 0) {
+            // Add an invisible label when there are no categories.
+            Label placeholderLabel = new Label("");
+            placeholderLabel.setVisible(false);
+            categories.getChildren().add(placeholderLabel);
+        }
+
         // Hijack scroll wheel for horizontal scrolling instead of vertical scrolling.
         scrollPane.setOnScroll(scrollEvent -> {
-            if (scrollEvent.getDeltaY() != 0) {
-                scrollPane.setHvalue(scrollPane.getHvalue() - scrollEvent.getDeltaY() / categories.getWidth());
+            // If no scrollbar, pass scroll event up to parent.
+            if (categories.getWidth() <= scrollPane.getWidth()) {
+                return;
+            }
+
+            double oldHvalue = scrollPane.getHvalue();
+            double newHvalue = scrollPane.getHvalue() - scrollEvent.getDeltaY() / categories.getWidth();
+            // Bound the values of 'newHvalue' to [0, 1].
+            newHvalue = Math.max(0.0, Math.min(1.0, newHvalue));
+
+            // If there is a change in the Hvalue, consume the scroll event.
+            if (oldHvalue != newHvalue) {
+                scrollPane.setHvalue(newHvalue);
                 // Do not pass scroll event up to parent.
                 scrollEvent.consume();
             }
