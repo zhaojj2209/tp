@@ -149,6 +149,7 @@ This section aims to provide you with in-depth details on Fine\$\$e's unique fea
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add-expense t/TITLE`, `TITLE` is a parameter which can be used as `add t/Bubble Tea`.
+  Any leading/trailing whitspaces will be ignored. e.g. `add t/   Bubble Tea` and `add t/Bubble Tea   ` will be treated as `add t/Bubble Tea`.
 
 * Items in square brackets (`[]`) are optional.<br>
   e.g `t/TITLE [c/CATEGORY]` can be used as `t/Bubble Tea c/Food & Beverage` or as `t/Bubble Tea`.
@@ -166,11 +167,12 @@ This section aims to provide you with in-depth details on Fine\$\$e's unique fea
 **:warning: &nbsp; IMPORTANT &nbsp; :warning:**<br>
 
 The formats of the parameters used in the rest of the document are as follows:
-* `TITLE`, `TITLE_KEYPHRASE` and `CATEGORY` should consist of printable ASCII characters, and cannot begin with a space.
+* `TITLE`, `TITLE_KEYPHRASE` and `CATEGORY` should consist of printable ASCII characters.
   * The set of printable ASCII characters consists of alphanumeric characters, space, and several special characters.
     Below is an exhaustive list of printable ASCII characters (excluding line breaks):
     ```
-    0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+    0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
+    mnopqrstuvwxyz !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
     ```
 * `AMOUNT`, `AMOUNT_FROM` and `AMOUNT_TO` should each be a non-negative number with up to 8 digits before the decimal point and with 0 or 2 decimal places.
   An optional `$` may be included in front as well.
