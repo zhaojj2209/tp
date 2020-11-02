@@ -9,24 +9,24 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 /**
  * Tests that a {@code Transaction}'s {@code Title} matches any of the keywords given.
  */
-public class TitleContainsKeywordsPredicate implements Predicate<Transaction> {
-    private final List<String> keywords;
+public class TitleContainsKeyphrasesPredicate implements Predicate<Transaction> {
+    private final List<String> keyphrases;
 
-    public TitleContainsKeywordsPredicate(List<String> keywords) {
-        this.keywords = keywords;
+    public TitleContainsKeyphrasesPredicate(List<String> keyphrases) {
+        this.keyphrases = keyphrases;
     }
 
     @Override
     public boolean test(Transaction transaction) {
-        return keywords.stream()
+        return keyphrases.stream()
                 .anyMatch(keyword -> StringUtil.containsIgnoreCase(transaction.getTitle().toString(), keyword));
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof TitleContainsKeywordsPredicate // instanceof handles nulls
-                && keywords.equals(((TitleContainsKeywordsPredicate) other).keywords)); // state check
+                || (other instanceof TitleContainsKeyphrasesPredicate // instanceof handles nulls
+                && keyphrases.equals(((TitleContainsKeyphrasesPredicate) other).keyphrases)); // state check
     }
 
 }

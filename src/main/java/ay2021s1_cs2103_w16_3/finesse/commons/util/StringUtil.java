@@ -24,12 +24,20 @@ public class StringUtil {
      */
     public static boolean containsIgnoreCase(String sentence, String keyphrase) {
         requireNonNull(sentence);
-        requireNonNull(keyphrase);
+        checkEmptyString(keyphrase);
 
         String preppedWord = keyphrase.trim();
-        checkArgument(!preppedWord.isEmpty(), "Word parameter cannot be empty");
-
         return sentence.toLowerCase().contains(preppedWord.toLowerCase());
+    }
+
+    /**
+     * Checks if the string {@code s} is an empty string.
+     * A string is considered empty if it is the empty string, or is a string consisting of only whitespaces.
+     * @param s cannot be null
+     */
+    public static void checkEmptyString(String s) {
+        requireNonNull(s);
+        checkArgument(!s.trim().isEmpty(), "Parameter cannot be empty");
     }
 
     /**
