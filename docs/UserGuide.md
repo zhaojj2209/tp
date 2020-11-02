@@ -149,7 +149,7 @@ This section aims to provide you with in-depth details on Fine\$\$e's unique fea
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add-expense t/TITLE`, `TITLE` is a parameter which can be used as `add t/Bubble Tea`.
-  Any leading/trailing whitspaces will be ignored. e.g. `add t/   Bubble Tea` and `add t/Bubble Tea   ` will be treated as `add t/Bubble Tea`.
+  Any leading/trailing whitespaces will be ignored. e.g. `add t/   Bubble Tea` and `add t/Bubble Tea   ` will be treated as `add t/Bubble Tea`.
 
 * Items in square brackets (`[]`) are optional.<br>
   e.g `t/TITLE [c/CATEGORY]` can be used as `t/Bubble Tea c/Food & Beverage` or as `t/Bubble Tea`.
@@ -357,17 +357,17 @@ Format: (when on the [Expenses tab](#223-expenses-tab)) `find [t/TITLE_KEYPHRASE
 
 The available search parameters and their uses are as follows:
 
-* `t/TITLE_KEYPHRASE`: Searches for all expenses with titles containing the specified `TITLE_KEYPHRASE` keyphrase exactly.
-  * The search is case-insensitive. e.g `t/taxi` will match `Taxi`
-  * A keyphrase can contain more than one word. e.g. `t/bubble tea` is considered as one keyphrase
-  * The order of the keyphrases does not matter. e.g. `t/Bus t/Train` will match `Train Bus`
-  * Partial matches are accepted. e.g. `t/Snack` will match `Snacks`
+* `t/TITLE_KEYPHRASE`: Searches for all expenses with titles containing the specified `TITLE_KEYPHRASE` keyphrase.
+  * The search is case-insensitive. e.g `t/taxi` will match `Taxi`.
+  * A keyphrase can contain more than one word. e.g. `t/bubble tea` is considered as one keyphrase.
+  * The order of the keyphrases does not matter. e.g. `t/Bus t/Train` will match `Train Bus`.
+  * Partial matches are accepted. e.g. `t/Snack` will match `Snacks`.
   * Titles matching at least one keyphrase will be returned (i.e. `OR` search).
-    e.g. `t/Tea t/Coffee` will return `Bubble Tea`, `Starbucks Coffee`
+    e.g. `t/Tea t/Coffee` will return `Bubble Tea`, `Starbucks Coffee`.
 * `a/AMOUNT`: Searches for all expenses with the specified amount.
 * `d/DATE`: Searches for all expenses that occurred on the specified date.
 * `c/CATEGORY`: Searches for all expenses labelled with the specified category.
-  * The search is case-insensitive. e.g `taxi` will match `Taxi`
+  * The search is case-insensitive. e.g `taxi` will match `Taxi`.
   * More than one category can be given; the search will return expenses with any of the input categories.
 * `af/AMOUNT_FROM`: Searches for all expenses with amounts more than or equal to the specified amount.
 * `at/AMOUNT_TO`: Searches for all expenses with amounts less than or equal to the specified amount.
@@ -512,17 +512,17 @@ Format: (when on the [Incomes tab](#222-incomes-tab)) `find [t/TITLE_KEYPHRASE..
 
 The available search parameters and their uses are as follows:
 
-* `t/TITLE_KEYPHRASE`: Searches for all incomes with titles containing the specified `TITLE_KEYPHRASE` keyphrase exactly.
-  * The search is case-insensitive. e.g `t/work` will match `Work`
-  * A keyphrase can contain more than one word. e.g. `t/Shopee internship` is considered as one keyphrase
-  * The order of the keyphrases does not matter. e.g. `t/TA t/part-time` will match `part-time TA`
-  * Partial matches are accepted. e.g. `t/intern` will match `internship`
+* `t/TITLE_KEYPHRASE`: Searches for all incomes with titles containing the specified `TITLE_KEYPHRASE` keyphrase.
+  * The search is case-insensitive. e.g `t/work` will match `Work`.
+  * A keyphrase can contain more than one word. e.g. `t/Shopee internship` is considered as one keyphrase.
+  * The order of the keyphrases does not matter. e.g. `t/TA t/part-time` will match `part-time TA`.
+  * Partial matches are accepted. e.g. `t/intern` will match `internship`.
   * Titles matching at least one keyphrase will be returned (i.e. `OR` search).
-    e.g. `t/allowance t/prize` will return `Laptop Allowance`, `Hackathon Prize`
+    e.g. `t/allowance t/prize` will return `Laptop Allowance`, `Hackathon Prize`.
 * `a/AMOUNT`: Searches for all incomes with the specified amount.
 * `d/DATE`: Searches for all incomes that occurred on the specified date.
 * `c/CATEGORY`: Searches for all incomes labelled with the specified category.
-  * The search is case-insensitive. e.g `work` will match `Work`
+  * The search is case-insensitive. e.g `work` will match `Work`.
   * More than one category can be given; the search will return incomes with any of the input categories.
 * `af/AMOUNT_FROM`: Searches for all incomes with amounts more than or equal to the specified amount.
 * `at/AMOUNT_TO`: Searches for all incomes with amounts less than or equal to the specified amount.
