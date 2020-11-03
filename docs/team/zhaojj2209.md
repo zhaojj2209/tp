@@ -24,22 +24,22 @@ Fine$$e is a desktop finance tracker that allows tertiary students to better man
 * **Code contributed**: [RepoSense link](https://nus-cs2103-ay2021s1.github.io/tp-dashboard/#breakdown=true&search=w16&sort=groupTitle&sortWithin=title&since=2020-08-14&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other&tabOpen=true&tabType=authorship&tabAuthor=zhaojj2209&tabRepo=AY2021S1-CS2103T-W16-3%2Ftp%5Bmaster%5D&authorshipIsMergeGroup=false&authorshipFileTypes=docs~functional-code~test-code~other)
 
 * **Project management**:
-  * Created labels for issues and pull requests on GitHub
-  * Managed release `v1.3` (1 release) on GitHub
+  * Created labels for issues and pull requests on GitHub.
+  * Managed release `v1.3` (1 release) on GitHub.
 
 * **Enhancements to existing features**:
-  * Removed duplicate checks to allow duplicate transactions to be added to the finance tracker (Pull request #72)
-  * Restricted command inputs to allow for only one title/amount/date input in the finance tracker (Pull request #201)
+  * Removed duplicate checks to allow duplicate transactions to be added to the finance tracker. (Pull request #72)
+  * Restricted command inputs to allow for only one title/amount/date input in the finance tracker. (Pull request #201)
 
 * **Documentation**:
   * User Guide:
-    * Updated user guide to reflect commands for v1.2 (Pull request #114)
-    * Updated user guide for `find`, `set-expense-limit` and `set-savings-goal` commands for v1.3 (Pull request #176)
+    * Updated user guide to reflect commands for v1.2. (Pull request #114)
+    * Updated user guide for `find`, `set-expense-limit` and `set-savings-goal` commands for v1.3. (Pull request #176)
   * Developer Guide:
-    * Updated user stories and use cases in developer guide (Pull request #13)
-    * Updated find transactions and monthly budget features in developer guide (Pull request #120, #144)
+    * Updated user stories and use cases in the developer guide. (Pull request #13)
+    * Updated find transactions and monthly budget features in the developer guide. (Pull request #120, #144)
 
 * **Community**:
-  * PRs reviewed (with non-trivial review comments): #39, #48, #90, #107, #132
+  * PRs reviewed (with non-trivial review comments): #39, #48, #90, #107, #132.
 
 
