@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import ay2021s1_cs2103_w16_3.finesse.commons.core.GuiSettings;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeyphrasesPredicate;
 import ay2021s1_cs2103_w16_3.finesse.testutil.FinanceTrackerBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 import javafx.collections.ObservableList;
@@ -178,18 +178,18 @@ public class ModelManagerTest {
         // different financeTracker -> returns false
         assertFalse(modelManager.equals(new ModelManager(differentFinanceTracker, userPrefs)));
 
-        String[] keywords = BUBBLE_TEA.getTitle().toString().split("\\s+");
+        String[] keyphrases = BUBBLE_TEA.getTitle().toString().split("\\s+");
 
         // different filteredTransactionList -> returns false
-        modelManager.updateFilteredTransactionList(new TitleContainsKeywordsPredicate(Arrays.asList(keywords)));
+        modelManager.updateFilteredTransactionList(new TitleContainsKeyphrasesPredicate(Arrays.asList(keyphrases)));
         assertFalse(modelManager.equals(new ModelManager(financeTracker, userPrefs)));
 
         // different filteredExpenseList -> returns false
-        modelManager.updateFilteredExpenseList(new TitleContainsKeywordsPredicate(Arrays.asList(keywords)));
+        modelManager.updateFilteredExpenseList(new TitleContainsKeyphrasesPredicate(Arrays.asList(keyphrases)));
         assertFalse(modelManager.equals(new ModelManager(financeTracker, userPrefs)));
 
         // different filteredIncomeList -> returns false
-        modelManager.updateFilteredIncomeList(new TitleContainsKeywordsPredicate(Arrays.asList(keywords)));
+        modelManager.updateFilteredIncomeList(new TitleContainsKeyphrasesPredicate(Arrays.asList(keyphrases)));
         assertFalse(modelManager.equals(new ModelManager(financeTracker, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests

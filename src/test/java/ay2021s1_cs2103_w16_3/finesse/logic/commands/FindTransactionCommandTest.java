@@ -26,7 +26,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeyphrasesPredicate;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 
 /**
@@ -38,10 +38,10 @@ public class FindTransactionCommandTest {
 
     @Test
     public void equals() {
-        TitleContainsKeywordsPredicate firstPredicate =
-                new TitleContainsKeywordsPredicate(Collections.singletonList("first"));
-        TitleContainsKeywordsPredicate secondPredicate =
-                new TitleContainsKeywordsPredicate(Collections.singletonList("second"));
+        TitleContainsKeyphrasesPredicate firstPredicate =
+                new TitleContainsKeyphrasesPredicate(Collections.singletonList("first"));
+        TitleContainsKeyphrasesPredicate secondPredicate =
+                new TitleContainsKeyphrasesPredicate(Collections.singletonList("second"));
         List<Predicate<Transaction>> firstPredicateList = new ArrayList<>();
         firstPredicateList.add(firstPredicate);
         List<Predicate<Transaction>> secondPredicateList = new ArrayList<>();
@@ -72,7 +72,7 @@ public class FindTransactionCommandTest {
     @Test
     public void execute_zeroKeywords_noTransactionsFound() {
         String expectedMessage = String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW, 0);
-        TitleContainsKeywordsPredicate predicate = preparePredicate(" ");
+        TitleContainsKeyphrasesPredicate predicate = preparePredicate(" ");
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
         predicateList.add(predicate);
         FindCommandStub superCommand = new FindCommandStub(predicateList);
@@ -85,7 +85,7 @@ public class FindTransactionCommandTest {
     @Test
     public void execute_multipleKeywords_multipleTransactionsFound() {
         String expectedMessage = String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW, 6);
-        TitleContainsKeywordsPredicate predicate = preparePredicate("gst carl's artificial internship pen teaching");
+        TitleContainsKeyphrasesPredicate predicate = preparePredicate("gst carl's artificial internship pen teaching");
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
         predicateList.add(predicate);
         FindCommandStub superCommand = new FindCommandStub(predicateList);
@@ -103,9 +103,9 @@ public class FindTransactionCommandTest {
     }
 
     /**
-     * Parses {@code userInput} into a {@code TitleContainsKeywordsPredicate}.
+     * Parses {@code userInput} into a {@code TitleContainsKeyphrasesPredicate}.
      */
-    private TitleContainsKeywordsPredicate preparePredicate(String userInput) {
-        return new TitleContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+")));
+    private TitleContainsKeyphrasesPredicate preparePredicate(String userInput) {
+        return new TitleContainsKeyphrasesPredicate(Arrays.asList(userInput.split("\\s+")));
     }
 }

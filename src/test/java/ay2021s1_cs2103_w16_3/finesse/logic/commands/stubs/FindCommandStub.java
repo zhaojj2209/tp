@@ -9,8 +9,8 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 
 /**
- * A {@code FindCommand} stub that takes in a {@code TitleContainsKeywordsPredicate}
- * and returns the same {@code TitleContainsKeywordsPredicate} when its {@code getPredicate}
+ * A {@code FindCommand} stub that takes in a {@code TitleContainsKeyphrasesPredicate}
+ * and returns the same {@code TitleContainsKeyphrasesPredicate} when its {@code getPredicate}
  * method is called. All of its other methods fail when called.
  */
 public class FindCommandStub extends FindCommand {

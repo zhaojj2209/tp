@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindCommand;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeyphrasesPredicate;
 
 public class FindCommandParserTest {
 
@@ -28,7 +28,7 @@ public class FindCommandParserTest {
     public void parse_validArgs_returnsFindCommand() {
         // no leading and trailing whitespaces
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
-        predicateList.add(new TitleContainsKeywordsPredicate(Arrays.asList("Damith", "Seth")));
+        predicateList.add(new TitleContainsKeyphrasesPredicate(Arrays.asList("Damith", "Seth")));
         FindCommand expectedFindCommand =
                 new FindCommand(predicateList);
         assertParseSuccess(parser, " t/Damith t/Seth", expectedFindCommand);

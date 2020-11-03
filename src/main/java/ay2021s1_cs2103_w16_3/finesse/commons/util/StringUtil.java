@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Arrays;
 
 /**
  * Helper functions for handling strings.
@@ -13,33 +12,36 @@ import java.util.Arrays;
 public class StringUtil {
 
     /**
-     * Returns true if the {@code sentence} contains the {@code word}.
-     *   Ignores case, but a full word match is required.
+     * Returns true if the {@code sentence} contains the {@code keyphrase}.
+     *   Ignores case, but a full keyphrase match is required.
      *   <br>examples:<pre>
-     *       containsWordIgnoreCase("ABc def", "abc") == true
-     *       containsWordIgnoreCase("ABc def", "DEF") == true
-     *       containsWordIgnoreCase("ABc def", "AB") == false //not a full word match
+     *       containsIgnoreCase("ABc def", "abc") == true
+     *       containsIgnoreCase("ABc def", "DEF") == true
+     *       containsIgnoreCase("ABc def", "AB") == false //not a full keyphrase match
      *       </pre>
      * @param sentence cannot be null
-     * @param word cannot be null, cannot be empty, must be a single word
+     * @param keyphrase cannot be null, cannot be empty
      */
-    public static boolean containsWordIgnoreCase(String sentence, String word) {
+    public static boolean containsIgnoreCase(String sentence, String keyphrase) {
         requireNonNull(sentence);
-        requireNonNull(word);
+        checkEmptyString(keyphrase);
 
-        String preppedWord = word.trim();
-        checkArgument(!preppedWord.isEmpty(), "Word parameter cannot be empty");
-        checkArgument(preppedWord.split("\\s+").length == 1, "Word parameter should be a single word");
-
-        String preppedSentence = sentence;
-        String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
-
-        return Arrays.stream(wordsInPreppedSentence)
-                .anyMatch(preppedWord::equalsIgnoreCase);
+        String preppedWord = keyphrase.trim();
+        return sentence.toLowerCase().contains(preppedWord.toLowerCase());
     }
 
     /**
-     * Returns a detailed message of the t, including the stack trace.
+     * Checks if the string {@code s} is an empty string.
+     * A string is considered empty if it is the empty string, or is a string consisting of only whitespaces.
+     * @param s cannot be null
+     */
+    public static void checkEmptyString(String s) {
+        requireNonNull(s);
+        checkArgument(!s.trim().isEmpty(), "Parameter cannot be empty");
+    }
+
+    /**
+     * Returns a detailed message of the Throwable object {@code t}, including the stack trace.
      */
     public static String getDetails(Throwable t) {
         requireNonNull(t);

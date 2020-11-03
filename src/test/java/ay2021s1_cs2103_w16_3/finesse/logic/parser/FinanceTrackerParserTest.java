@@ -33,7 +33,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
-import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeywordsPredicate;
+import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsKeyphrasesPredicate;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionUtil;
@@ -276,29 +276,29 @@ public class FinanceTrackerParserTest {
                 FindCommand.COMMAND_WORD + " t/" + keywords.stream()
                         .collect(Collectors.joining(" t/")), overviewUiStateStub);
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
-        predicateList.add(new TitleContainsKeywordsPredicate(keywords));
+        predicateList.add(new TitleContainsKeyphrasesPredicate(keywords));
         assertEquals(new FindCommand(predicateList), command);
     }
 
     @Test
     public void parseCommand_findWhenIncomeTab() throws Exception {
-        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        List<String> keyphrases = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " t/" + keywords.stream()
+                FindCommand.COMMAND_WORD + " t/" + keyphrases.stream()
                         .collect(Collectors.joining(" t/")), incomeUiStateStub);
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
-        predicateList.add(new TitleContainsKeywordsPredicate(keywords));
+        predicateList.add(new TitleContainsKeyphrasesPredicate(keyphrases));
         assertEquals(new FindCommand(predicateList), command);
     }
 
     @Test
     public void parseCommand_findWhenExpensesTab() throws Exception {
-        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        List<String> keyphrases = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " t/" + keywords.stream()
+                FindCommand.COMMAND_WORD + " t/" + keyphrases.stream()
                         .collect(Collectors.joining(" t/")), expensesUiStateStub);
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
-        predicateList.add(new TitleContainsKeywordsPredicate(keywords));
+        predicateList.add(new TitleContainsKeyphrasesPredicate(keyphrases));
         assertEquals(new FindCommand(predicateList), command);
     }
 
