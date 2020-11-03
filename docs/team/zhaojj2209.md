@@ -11,12 +11,12 @@ Fine$$e is a desktop finance tracker that allows tertiary students to better man
 
 ### Summary of Contributions
 
-* **Major Enhancement**: Added the monthly budget feature to the finance tracker.
+* **New feature**: Added the monthly budget feature to the finance tracker.
   * What it does: With the addition of the monthly budget, the finance tracker allows the user to set their desired monthly expense limit and monthly savings goal, and calculates the user's remaining budget and current savings.
   * Justification: This feature significantly enhances the capabilities of the finance tracker by allowing the user to track their progress in their savings, and paves the way for the application's analytics feature.
   * Highlights: This feature required heavy use of the observer design pattern as all values in the monthly budget have to be observed by the UI so that the values and calculations can be updated immediately upon any changes.
 
-* **Major Enhancement**: Revamped the finance tracker's `find` command.
+* **New feature**: Revamped the finance tracker's `find` command.
   * What it does: Instead of only title keywords, the user can now search for transactions in the finance tracker by title keyphrase, amount, date, category, amount range and date range.
   * Justification: This feature significantly increases the user's ease in finding the transactions they have entered into the finance tracker.
   * Highlights: This feature involved changes in the way the find command is parsed, and different predicates for each of the search scenarios were created.
@@ -37,7 +37,7 @@ Fine$$e is a desktop finance tracker that allows tertiary students to better man
     * Updated user guide for `find`, `set-expense-limit` and `set-savings-goal` commands for v1.3. (Pull request #176)
   * Developer Guide:
     * Updated user stories and use cases in the developer guide. (Pull request #13)
-    * Updated find transactions and monthly budget features in the developer guide. (Pull request #120, #144)
+    * Updated find transactions and monthly budget features in the developer guide. (Pull requests #120, #144)
 
 * **Community**:
   * PRs reviewed (with non-trivial review comments): #39, #48, #90, #107, #132.
