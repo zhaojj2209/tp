@@ -1,8 +1,8 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.commands;
 
-import static ay2021s1_cs2103_w16_3.finesse.model.Model.PREDICATE_SHOW_ALL_TRANSACTIONS;
-import static java.util.Objects.requireNonNull;
+import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_METHOD_SHOULD_NOT_BE_CALLED;
 
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.exceptions.CommandException;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 
 /**
@@ -14,11 +14,8 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Listed all transactions";
 
-
     @Override
-    public CommandResult execute(Model model) {
-        requireNonNull(model);
-        model.updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
-        return new CommandResult(MESSAGE_SUCCESS);
+    public CommandResult execute(Model model) throws CommandException {
+        throw new CommandException(MESSAGE_METHOD_SHOULD_NOT_BE_CALLED);
     }
 }
