@@ -65,6 +65,11 @@ public class Date implements Comparable<Date> {
         return value;
     }
 
+    public static Date getCurrentDate() {
+        LocalDate currentDate = LocalDate.now();
+        return new Date(VALIDATION_FORMAT.format(currentDate));
+    }
+
     /**
      * Returns a String representation of this Date that can be used to construct an identical Date.
      * @return A String representation of this Date.
