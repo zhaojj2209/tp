@@ -87,11 +87,11 @@ public class EditCommandParserTest {
         // while parsing {@code PREFIX_CATEGORY} alone will reset the categories of the {@code Transaction} being
         // edited, parsing it together with a valid category results in error
         assertParseFailure(parser, "1" + CATEGORY_DESC_FOOD_BEVERAGE + CATEGORY_DESC_WORK + CATEGORY_EMPTY,
-                Category.MESSAGE_CONSTRAINTS);
+                Category.MESSAGE_EMPTY_CATEGORY);
         assertParseFailure(parser, "1" + CATEGORY_DESC_FOOD_BEVERAGE + CATEGORY_EMPTY + CATEGORY_DESC_WORK,
-                Category.MESSAGE_CONSTRAINTS);
+                Category.MESSAGE_EMPTY_CATEGORY);
         assertParseFailure(parser, "1" + CATEGORY_EMPTY + CATEGORY_DESC_FOOD_BEVERAGE + CATEGORY_DESC_WORK,
-                Category.MESSAGE_CONSTRAINTS);
+                Category.MESSAGE_EMPTY_CATEGORY);
 
         // multiple invalid values, but only the first invalid value is captured
         assertParseFailure(parser, "1" + INVALID_TITLE_DESC + INVALID_DATE_DESC + VALID_AMOUNT_BUBBLE_TEA,

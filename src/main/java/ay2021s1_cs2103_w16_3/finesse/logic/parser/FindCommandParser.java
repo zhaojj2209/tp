@@ -1,6 +1,7 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.parser;
 
 import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static ay2021s1_cs2103_w16_3.finesse.commons.util.StringUtil.isEmptyString;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT_FROM;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT_TO;
@@ -9,13 +10,13 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE_FROM;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE_TO;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
+import static ay2021s1_cs2103_w16_3.finesse.model.category.Category.MESSAGE_EMPTY_CATEGORY;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import ay2021s1_cs2103_w16_3.finesse.commons.util.StringUtil;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.FindCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
@@ -71,9 +72,7 @@ public class FindCommandParser implements Parser<FindCommand> {
     public static final String MESSAGE_DATE_RANGE_CONSTRAINTS =
             "The lower bound for the date range cannot be later than the upper bound.";
 
-    public static final String MESSAGE_EMPTY_TITLE_KEYPHRASE = "The title keyphrase to search cannot be empty.";
-
-    public static final String MESSAGE_EMPTY_CATEGORY = "The category to search cannot be empty.";
+    public static final String MESSAGE_EMPTY_TITLE_KEYPHRASE = "Title keyphrases cannot be empty.";
 
     /**
      * Parses the given {@code String} of arguments in the context of the FindCommand
@@ -87,33 +86,27 @@ public class FindCommandParser implements Parser<FindCommand> {
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
 
         if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT)) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_AMOUNT_CONSTRAINTS));
+            throw new ParseException(MESSAGE_AMOUNT_CONSTRAINTS);
         }
 
         if (argMultimap.moreThanOneValuePresent(PREFIX_DATE)) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_DATE_CONSTRAINTS));
+            throw new ParseException(MESSAGE_DATE_CONSTRAINTS);
         }
 
         if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT_FROM)) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_AMOUNT_FROM_CONSTRAINTS));
+            throw new ParseException(MESSAGE_AMOUNT_FROM_CONSTRAINTS);
         }
 
         if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT_TO)) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_AMOUNT_TO_CONSTRAINTS));
+            throw new ParseException(MESSAGE_AMOUNT_TO_CONSTRAINTS);
         }
 
         if (argMultimap.moreThanOneValuePresent(PREFIX_DATE_FROM)) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_DATE_FROM_CONSTRAINTS));
+            throw new ParseException(MESSAGE_DATE_FROM_CONSTRAINTS);
         }
 
         if (argMultimap.moreThanOneValuePresent(PREFIX_DATE_TO)) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_DATE_TO_CONSTRAINTS));
+            throw new ParseException(MESSAGE_DATE_TO_CONSTRAINTS);
         }
 
         if (!argMultimap.getPreamble().isEmpty()) {
@@ -122,11 +115,12 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         if (argMultimap.getValue(PREFIX_TITLE).isPresent()) {
             List<String> titleKeyphrases = argMultimap.getAllValues(PREFIX_TITLE);
-            try {
-                titleKeyphrases.forEach(s -> StringUtil.checkEmptyString(s));
-            } catch (Exception e) {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_EMPTY_TITLE_KEYPHRASE));
+            boolean hasEmptyTitleKeyphrase = false;
+            for (String s: titleKeyphrases) {
+                hasEmptyTitleKeyphrase = isEmptyString(s);
+            }
+            if (hasEmptyTitleKeyphrase) {
+                throw new ParseException(MESSAGE_EMPTY_TITLE_KEYPHRASE);
             }
             predicateList.add(new TitleContainsKeyphrasesPredicate(titleKeyphrases));
         }
@@ -143,11 +137,12 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         if (argMultimap.getValue(PREFIX_CATEGORY).isPresent()) {
             List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
-            try {
-                categories.forEach(s -> StringUtil.checkEmptyString(s));
-            } catch (Exception e) {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_EMPTY_CATEGORY));
+            boolean hasEmptyCategory = false;
+            for (String s: categories) {
+                hasEmptyCategory = isEmptyString(s);
+            }
+            if (hasEmptyCategory) {
+                throw new ParseException(MESSAGE_EMPTY_CATEGORY);
             }
             predicateList.add(new HasCategoriesPredicate(categories));
         }
@@ -163,8 +158,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                 amountTo = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT_TO).get());
             }
             if (amountFrom != null && amountTo != null && amountFrom.compareTo(amountTo) > 0) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                        MESSAGE_AMOUNT_RANGE_CONSTRAINTS));
+                throw new ParseException(MESSAGE_AMOUNT_RANGE_CONSTRAINTS);
             }
             predicateList.add(new InAmountRangePredicate(Optional.ofNullable(amountFrom),
                     Optional.ofNullable(amountTo)));
@@ -181,8 +175,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                 dateTo = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE_TO).get());
             }
             if (dateFrom != null && dateTo != null && dateFrom.compareTo(dateTo) > 0) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                        MESSAGE_DATE_RANGE_CONSTRAINTS));
+                throw new ParseException(MESSAGE_DATE_RANGE_CONSTRAINTS);
             }
             predicateList.add(new InDateRangePredicate(Optional.ofNullable(dateFrom),
                     Optional.ofNullable(dateTo)));

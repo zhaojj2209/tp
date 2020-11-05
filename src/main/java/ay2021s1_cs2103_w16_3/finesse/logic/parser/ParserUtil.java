@@ -1,5 +1,10 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.parser;
 
+import static ay2021s1_cs2103_w16_3.finesse.commons.util.StringUtil.isEmptyString;
+import static ay2021s1_cs2103_w16_3.finesse.model.category.Category.MESSAGE_EMPTY_CATEGORY;
+import static ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount.MESSAGE_EMPTY_AMOUNT;
+import static ay2021s1_cs2103_w16_3.finesse.model.transaction.Date.MESSAGE_EMPTY_DATE;
+import static ay2021s1_cs2103_w16_3.finesse.model.transaction.Title.MESSAGE_EMPTY_TITLE;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
@@ -43,6 +48,9 @@ public class ParserUtil {
     public static Title parseTitle(String title) throws ParseException {
         requireNonNull(title);
         String trimmedTitle = title.trim();
+        if (isEmptyString(trimmedTitle)) {
+            throw new ParseException(MESSAGE_EMPTY_TITLE);
+        }
         if (!Title.isValidTitle(trimmedTitle)) {
             throw new ParseException(Title.MESSAGE_CONSTRAINTS);
         }
@@ -71,6 +79,9 @@ public class ParserUtil {
     public static Amount parseAmount(String amount) throws ParseException {
         requireNonNull(amount);
         String trimmedAmount = amount.trim();
+        if (isEmptyString(trimmedAmount)) {
+            throw new ParseException(MESSAGE_EMPTY_AMOUNT);
+        }
         if (!Amount.isValidAmount(trimmedAmount)) {
             throw new ParseException(Amount.MESSAGE_CONSTRAINTS);
         }
@@ -86,6 +97,9 @@ public class ParserUtil {
     public static Date parseDate(String date) throws ParseException {
         requireNonNull(date);
         String trimmedDate = date.trim();
+        if (isEmptyString(trimmedDate)) {
+            throw new ParseException(MESSAGE_EMPTY_DATE);
+        }
         if (!Date.isValidDate(trimmedDate)) {
             throw new ParseException(Date.MESSAGE_CONSTRAINTS);
         }
@@ -101,6 +115,9 @@ public class ParserUtil {
     public static Category parseCategory(String category) throws ParseException {
         requireNonNull(category);
         String trimmedCategory = category.trim();
+        if (isEmptyString(trimmedCategory)) {
+            throw new ParseException(MESSAGE_EMPTY_CATEGORY);
+        }
         if (!Category.isValidCategoryName(trimmedCategory)) {
             throw new ParseException(Category.MESSAGE_CONSTRAINTS);
         }
