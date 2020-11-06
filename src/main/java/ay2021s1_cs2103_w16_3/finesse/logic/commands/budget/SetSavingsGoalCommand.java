@@ -7,6 +7,7 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.Command;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 /**
  * Sets the monthly savings goal in the finance tracker.
@@ -37,7 +38,7 @@ public class SetSavingsGoalCommand extends Command {
         requireNonNull(model);
 
         model.setSavingsGoal(amount);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, amount), true);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, amount), true, Tab.OVERVIEW);
     }
 
     @Override

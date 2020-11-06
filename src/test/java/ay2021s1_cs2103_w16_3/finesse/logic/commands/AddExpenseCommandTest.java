@@ -16,6 +16,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 public class AddExpenseCommandTest {
 
@@ -33,6 +34,7 @@ public class AddExpenseCommandTest {
 
         assertEquals(String.format(AddExpenseCommand.MESSAGE_SUCCESS, validExpense), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validExpense), modelStub.expensesAdded);
+        assertEquals(commandResult.getTabToSwitchTo().get(), Tab.EXPENSES);
     }
 
     @Test
