@@ -8,6 +8,7 @@ import static java.util.Objects.requireNonNull;
 
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Expense;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 /**
  * Adds an expense to the finance tracker.
@@ -47,7 +48,7 @@ public class AddExpenseCommand extends Command {
         requireNonNull(model);
 
         model.addExpense(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), true);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), true, Tab.EXPENSES);
     }
 
     @Override
