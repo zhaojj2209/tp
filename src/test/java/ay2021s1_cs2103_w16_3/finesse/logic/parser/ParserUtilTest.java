@@ -59,6 +59,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTitle_emptyValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTitle(WHITESPACE));
+    }
+
+    @Test
     public void parseTitle_invalidValue_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parseTitle(INVALID_TITLE));
     }
@@ -91,6 +96,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseAmount_emptyValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAmount(WHITESPACE));
+    }
+
+    @Test
     public void parseAmount_invalidValue_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parseAmount(INVALID_AMOUNT));
     }
@@ -114,6 +124,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseDate_emptyValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseDate(WHITESPACE));
+    }
+
+    @Test
     public void parseDate_invalidValue_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parseDate(INVALID_DATE));
     }
@@ -134,6 +149,11 @@ public class ParserUtilTest {
     @Test
     public void parseCategory_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseCategory(null));
+    }
+
+    @Test
+    public void parseCategory_emptyValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseCategory(WHITESPACE));
     }
 
     @Test
