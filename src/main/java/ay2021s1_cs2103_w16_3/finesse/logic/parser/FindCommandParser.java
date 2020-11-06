@@ -34,40 +34,51 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsK
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
-    public static final String MESSAGE_AMOUNT_RANGE_USAGE =
-            "To search for transactions within a range of amounts, please use " + PREFIX_AMOUNT_FROM
+    public static final String MESSAGE_AMOUNT_SEARCH_USAGE =
+            "To search for transactions with an exact amount, please use " + PREFIX_AMOUNT
+                    + " to indicate the amount.\n"
+                    + "To search for transactions within a range of amounts, please use " + PREFIX_AMOUNT_FROM
                     + " to indicate the lower bound, and/or " + PREFIX_AMOUNT_TO + " to indicate the upper bound.";
 
-    public static final String MESSAGE_DATE_RANGE_USAGE =
-            "To search for transactions within a range of dates, please use " + PREFIX_DATE_FROM
+    public static final String MESSAGE_DATE_SEARCH_USAGE =
+            "To search for transactions with an exact date, please use " + PREFIX_DATE + " to indicate the date.\n"
+                    + "To search for transactions within a range of dates, please use " + PREFIX_DATE_FROM
                     + " to indicate the lower bound, and/or " + PREFIX_DATE_TO + " to indicate the upper bound.";
 
-    public static final String MESSAGE_AMOUNT_CONSTRAINTS =
-            "Only one amount can be input for a search of transactions containing an exact amount.\n"
-                    + MESSAGE_AMOUNT_RANGE_USAGE;
+    public static final String MESSAGE_AMOUNT_SEARCH_CONSTRAINTS =
+            PREFIX_AMOUNT + " cannot be used concurrently with " + PREFIX_AMOUNT_FROM
+                    + " and/or " + PREFIX_AMOUNT_TO + ".\n" + MESSAGE_AMOUNT_SEARCH_USAGE;
 
-    public static final String MESSAGE_DATE_CONSTRAINTS =
+    public static final String MESSAGE_DATE_SEARCH_CONSTRAINTS =
+            PREFIX_DATE + " cannot be used concurrently with " + PREFIX_DATE_FROM
+                    + " and/or " + PREFIX_DATE_TO + ".\n" + MESSAGE_DATE_SEARCH_USAGE;
+
+    public static final String MESSAGE_AMOUNT_DUPLICATE_CONSTRAINTS =
+            "Only one amount can be input for a search of transactions containing an exact amount.\n"
+                    + MESSAGE_AMOUNT_SEARCH_USAGE;
+
+    public static final String MESSAGE_DATE_DUPLICATE_CONSTRAINTS =
             "Only one date can be input for a search of transactions occurring on an exact date.\n"
-                    + MESSAGE_DATE_RANGE_USAGE;
+                    + MESSAGE_DATE_SEARCH_USAGE;
 
     public static final String MESSAGE_AMOUNT_FROM_CONSTRAINTS =
             "Only one amount can be input as the lower bound for a search of transactions within a range of amounts.\n"
-                    + MESSAGE_AMOUNT_RANGE_USAGE;
+                    + MESSAGE_AMOUNT_SEARCH_USAGE;
 
     public static final String MESSAGE_AMOUNT_TO_CONSTRAINTS =
             "Only one amount can be input as the upper bound for a search of transactions within a range of amounts.\n"
-                    + MESSAGE_AMOUNT_RANGE_USAGE;
+                    + MESSAGE_AMOUNT_SEARCH_USAGE;
 
     public static final String MESSAGE_AMOUNT_RANGE_CONSTRAINTS =
             "The lower bound for the amount range cannot be larger than the upper bound.";
 
     public static final String MESSAGE_DATE_FROM_CONSTRAINTS =
             "Only one date can be input as the lower bound for a search of transactions "
-                    + "occurring within a range of dates.\n" + MESSAGE_DATE_RANGE_USAGE;
+                    + "occurring within a range of dates.\n" + MESSAGE_DATE_SEARCH_USAGE;
 
     public static final String MESSAGE_DATE_TO_CONSTRAINTS =
             "Only one date can be input as the upper bound for a search of transactions "
-                    + "occurring within a range of dates.\n" + MESSAGE_DATE_RANGE_USAGE;
+                    + "occurring within a range of dates.\n" + MESSAGE_DATE_SEARCH_USAGE;
 
     public static final String MESSAGE_DATE_RANGE_CONSTRAINTS =
             "The lower bound for the date range cannot be later than the upper bound.";
@@ -85,12 +96,16 @@ public class FindCommandParser implements Parser<FindCommand> {
                         PREFIX_AMOUNT_FROM, PREFIX_AMOUNT_TO, PREFIX_DATE_FROM, PREFIX_DATE_TO);
         List<Predicate<Transaction>> predicateList = new ArrayList<>();
 
+        if (!argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+
         if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT)) {
-            throw new ParseException(MESSAGE_AMOUNT_CONSTRAINTS);
+            throw new ParseException(MESSAGE_AMOUNT_DUPLICATE_CONSTRAINTS);
         }
 
         if (argMultimap.moreThanOneValuePresent(PREFIX_DATE)) {
-            throw new ParseException(MESSAGE_DATE_CONSTRAINTS);
+            throw new ParseException(MESSAGE_DATE_DUPLICATE_CONSTRAINTS);
         }
 
         if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT_FROM)) {
@@ -109,10 +124,6 @@ public class FindCommandParser implements Parser<FindCommand> {
             throw new ParseException(MESSAGE_DATE_TO_CONSTRAINTS);
         }
 
-        if (!argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        }
-
         if (argMultimap.getValue(PREFIX_TITLE).isPresent()) {
             List<String> titleKeyphrases = argMultimap.getAllValues(PREFIX_TITLE);
             for (String s: titleKeyphrases) {
@@ -124,11 +135,19 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
 
         if (argMultimap.getValue(PREFIX_AMOUNT).isPresent()) {
+            if (argMultimap.getValue(PREFIX_AMOUNT_FROM).isPresent()
+            || argMultimap.getValue(PREFIX_AMOUNT_TO).isPresent()) {
+                throw new ParseException(MESSAGE_AMOUNT_SEARCH_CONSTRAINTS);
+            }
             Amount amount = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT).get());
             predicateList.add(new HasExactAmountPredicate(amount));
         }
 
         if (argMultimap.getValue(PREFIX_DATE).isPresent()) {
+            if (argMultimap.getValue(PREFIX_DATE_FROM).isPresent()
+                    || argMultimap.getValue(PREFIX_DATE_TO).isPresent()) {
+                throw new ParseException(MESSAGE_DATE_SEARCH_CONSTRAINTS);
+            }
             Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
             predicateList.add(new OnExactDatePredicate(date));
         }
