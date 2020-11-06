@@ -877,6 +877,8 @@ New monthly expense limit set: $400.00
 ```
 Sets the monthly expense limit in the finance tracker to be `$400.00`.
 
+> :information_source: &nbsp; After executing this command, the UI will automatically switch to the [Overview tab](#221-overview-tab).
+
 ### 4.8 Savings Goal
 
 Want to save up for the new PlayStation 5 but can't seem to no matter what? Fine$$e has you covered!
@@ -904,6 +906,8 @@ Expected Outcome:
 New monthly savings goal set: $50.00
 ```
 Sets the monthly savings goal in the finance tracker to be `$50.00`.
+
+> :information_source: &nbsp; After executing this command, the UI will automatically switch to the [Overview tab](#221-overview-tab).
 
 ### 4.9 Analytics
 
