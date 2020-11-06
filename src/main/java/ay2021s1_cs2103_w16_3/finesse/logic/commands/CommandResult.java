@@ -45,8 +45,8 @@ public class CommandResult {
     }
 
     /**
-     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser}, {@code showHelp},
-     * {@code exit}, and other fields set to their default value.
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser}, {@code calculateBudgetInfo},
+     * {@code showHelp}, {@code exit}, and other fields set to their default value.
      *
      * @param feedbackToUser The feedback to be displayed to the user.
      * @param calculateBudgetInfo Whether the budget information should be recalculated.
@@ -79,22 +79,23 @@ public class CommandResult {
     }
 
     /**
-     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
-     * the specified boolean to determine whether budget information should be recalculated,
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser}, {@code calculateBudgetInfo},
      * and other fields set to their default value.
      *
      * @param feedbackToUser The feedback to be displayed to the user.
+     * @param calculateBudgetInfo Whether the budget information should be recalculated.
      */
     public CommandResult(String feedbackToUser, boolean calculateBudgetInfo) {
         this(feedbackToUser, calculateBudgetInfo, false, false, null);
     }
 
     /**
-     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
-     * the specified boolean to determine whether budget information should be recalculated,
-     * and other fields set to their default value.
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser}, {@code calculateBudgetInfo},
+     * {@code tabToSwitchTo}, and other fields set to their default value.
      *
      * @param feedbackToUser The feedback to be displayed to the user.
+     * @param calculateBudgetInfo Whether the budget information should be recalculated.
+     * @param tabToSwitchTo The tab the UI should switch to.
      */
     public CommandResult(String feedbackToUser, boolean calculateBudgetInfo, Tab tabToSwitchTo) {
         this(feedbackToUser, calculateBudgetInfo, false, false, tabToSwitchTo);
