@@ -115,12 +115,10 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         if (argMultimap.getValue(PREFIX_TITLE).isPresent()) {
             List<String> titleKeyphrases = argMultimap.getAllValues(PREFIX_TITLE);
-            boolean hasEmptyTitleKeyphrase = false;
             for (String s: titleKeyphrases) {
-                hasEmptyTitleKeyphrase = isEmptyString(s);
-            }
-            if (hasEmptyTitleKeyphrase) {
-                throw new ParseException(MESSAGE_EMPTY_TITLE_KEYPHRASE);
+                if (isEmptyString(s)) {
+                    throw new ParseException(MESSAGE_EMPTY_TITLE_KEYPHRASE);
+                }
             }
             predicateList.add(new TitleContainsKeyphrasesPredicate(titleKeyphrases));
         }
@@ -137,12 +135,10 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         if (argMultimap.getValue(PREFIX_CATEGORY).isPresent()) {
             List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
-            boolean hasEmptyCategory = false;
             for (String s: categories) {
-                hasEmptyCategory = isEmptyString(s);
-            }
-            if (hasEmptyCategory) {
-                throw new ParseException(MESSAGE_EMPTY_CATEGORY);
+                if (isEmptyString(s)) {
+                    throw new ParseException(MESSAGE_EMPTY_CATEGORY);
+                }
             }
             predicateList.add(new HasCategoriesPredicate(categories));
         }
