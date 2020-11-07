@@ -1,12 +1,11 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.commands.budget;
 
+import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.Assert.assertThrows;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalTransactions.getTypicalFinanceTracker;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandResult;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
@@ -25,12 +24,13 @@ public class SetSavingsGoalCommandTest {
     @Test
     public void execute_validAmount_success() {
         Amount amountToSet = new Amount("500");
+        SetSavingsGoalCommand setSavingsGoalCommand = new SetSavingsGoalCommand(amountToSet);
 
-        CommandResult commandResult = new SetSavingsGoalCommand(amountToSet).execute(model);
+        String expectedMessage = String.format(SetSavingsGoalCommand.MESSAGE_SUCCESS, amountToSet);
 
-        assertEquals(String.format(SetSavingsGoalCommand.MESSAGE_SUCCESS, amountToSet),
-                commandResult.getFeedbackToUser());
-        assertEquals(amountToSet, model.getMonthlyBudget().getMonthlySavingsGoal().getValue());
-        assertEquals(commandResult.getTabToSwitchTo().get(), Tab.OVERVIEW);
+        ModelManager expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
+        expectedModel.setSavingsGoal(amountToSet);
+
+        assertCommandSuccess(setSavingsGoalCommand, model, expectedMessage, expectedModel, true, Tab.OVERVIEW);
     }
 }
