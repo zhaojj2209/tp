@@ -15,8 +15,6 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount.CalculatedAmount;
 
 public class MonthlyBudgetTest {
-    private static final int NUM_OF_MONTHS = 12;
-
     private final MonthlyBudget monthlyBudget = new MonthlyBudget();
     private final Amount amountToSet = new Amount("500");
     private final CalculatedAmount calculatedAmountToSet = new CalculatedAmount(amountToSet);
