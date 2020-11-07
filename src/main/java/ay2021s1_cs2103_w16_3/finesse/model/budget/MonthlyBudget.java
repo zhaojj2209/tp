@@ -191,15 +191,24 @@ public class MonthlyBudget {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof MonthlyBudget // instanceof handles nulls
-                && monthlyExpenseLimit.getValue().equals(((MonthlyBudget) other).monthlyExpenseLimit.getValue())
-                && monthlySavingsGoal.getValue().equals(((MonthlyBudget) other).monthlySavingsGoal.getValue())
-                && remainingBudget.getValue().equals(((MonthlyBudget) other).remainingBudget.getValue())
-                && currentSavings.getValue().equals(((MonthlyBudget) other).currentSavings.getValue())
-                && monthlyExpenses.equals(((MonthlyBudget) other).monthlyExpenses)
-                && monthlyIncomes.equals(((MonthlyBudget) other).monthlyIncomes)
-                && monthlySavings.equals(((MonthlyBudget) other).monthlySavings)
-                && months.equals(((MonthlyBudget) other).months));
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof MonthlyBudget)) {
+            return false;
+        }
+
+        MonthlyBudget otherMonthlyBudget = (MonthlyBudget) other;
+        return monthlyExpenseLimit.getValue().equals(otherMonthlyBudget.monthlyExpenseLimit.getValue())
+                && monthlySavingsGoal.getValue().equals(otherMonthlyBudget.monthlySavingsGoal.getValue())
+                && remainingBudget.getValue().equals(otherMonthlyBudget.remainingBudget.getValue())
+                && currentSavings.getValue().equals(otherMonthlyBudget.currentSavings.getValue())
+                && monthlyExpenses.equals(otherMonthlyBudget.monthlyExpenses)
+                && monthlyIncomes.equals(otherMonthlyBudget.monthlyIncomes)
+                && monthlySavings.equals(otherMonthlyBudget.monthlySavings)
+                && months.equals(otherMonthlyBudget.months);
     }
 }
