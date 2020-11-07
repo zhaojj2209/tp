@@ -61,7 +61,7 @@ public class StringUtilTest {
 
     @Test
     public void containsIgnoreCase_emptyWord_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, "Parameter cannot be empty", ()
+        assertThrows(IllegalArgumentException.class, "Keyphrase cannot be empty", ()
             -> StringUtil.containsIgnoreCase("typical sentence", "  "));
     }
 

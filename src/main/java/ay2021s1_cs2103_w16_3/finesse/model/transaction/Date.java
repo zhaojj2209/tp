@@ -20,6 +20,7 @@ public class Date implements Comparable<Date> {
             + "cannot be earlier than " + EPOCH_STRING + ", and cannot be later than the current date";
     public static final DateTimeFormatter VALIDATION_FORMAT = DateTimeFormatter.ofPattern("dd/MM/uuuu")
             .withResolverStyle(ResolverStyle.STRICT);
+    public static final String MESSAGE_EMPTY_DATE = "Dates cannot be empty.";
     private static final LocalDate EPOCH = LocalDate.parse(EPOCH_STRING, VALIDATION_FORMAT);
 
     private final LocalDate value;

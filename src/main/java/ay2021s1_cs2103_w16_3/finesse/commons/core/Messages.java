@@ -6,7 +6,7 @@ package ay2021s1_cs2103_w16_3.finesse.commons.core;
 public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command.";
-    public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s.";
+    public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     public static final String MESSAGE_INVALID_TAB_FORMAT = "'%s' command can only be used in the following tabs: %s.";
     public static final String MESSAGE_INVALID_BOOKMARK_EXPENSE_DISPLAYED_INDEX =
             "The bookmark expense index provided is invalid.";

@@ -24,7 +24,7 @@ public class StringUtil {
      */
     public static boolean containsIgnoreCase(String sentence, String keyphrase) {
         requireNonNull(sentence);
-        checkEmptyString(keyphrase);
+        checkArgument(!isEmptyString(keyphrase), "Keyphrase cannot be empty");
 
         String preppedWord = keyphrase.trim();
         return sentence.toLowerCase().contains(preppedWord.toLowerCase());
@@ -35,9 +35,9 @@ public class StringUtil {
      * A string is considered empty if it is the empty string, or is a string consisting of only whitespaces.
      * @param s cannot be null
      */
-    public static void checkEmptyString(String s) {
+    public static boolean isEmptyString(String s) {
         requireNonNull(s);
-        checkArgument(!s.trim().isEmpty(), "Parameter cannot be empty");
+        return s.trim().isEmpty();
     }
 
     /**
