@@ -135,6 +135,13 @@ public class Amount implements Comparable<Amount> {
         public String toString() {
             return String.format("$%.2f", value.abs());
         }
+
+        @Override
+        public boolean equals(Object other) {
+            return other == this // short circuit if same object
+                    || (other instanceof CalculatedAmount // instanceof handles nulls
+                    && (value.compareTo(((CalculatedAmount) other).value)) == 0); // state check
+        }
     }
 
 }
