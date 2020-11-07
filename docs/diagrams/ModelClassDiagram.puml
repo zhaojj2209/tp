@@ -19,6 +19,7 @@ Class "{abstract}\nTransaction" as Transaction
 Class Expense
 Class Income
 Class Amount
+Class CalculatedAmount
 Class Date
 Class Title
 Class TransactionList
@@ -30,12 +31,14 @@ Class Category
 
 Package Budget {
 Class MonthlyBudget
-Class MonthlyExpenseLimit
 }
 
-Package Savings {
-Class MonthlySavings
-Class MonthlySavingsGoal
+Package Bookmark {
+Class BookmarkExpense
+Class BookmarkExpenseList
+Class BookmarkIncome
+Class BookmarkIncomeList
+Class "{abstract}\nBookmarkTransaction" as BookmarkTransaction
 }
 }
 
@@ -50,21 +53,29 @@ ModelManager o-left-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
 FinanceTracker *--> "1" TransactionList
-TransactionList o--> "*" Transaction
-Expense -left-|> Transaction
-Income -right-|> Transaction
-Transaction *--> "1" Title
-Transaction *--> "1" Amount
+TransactionList o-left-> "*" Transaction
+Expense -up-|> Transaction
+Income -up-|> Transaction
+Transaction *-up-> "1" Title
+Transaction *-up-> "1" Amount
 Transaction *--> "1" Date
 Transaction *--> "*" Category
 
-FinanceTracker *--> "1" MonthlySavings
-MonthlySavings *--> "1" MonthlySavingsGoal
-FinanceTracker *--> "1" MonthlyBudget
-MonthlyBudget *--> "1" MonthlyExpenseLimit
+FinanceTracker *--> "1" BookmarkExpenseList
+FinanceTracker *--> "1" BookmarkIncomeList
+BookmarkExpenseList o--> "*" BookmarkTransaction
+BookmarkIncomeList o--> "*" BookmarkTransaction
+BookmarkExpense -up-|> BookmarkTransaction
+BookmarkIncome -left-|> BookmarkTransaction
+BookmarkTransaction --> Transaction
+BookmarkTransaction *--> "1" Title
+BookmarkTransaction *--> "1" Amount
+BookmarkTransaction *--> "*" Category
 
-Title -[hidden]right-> Amount
-Amount -[hidden]right-> Date
+FinanceTracker *--> "1" MonthlyBudget
+CalculatedAmount ..> Amount
+MonthlyBudget --> CalculatedAmount
+MonthlyBudget --> Amount
 
 ModelManager -->"*" Transaction : filtered list
 @enduml

@@ -57,7 +57,7 @@ deactivate FinanceTrackerParser
 LogicManager -> FindTransactionCommand : execute()
 activate FindTransactionCommand
 
-FindTransactionCommand -> ModelManager : updateFilteredTransactionList(f.getPredicate())
+FindTransactionCommand -> ModelManager : updateFilteredTransactionList(f.getPredicates())
 activate ModelManager
 
 ModelManager --> FindTransactionCommand

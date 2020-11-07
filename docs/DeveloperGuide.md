@@ -96,15 +96,23 @@ Below is the Sequence Diagram for interactions within the `Logic` component for 
 The `Model`:
 
 * stores a `UserPref` object that represents the user’s preferences.
-* stores the finance tracker data in a `TransactionList` containing `Transaction`s.
-* exposes `MonthlySavings` and `MonthlyBudget`, which can be 'observed' e.g. the UI can be bound to the values in these classes so that the UI automatically updates when the values in the classes change.
-* exposes an unmodifiable `ObservableList<Transaction>` which can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list changes.
+* stores the finance tracker data in the following components:
+    * a `TransactionList` containing `Transaction`s.
+    * a `BookmarkExpenseList` and `BookmarkIncomeList`, each containing `BookmarkTransaction`s.
+    * a `MonthlyBudget`.
+* exposes `MonthlyBudget`, which can be 'observed' e.g. the UI can be bound to the values in the class so that the UI automatically updates when the values in the class changes.
+* exposes an unmodifiable `ObservableList<Transaction>`, `ObservableList<Expense>`, `ObservableList<Income>`, `ObservableList<BookmarkExpense>` and `ObservableList<BookmarkIncome>` each, which can be 'observed' e.g. the UI can be bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components (`UI`, `Logic`, `Storage`).
 
 A `Transaction`:
-* represents a unit of user data within the finance tracker.
+* represents a unit of user data of transactions within the finance tracker.
 * is either an `Expense` or an `Income`.
 * is composed of a `Title`, an `Amount`, a `Date`, and any number of `Category`s. These are known as *data fields*.
+
+A `BookmarkTransaction`:
+* represents a unit of user data of bookmark transactions within the finance tracker.
+* is either a `BookmarkExpense` or a `BookmarkIncome`.
+* is composed of a `Title`, an `Amount`, and any number of `Category`s.
 
 The *data fields* `Title`, `Amount`, `Date`, and `Category` are encapsulations of an underlying Java data type.
 
@@ -117,7 +125,7 @@ The *data fields* `Title`, `Amount`, `Date`, and `Category` are encapsulations o
 
 The underlying Java data types allow more operations to be done on `Transaction` objects, such as filtering `Transaction`s by `Date`, or aggregating the `Amount`s of `Expense`s and `Income`s.
 
-<div markdown="span" class="alert alert-info">:information_source:
+<div markdown="span" class="alert alert-info">:information_source: &nbsp;
 **Note:** All data fields take in a `String` in their constructor, regardless of the underlying Java data type.
 Within the constructor, data validation takes place to ensure that the `String` correctly represents a valid data field.
 If the `String` given is not valid, an `IllegalArgumentException` will be thrown.
@@ -128,15 +136,22 @@ This abstraction is maintained so that the implementation of other components (`
 the underlying Java data type choices in the `Model` component.
 </div>
 
-The `FinanceTracker` has a `TransactionList` field which stores all `Expense` and `Income` objects together.
+The `FinanceTracker` has the following fields:
+* a `TransactionList` field which stores all `Expense` and `Income` objects together.
+* a `BookmarkExpenseList` field which stores all `BookmarkExpense` objects.
+* a `BookmarkIncomeList` field which stores all `BookmarkIncome` objects.
+* a `MonthlyBudget` field which stores a `MonthlyExpenseLimit`, a `MonthlySavingsGoal`, and all calculated values for the user's statistics.
 
-The `ModelManager` has three `FilteredList` fields which point to the same `ObservableList` obtained from `FinanceTracker::getTransactionList`.
-The `Predicate` fields in the three `FilteredList` fields are set such that:
-* `filteredTransactions` shows a view of all `Transaction` objects
-* `filteredExpenses` shows a view of all `Transaction` objects of type `Expense`
-* `filteredIncomes` shows a view of all `Transaction` objects of type `Income`
+The `ModelManager` has the following fields:
+* three `FilteredList` fields which point to the same `ObservableList` obtained from `FinanceTracker::getTransactionList`. The `Predicate` fields in the three `FilteredList` fields are set such that:
+    * `filteredTransactions` shows a view of all `Transaction` objects
+    * `filteredExpenses` shows a view of all `Transaction` objects of type `Expense`
+    * `filteredIncomes` shows a view of all `Transaction` objects of type `Income`
 
-The motivation behind having three lists is due to the fact that there are three tabs in the user interface, each having its own list while at the same time retrieving data from the same transaction list.
+    The motivation behind having three lists is due to the fact that there are three tabs in the user interface, each having its own list while at the same time retrieving data from the same transaction list.
+* two `ObservableList` fields, `castFilteredExpenses` and `castFilteredIncomes` that contain the same objects as that in `filteredExpenses` and `filteredIncomes` respectively. This is so that the UI can automatically update when the values in the two lists change.
+* two `FilteredList` fields, `FilteredBookmarkExpenses` and `FilteredBookmarkIncomes` that point to the `ObservableList`s obtained from `FinanceTracker::getBookmarkExpenseList` and `FinanceTracker::getBookmarkIncomeList` respectively.
+* a `MonthlyBudget` field which is the same as the `MonthlyBudget` stored in `FinanceTracker`.
 
 ### Storage component
 
@@ -167,26 +182,56 @@ Classes used by multiple components are in the `ay2021s1_cs2103_w16_3.finesse.co
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Find transactions
+### Find transactions feature
+
+#### Overview
+
+The find transactions feature allows users to search for transactions in the `FinanceTracker` by various search parameters.
+Each search parameter corresponds to a different predicate which will be used to filter transactions in the various `FilteredList`s.
+
+#### Implementation of feature
 
 The find transactions feature is implemented via `FindCommandParser`, as well as the following commands:
 
-* `FindCommand`, the base command that is returned when the command is parsed
-* `FindTransactionCommand`, to be executed when the user inputs the command on the Overview tab
-* `FindExpenseCommand`, to be executed when the user inputs the command on the Expenses tab
-* `FindIncomeCommand`, to be executed when the user inputs the command on the Incomes tab
+* `FindCommand`, the base command that is returned when the command is parsed.
+* `FindTransactionCommand`, to be executed when the user inputs the command on the Overview tab.
+* `FindExpenseCommand`, to be executed when the user inputs the command on the Expenses tab.
+* `FindIncomeCommand`, to be executed when the user inputs the command on the Incomes tab.
 
-`FindCommandParser` takes in the command arguments and parses them to return a `FindCommand` containing the correct predicate for finding the transactions.
+`FindCommandParser` takes in the argument string and parses it into an `ArgumentMultimap` that contains all the different search parameters mapped to their respective prefix.
+
+Depending on the parameters present, `FindCommandParser` then creates a `List<Predicate<Transaction>>` containing the predicates that will be used to filter the transactions.
+It then returns a `FindCommand` containing the list of predicates.
+
 Depending on the UI tab the user inputted the command in, a `FindXXXCommand` (`FindTransactionCommand`, `FindExpenseCommand` or `FindIncomeCommand`) will be created from the base `FindCommand`.
-When executed, the `FindXXXCommand` will set the predicate of the respective `FilteredList` in `ModelManager` so that only the transactions matching the keywords will be displayed in the list.
+When executed, the `FindXXXCommand` will combine all of the predicates in the list into a `combinedPredicate`, then sets the predicate of the respective `FilteredList` in `ModelManager` so that only the transactions matching the `combinedPredicate` will be displayed in the UI.
 
-Below is the Sequence Diagram for interactions within the `Logic` and `Model` components when the user inputs the `"find tea"` command while on the Overview tab.
+The list of predicates that can be used to filter the `FilteredList`s are as follows:
+* `TitleContainsKeyphrasesPredicate` checks if any of the given keyphrases is present in the transaction's title.
+* `HasExactAmountPredicate` checks if the transaction's amount is equal to the given amount.
+* `OnExactDatePredicate` checks if the transaction's date is equal to the given date.
+* `HasCategoriesPredicate` checks if the transaction's categories contains any of the given categories.
+* `InAmountRangePredicate` checks if the transaction's amount is within the given amount range.
+* `InDateRangePredicate` checks if the transaction's date is within the given date range.
 
-![Interactions Inside the Logic Component for the `find tea` Command on the Overview tab](images/FindSequenceDiagram.png)
+#### Finding transactions
 
-Alternatives considered:
+Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"find t/tea af/5"` command while on the Overview tab.
 
-* Having separate command parsers for each tab in which the find command can be input, e.g. `FindTransactionCommandParser`, `FindExpenseCommandParser` and `FindIncomeCommandParser`.
+![Sequence diagram for executing the `find t/tea a/5` command on the Overview tab](images/FindSequenceDiagram.png)
+
+The following activity diagram summarizes what happens when the user executes a new find command:
+
+![Activity diagram for executing the find command](images/FindActivityDiagram.png)
+
+#### Design considerations
+
+The alternative implementations considered, as well as the rationale behind our current implementation is as follows:
+
+| Alternative considered  | Current implementation and rationale   |
+| ----------- | -------------------------   |
+| Having separate command parsers for each tab in which the find command can be input, e.g. `FindTransactionCommandParser`, `FindExpenseCommandParser` and `FindIncomeCommandParser`, which return a `FindTransactionCommand`, a `FindExpenseCommand` and a `FindIncomeCommand` respectively. | Use only one `FindCommandParser`, which returns a `FindCommand` that is then further split into the respective `FindXXXCommand`. This is because the parsing for the input is similar same regardless of the tab the user is on.          |
+| Have `FindCommandParser` take in an `Index` corresponding to the parameter being searched. | Make the input of similar format to that of adding transactions, so that the input can be parsed into an `ArgumentMultimap` which is then used generate the relevant `Predicate`s. This is so that multiple search parameters can be employed in one command. |
 
 ### Programmatically switch selected tab
 
