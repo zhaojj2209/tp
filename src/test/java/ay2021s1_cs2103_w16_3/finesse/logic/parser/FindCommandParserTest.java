@@ -61,6 +61,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.predicates.TitleContainsK
 
 public class FindCommandParserTest {
 
+    // These strings are only used in FindCommandParserTest, hence are defined here instead of in CommandTestUtil
     public static final String AMOUNT_FROM_DESC_BUBBLE_TEA = " " + PREFIX_AMOUNT_FROM + VALID_AMOUNT_BUBBLE_TEA;
     public static final String AMOUNT_TO_DESC_BUBBLE_TEA = " " + PREFIX_AMOUNT_TO + VALID_AMOUNT_BUBBLE_TEA;
     public static final String AMOUNT_FROM_DESC_INTERNSHIP = " " + PREFIX_AMOUNT_FROM + VALID_AMOUNT_INTERNSHIP;

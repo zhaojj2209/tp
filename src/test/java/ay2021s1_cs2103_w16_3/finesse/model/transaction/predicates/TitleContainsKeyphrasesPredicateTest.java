@@ -48,6 +48,10 @@ public class TitleContainsKeyphrasesPredicateTest {
                 new TitleContainsKeyphrasesPredicate(Collections.singletonList("Damith Seth"));
         assertTrue(predicate.test(new TransactionBuilder().withTitle("Damith Seth").buildExpense()));
 
+        // Partial keyphrase
+        predicate = new TitleContainsKeyphrasesPredicate(Arrays.asList("Dam"));
+        assertTrue(predicate.test(new TransactionBuilder().withTitle("Damith Seth").buildExpense()));
+
         // Multiple keyphrases
         predicate = new TitleContainsKeyphrasesPredicate(Arrays.asList("Damith", "Seth"));
         assertTrue(predicate.test(new TransactionBuilder().withTitle("Damith Seth").buildExpense()));

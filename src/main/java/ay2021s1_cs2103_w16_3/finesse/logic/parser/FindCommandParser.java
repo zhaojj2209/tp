@@ -136,7 +136,7 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         if (argMultimap.getValue(PREFIX_AMOUNT).isPresent()) {
             if (argMultimap.getValue(PREFIX_AMOUNT_FROM).isPresent()
-                || argMultimap.getValue(PREFIX_AMOUNT_TO).isPresent()) {
+                    || argMultimap.getValue(PREFIX_AMOUNT_TO).isPresent()) {
                 throw new ParseException(MESSAGE_AMOUNT_SEARCH_CONSTRAINTS);
             }
             Amount amount = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT).get());
