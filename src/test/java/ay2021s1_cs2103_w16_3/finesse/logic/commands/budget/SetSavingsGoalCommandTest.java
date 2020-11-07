@@ -10,6 +10,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 public class SetSavingsGoalCommandTest {
 
@@ -30,6 +31,6 @@ public class SetSavingsGoalCommandTest {
         ModelManager expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.setSavingsGoal(amountToSet);
 
-        assertCommandSuccess(setSavingsGoalCommand, model, expectedMessage, expectedModel, true);
+        assertCommandSuccess(setSavingsGoalCommand, model, expectedMessage, expectedModel, true, Tab.OVERVIEW);
     }
 }

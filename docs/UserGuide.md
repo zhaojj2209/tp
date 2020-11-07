@@ -280,6 +280,8 @@ New expense added: Bubble Tea Amount: $5.00 Date: 03/10/2020 Categories: [Food &
 ```
 Adds a new expense titled `Bubble Tea`, with amount `$5.00`, date `03/10/2020`, and a single category `Food & Beverage`.
 
+> :information_source: &nbsp; After executing this command, the UI will automatically switch to the [Expenses tab](#223-expenses-tab).
+
 #### 4.3.2 Edit Expense: `edit`
 
 Edits an expense in the finance tracker.
@@ -418,7 +420,7 @@ Format: `add-income t/TITLE a/AMOUNT d/DATE [c/CATEGORY...]`
 * `DATE` is optional; if `DATE` is not given, the current date is used.
 * `CATEGORY` is optional. Multiple `c/` prefixes can be used to specify multiple categories.
 
-Shortcuts: `addi`; (when on the [Income tab](#222-incomes-tab)) `add`
+Shortcuts: `addi`; (when on the [Incomes tab](#222-incomes-tab)) `add`
 
 Examples:
 * `add-income t/Waitressing a/80 c/Work`
@@ -435,11 +437,13 @@ New income added: Shopee Internship Amount: $560.00 Date: 03/10/2020 Categories:
 ```
 Adds a new income titled `Shopee Internship`, with amount `$560.00`, date `03/10/2020`, and a single category `Internship`.
 
+> :information_source: &nbsp; After executing this command, the UI will automatically switch to the [Incomes tab](#222-incomes-tab).
+
 #### 4.4.2 Edit Income: `edit`
 
 Edits an expense in the finance tracker.
 
-Format: (when on the [Income tab](#222-incomes-tab)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY...]`
+Format: (when on the [Incomes tab](#222-incomes-tab)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY...]`
 
 * `INDEX` allows you to choose which income to edit by specifying its position in the currently displayed incomes list.
 * `TITLE`, `AMOUNT`, `DATE` and `CATEGORY` allow you to specify the updated income information.
@@ -793,7 +797,7 @@ Edits the third bookmark income in the bookmark incomes list to have an amount o
 
 Deletes the bookmark income and all of its information from the bookmark income list in Fine$$e.
 
-> :warning: &nbsp; This command can only be executed on the [Income tab](#222-incomes-tab).
+> :warning: &nbsp; This command can only be executed on the [Incomes tab](#222-incomes-tab).
 
 Format: `delete-bookmark INDEX`
 
@@ -873,6 +877,8 @@ New monthly expense limit set: $400.00
 ```
 Sets the monthly expense limit in the finance tracker to be `$400.00`.
 
+> :information_source: &nbsp; After executing this command, the UI will automatically switch to the [Overview tab](#221-overview-tab).
+
 ### 4.8 Savings Goal
 
 Want to save up for the new PlayStation 5 but can't seem to no matter what? Fine$$e has you covered!
@@ -900,6 +906,8 @@ Expected Outcome:
 New monthly savings goal set: $50.00
 ```
 Sets the monthly savings goal in the finance tracker to be `$50.00`.
+
+> :information_source: &nbsp; After executing this command, the UI will automatically switch to the [Overview tab](#221-overview-tab).
 
 ### 4.9 Analytics
 

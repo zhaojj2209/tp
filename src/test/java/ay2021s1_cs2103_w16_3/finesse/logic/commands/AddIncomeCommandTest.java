@@ -16,6 +16,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.ReadOnlyFinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.testutil.TransactionBuilder;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 public class AddIncomeCommandTest {
 
@@ -33,6 +34,7 @@ public class AddIncomeCommandTest {
 
         assertEquals(String.format(AddIncomeCommand.MESSAGE_SUCCESS, validIncome), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validIncome), modelStub.incomesAdded);
+        assertEquals(commandResult.getTabToSwitchTo().get(), Tab.INCOME);
     }
 
     @Test

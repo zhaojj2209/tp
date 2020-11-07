@@ -10,6 +10,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 public class SetExpenseLimitCommandTest {
 
@@ -23,6 +24,7 @@ public class SetExpenseLimitCommandTest {
     @Test
     public void execute_validAmount_success() {
         Amount amountToSet = new Amount("500");
+
         SetExpenseLimitCommand setExpenseLimitCommand = new SetExpenseLimitCommand(amountToSet);
 
         String expectedMessage = String.format(SetExpenseLimitCommand.MESSAGE_SUCCESS, amountToSet);
@@ -30,6 +32,7 @@ public class SetExpenseLimitCommandTest {
         ModelManager expectedModel = new ModelManager(model.getFinanceTracker(), new UserPrefs());
         expectedModel.setExpenseLimit(amountToSet);
 
-        assertCommandSuccess(setExpenseLimitCommand, model, expectedMessage, expectedModel, true);
+        assertCommandSuccess(setExpenseLimitCommand, model, expectedMessage, expectedModel, true, Tab.OVERVIEW);
     }
+
 }

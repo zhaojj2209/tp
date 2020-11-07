@@ -23,6 +23,7 @@ import ay2021s1_cs2103_w16_3.finesse.model.transaction.Income;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Transaction;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditBookmarkTransactionDescriptorBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditTransactionDescriptorBuilder;
+import ay2021s1_cs2103_w16_3.finesse.ui.UiState.Tab;
 
 /**
  * Contains helper methods for testing commands.
@@ -117,18 +118,29 @@ public class CommandTestUtil {
      * that takes a string {@code expectedMessage}.
      */
     public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
-                                            Model expectedModel, boolean isCalculateBudgetInfo) {
+            Model expectedModel) {
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage);
+        assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
+    }
+
+    /**
+     * Convenience wrapper to {@link #assertCommandSuccess(Command, Model, CommandResult, Model)}
+     * that takes a string {@code expectedMessage} and a boolean {@code isCalculateBudgetInfo}.
+     */
+    public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
+            Model expectedModel, boolean isCalculateBudgetInfo) {
         CommandResult expectedCommandResult = new CommandResult(expectedMessage, isCalculateBudgetInfo);
         assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
     }
 
     /**
      * Convenience wrapper to {@link #assertCommandSuccess(Command, Model, CommandResult, Model)}
-     * that takes a string {@code expectedMessage}.
+     * that takes a string {@code expectedMessage}, a boolean {@code isCalculateBudgetInfo}
+     * and a Tab {@code tabToSwitchTo}.
      */
     public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
-            Model expectedModel) {
-        CommandResult expectedCommandResult = new CommandResult(expectedMessage);
+            Model expectedModel, boolean isCalculateBudgetInfo, Tab tabToSwitchTo) {
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage, isCalculateBudgetInfo, tabToSwitchTo);
         assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
     }
 
@@ -153,19 +165,6 @@ public class CommandTestUtil {
         assertEquals(expectedFinanceTracker, actualModel.getFinanceTracker());
         assertEquals(expectedFilteredList, actualModel.getFilteredTransactionList());
         assertEquals(expectedFilteredBookmarkExpenseList, actualModel.getFilteredBookmarkExpenseList());
-    }
-    /**
-     * Updates {@code model}'s filtered list to show only the transaction at the given {@code targetIndex} in the
-     * {@code model}'s finance tracker.
-     */
-    public static void showTransactionAtIndex(Model model, Index targetIndex) {
-        assertTrue(targetIndex.getZeroBased() < model.getFilteredTransactionList().size());
-
-        Transaction transaction = model.getFilteredTransactionList().get(targetIndex.getZeroBased());
-        final String[] splitTitle = transaction.getTitle().toString().split("\\s+");
-        model.updateFilteredTransactionList(t -> t == transaction);
-
-        assertEquals(1, model.getFilteredTransactionList().size());
     }
 
     /**
