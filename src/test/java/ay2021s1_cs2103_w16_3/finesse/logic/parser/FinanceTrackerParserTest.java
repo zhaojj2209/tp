@@ -35,14 +35,8 @@ import ay2021s1_cs2103_w16_3.finesse.logic.commands.TabCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.AddBookmarkExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.AddBookmarkIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.ConvertBookmarkCommand;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.ConvertBookmarkExpenseCommand;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.ConvertBookmarkIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.DeleteBookmarkCommand;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.DeleteBookmarkExpenseCommand;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.DeleteBookmarkIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.EditBookmarkCommand;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.EditBookmarkExpenseCommand;
-import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.EditBookmarkIncomeCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.EditBookmarkTransactionDescriptor;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkExpense;
@@ -322,14 +316,14 @@ public class FinanceTrackerParserTest {
     public void parseCommand_deleteBookmarkWhenIncomesTab() throws Exception {
         DeleteBookmarkCommand command = (DeleteBookmarkCommand) parser.parseCommand(
                 DeleteBookmarkCommand.COMMAND_WORD + " " + INDEX_FIRST.getOneBased(), incomeUiStateStub);
-        assertEquals(new DeleteBookmarkIncomeCommand(INDEX_FIRST), command);
+        assertEquals(new DeleteBookmarkCommand(INDEX_FIRST), command);
     }
 
     @Test
     public void parseCommand_deleteBookmarkWhenExpensesTab() throws Exception {
         DeleteBookmarkCommand command = (DeleteBookmarkCommand) parser.parseCommand(
                 DeleteBookmarkCommand.COMMAND_WORD + " " + INDEX_FIRST.getOneBased(), expensesUiStateStub);
-        assertEquals(new DeleteBookmarkExpenseCommand(INDEX_FIRST), command);
+        assertEquals(new DeleteBookmarkCommand(INDEX_FIRST), command);
     }
 
     @Test
@@ -397,7 +391,7 @@ public class FinanceTrackerParserTest {
                 + INDEX_FIRST.getOneBased() + " "
                 + BookmarkTransactionUtil
                 .getEditBookmarkTransactionDescriptorDetails(descriptor), incomeUiStateStub);
-        assertEquals(new EditBookmarkIncomeCommand(INDEX_FIRST, descriptor), command);
+        assertEquals(new EditBookmarkCommand(INDEX_FIRST, descriptor), command);
     }
 
     @Test
@@ -409,7 +403,7 @@ public class FinanceTrackerParserTest {
                 + INDEX_FIRST.getOneBased() + " "
                 + BookmarkTransactionUtil
                 .getEditBookmarkTransactionDescriptorDetails(descriptor), expensesUiStateStub);
-        assertEquals(new EditBookmarkExpenseCommand(INDEX_FIRST, descriptor), command);
+        assertEquals(new EditBookmarkCommand(INDEX_FIRST, descriptor), command);
     }
 
     @Test
@@ -437,7 +431,7 @@ public class FinanceTrackerParserTest {
                         + INDEX_FIRST.getOneBased() + " "
                         + PREFIX_DATE + VALID_DATE_INTERNSHIP,
                 incomeUiStateStub);
-        assertEquals(new ConvertBookmarkIncomeCommand(INDEX_FIRST, testDate), command);
+        assertEquals(new ConvertBookmarkCommand(INDEX_FIRST, testDate), command);
     }
 
     @Test
@@ -448,7 +442,7 @@ public class FinanceTrackerParserTest {
                         + INDEX_FIRST.getOneBased() + " "
                         + PREFIX_DATE + VALID_DATE_INTERNSHIP,
                 expensesUiStateStub);
-        assertEquals(new ConvertBookmarkExpenseCommand(INDEX_FIRST, testDate), command);
+        assertEquals(new ConvertBookmarkCommand(INDEX_FIRST, testDate), command);
     }
 
     @Test

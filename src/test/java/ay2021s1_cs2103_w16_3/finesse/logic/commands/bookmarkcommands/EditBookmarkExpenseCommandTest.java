@@ -22,11 +22,13 @@ import org.junit.jupiter.api.Test;
 import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.EditBookmarkExpenseCommand;
 import ay2021s1_cs2103_w16_3.finesse.logic.commands.bookmark.EditBookmarkTransactionDescriptor;
+import ay2021s1_cs2103_w16_3.finesse.logic.commands.stubs.EditBookmarkCommandStub;
 import ay2021s1_cs2103_w16_3.finesse.model.FinanceTracker;
 import ay2021s1_cs2103_w16_3.finesse.model.Model;
 import ay2021s1_cs2103_w16_3.finesse.model.ModelManager;
 import ay2021s1_cs2103_w16_3.finesse.model.UserPrefs;
 import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkExpense;
+import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkExpenseList;
 import ay2021s1_cs2103_w16_3.finesse.testutil.BookmarkTransactionBuilder;
 import ay2021s1_cs2103_w16_3.finesse.testutil.EditBookmarkTransactionDescriptorBuilder;
 
@@ -41,8 +43,8 @@ public class EditBookmarkExpenseCommandTest {
                 .buildBookmarkExpense();
         EditBookmarkTransactionDescriptor descriptor =
                 new EditBookmarkTransactionDescriptorBuilder(editedBookmarkExpense).build();
-        EditBookmarkExpenseCommand editBookmarkExpenseCommand =
-                new EditBookmarkExpenseCommand(INDEX_FIRST, descriptor);
+        EditBookmarkCommandStub superCommand = new EditBookmarkCommandStub(INDEX_FIRST, descriptor);
+        EditBookmarkExpenseCommand editBookmarkExpenseCommand = new EditBookmarkExpenseCommand(superCommand);
 
         String expectedMessage = String.format(EditBookmarkExpenseCommand.MESSAGE_EDIT_BOOKMARK_EXPENSE_SUCCESS,
                 editedBookmarkExpense);
@@ -66,8 +68,8 @@ public class EditBookmarkExpenseCommandTest {
         EditBookmarkTransactionDescriptor descriptor = new EditBookmarkTransactionDescriptorBuilder()
                 .withTitle(VALID_TITLE_BUBBLE_TEA).withAmount(VALID_AMOUNT_BUBBLE_TEA)
                 .withCategories(VALID_CATEGORY_MISCELLANEOUS).build();
-        EditBookmarkExpenseCommand editBookmarkExpenseCommand =
-                new EditBookmarkExpenseCommand(indexLastExpense, descriptor);
+        EditBookmarkCommandStub superCommand = new EditBookmarkCommandStub(indexLastExpense, descriptor);
+        EditBookmarkExpenseCommand editBookmarkExpenseCommand = new EditBookmarkExpenseCommand(superCommand);
 
         String expectedMessage = String.format(EditBookmarkExpenseCommand.MESSAGE_EDIT_BOOKMARK_EXPENSE_SUCCESS,
                 editedExpense);
@@ -83,7 +85,8 @@ public class EditBookmarkExpenseCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredBookmarkExpenseList().size() + 1);
         EditBookmarkTransactionDescriptor descriptor = new EditBookmarkTransactionDescriptorBuilder()
                 .withTitle(VALID_TITLE_SPOTIFY_SUBSCRIPTION).build();
-        EditBookmarkExpenseCommand editExpenseCommand = new EditBookmarkExpenseCommand(outOfBoundIndex, descriptor);
+        EditBookmarkCommandStub superCommand = new EditBookmarkCommandStub(outOfBoundIndex, descriptor);
+        EditBookmarkExpenseCommand editExpenseCommand = new EditBookmarkExpenseCommand(superCommand);
 
         assertCommandFailure(editExpenseCommand, model, MESSAGE_INVALID_BOOKMARK_EXPENSE_DISPLAYED_INDEX);
     }
@@ -101,22 +104,40 @@ public class EditBookmarkExpenseCommandTest {
         // ensures that outOfBoundIndex is still in bounds of bookmark expense list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getFinanceTracker().getBookmarkExpenseList().size());
 
-        EditBookmarkExpenseCommand editBookmarkExpenseCommand = new EditBookmarkExpenseCommand(outOfBoundIndex,
+        EditBookmarkCommandStub superCommand = new EditBookmarkCommandStub(outOfBoundIndex,
                 new EditBookmarkTransactionDescriptorBuilder().withTitle(VALID_TITLE_SPOTIFY_SUBSCRIPTION).build());
+        EditBookmarkExpenseCommand editBookmarkExpenseCommand = new EditBookmarkExpenseCommand(superCommand);
 
         assertCommandFailure(editBookmarkExpenseCommand, model, MESSAGE_INVALID_BOOKMARK_EXPENSE_DISPLAYED_INDEX);
     }
 
     @Test
+    public void execute_settingDuplicateEditedBookmarkExpense_throwsDuplicateBookmarkTransactionException() {
+        BookmarkExpense editedBookmarkExpense = new BookmarkTransactionBuilder()
+                .withTitle(VALID_TITLE_SPOTIFY_SUBSCRIPTION).withAmount(VALID_AMOUNT_SPOTIFY_SUBSCRIPTION)
+                .buildBookmarkExpense();
+        EditBookmarkTransactionDescriptor descriptor =
+                new EditBookmarkTransactionDescriptorBuilder(editedBookmarkExpense).build();
+
+        EditBookmarkCommandStub superCommand = new EditBookmarkCommandStub(INDEX_FIRST, descriptor);
+        EditBookmarkExpenseCommand editBookmarkExpenseCommand = new EditBookmarkExpenseCommand(superCommand);
+
+        assertCommandFailure(editBookmarkExpenseCommand, model,
+                BookmarkExpenseList.MESSAGE_OPERATION_WILL_RESULT_IN_DUPLICATE_BOOKMARK_EXPENSE);
+    }
+
+    @Test
     public void equals() {
-        final EditBookmarkExpenseCommand standardCommand =
-                new EditBookmarkExpenseCommand(INDEX_FIRST, DESC_SPOTIFY_SUBSCRIPTION);
+        final EditBookmarkCommandStub superCommand = new EditBookmarkCommandStub(INDEX_FIRST,
+                DESC_SPOTIFY_SUBSCRIPTION);
+        final EditBookmarkExpenseCommand standardCommand = new EditBookmarkExpenseCommand(superCommand);
 
         // same values -> returns true
         EditBookmarkTransactionDescriptor copyDescriptor =
                 new EditBookmarkTransactionDescriptor(DESC_SPOTIFY_SUBSCRIPTION);
+        EditBookmarkCommandStub superCommandWithSameValues = new EditBookmarkCommandStub(INDEX_FIRST, copyDescriptor);
         EditBookmarkExpenseCommand commandWithSameValues =
-                new EditBookmarkExpenseCommand(INDEX_FIRST, copyDescriptor);
+                new EditBookmarkExpenseCommand(superCommandWithSameValues);
         assertTrue(standardCommand.equals(commandWithSameValues));
 
         // same object -> returns true
@@ -127,11 +148,11 @@ public class EditBookmarkExpenseCommandTest {
 
         // different index -> returns false
         assertFalse(standardCommand
-                .equals(new EditBookmarkExpenseCommand(INDEX_SECOND, DESC_SPOTIFY_SUBSCRIPTION)));
+                .equals(new EditBookmarkCommandStub(INDEX_SECOND, DESC_SPOTIFY_SUBSCRIPTION)));
 
         // different descriptor -> returns false
         assertFalse(standardCommand
-                .equals(new EditBookmarkExpenseCommand(INDEX_FIRST, DESC_PHONE_BILL)));
+                .equals(new EditBookmarkCommandStub(INDEX_FIRST, DESC_PHONE_BILL)));
     }
 
 }

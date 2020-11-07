@@ -1,6 +1,11 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.parser;
 
+import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static ay2021s1_cs2103_w16_3.finesse.commons.util.StringUtil.isEmptyString;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_AMOUNT;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_CATEGORY;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_TITLE;
 import static ay2021s1_cs2103_w16_3.finesse.model.category.Category.MESSAGE_EMPTY_CATEGORY;
 import static ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount.MESSAGE_EMPTY_AMOUNT;
 import static ay2021s1_cs2103_w16_3.finesse.model.transaction.Date.MESSAGE_EMPTY_DATE;
@@ -8,12 +13,16 @@ import static ay2021s1_cs2103_w16_3.finesse.model.transaction.Title.MESSAGE_EMPT
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import ay2021s1_cs2103_w16_3.finesse.commons.core.index.Index;
 import ay2021s1_cs2103_w16_3.finesse.commons.util.StringUtil;
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.bookmarkparsers.BookmarkTransactionBuilder;
 import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
+import ay2021s1_cs2103_w16_3.finesse.model.bookmark.BookmarkTransaction;
 import ay2021s1_cs2103_w16_3.finesse.model.category.Category;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Amount;
 import ay2021s1_cs2103_w16_3.finesse.model.transaction.Date;
@@ -135,4 +144,61 @@ public class ParserUtil {
         }
         return categorySet;
     }
+
+    /**
+     * Parses {@code Collection<String> categories} into a {@code Set<Category>} if {@code categories} is non-empty.
+     * If {@code categories} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Category>} containing zero categories.
+     */
+    public static Optional<Set<Category>> parseCategoriesForEdit(Collection<String> categories) throws ParseException {
+        assert categories != null;
+
+        if (categories.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> categorySet = categories.size() == 1 && categories.contains("")
+                ? Collections.emptySet() : categories;
+        return Optional.of(ParserUtil.parseCategories(categorySet));
+    }
+
+    /**
+     * Parses {@code String args} into a {@code BookmarkTransactionBuilder}.
+     *
+     * @throws ParseException if the given {@code arge} does not adhere to the format of a bookmark transaction.
+     */
+    public static BookmarkTransactionBuilder parseBookmarkTransactionBuilder(String args, String exceptionMessage)
+            throws ParseException {
+        requireNonNull(args);
+        requireNonNull(exceptionMessage);
+
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_TITLE, PREFIX_AMOUNT, PREFIX_DATE, PREFIX_CATEGORY);
+
+        if (!argMultimap.arePrefixesPresent(PREFIX_TITLE, PREFIX_AMOUNT) || !argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    exceptionMessage));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_TITLE)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_TITLE_CONSTRAINTS));
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_AMOUNT)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_AMOUNT_CONSTRAINTS));
+        }
+
+        if (argMultimap.getValue(PREFIX_DATE).isPresent()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, BookmarkTransaction.MESSAGE_CANNOT_CONTAIN_DATE));
+        }
+
+        Title title = ParserUtil.parseTitleAndTrimBetweenWords(argMultimap.getValue(PREFIX_TITLE).get());
+        Amount amount = ParserUtil.parseAmount(argMultimap.getValue(PREFIX_AMOUNT).get());
+        Set<Category> categoryList = ParserUtil.parseCategories(argMultimap.getAllValues(PREFIX_CATEGORY));
+
+        return new BookmarkTransactionBuilder(title, amount, categoryList);
+    }
+
 }
