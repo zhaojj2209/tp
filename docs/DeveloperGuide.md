@@ -352,9 +352,7 @@ it to an `Expense` object.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Requirements**
-
-### Product scope
+## **Appendix A: Product scope**
 
 **Target user profile**:
 
@@ -366,7 +364,9 @@ it to an `Expense` object.
 
 **Value proposition**: Manage finances and cultivate good financial habits (such as saving) efficiently by typing in CLI commands
 
-### User stories
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix B: User stories**
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
@@ -388,7 +388,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | user                     | set a current monthly savings    | track how much I have to save to hit my savings goal                        |
 | `* *`    | user                     | view my saving trends            | better plan my future expenses                                              |
 
-### Use cases
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix C: Use cases**
 
 (For all use cases below, the **System** is `Fine$$e` and the **Actor** is the `user`, unless specified otherwise)
 
@@ -417,7 +419,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 *{More to be added}*
 
-### Non-Functional Requirements
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix D: Non-Functional Requirements**
 
 1.  Should work on any mainstream OS as long as it has Java `11` or above installed.
 2.  Should be able to hold up to 1000 expenses/incomes without a noticeable sluggishness in performance for typical usage.
@@ -429,7 +433,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 *{More to be added}*
 
-### Glossary
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix E: Glossary**
 
 * **Expense**: A single transaction that results in a decrease in cash
 * **Income**: A single transaction that results in an increase in cash
@@ -438,11 +444,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+## **Appendix F: Instructions for manual testing**
 
 Given below are instructions to test the app manually.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
+<div markdown="span" class="alert alert-info">:information_source: &nbsp; **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 
 </div>
@@ -451,40 +457,195 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+   1. Download the jar file and copy into an empty folder.
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file.<br>
+      Expected: Shows the GUI with a set of sample data. The window size may not be optimum.
 
 1. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
    1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+      Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Help and switching tabs
 
-### Deleting a transaction
+1. View help
 
-1. Deleting a transaction while all transactions are being shown
+    1. Test case: `help`
+       Expected: UI switches to the user guide.
 
-   1. Prerequisites: List all transactions using the `list` command. Multiple transactions in the list.
+    1. Test case: `help me`
+       Expected: There is no change to the UI. An error message is shown as the command cannot have any arguments.
 
-   1. Test case: `delete 1`<br>
-      Expected: First transaction is deleted from the list. Details of the deleted transaction shown in the status message. Timestamp in the status bar is updated.
+1. Switching tabs
 
-   1. Test case: `delete 0`<br>
-      Expected: No transaction is deleted. Error details shown in the status message. Status bar remains the same.
+    1. Test case: `tab 2`
+       Expected: UI switches to the Expenses tab.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+    1. Test case: `tab overview`
+       Expected: UI does not switch tabs. An error message is shown as the command format is invalid.
 
-1. _{ more test cases …​ }_
+    1. Test case: `tab 5`
+       Expected: UI does not switch tabs. An error message is shown as the specified tab does not exist.
+
+### Transactions
+
+1. Adding an expense
+    1. Test case: `add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage`<br>
+    Expected: An expense titled `Bubble Tea` is added with the given details. UI switches to the Expenses tab.
+
+    1. Test case: `add-expense t/Bubble Tea a/5 c/Food c/Beverage`<br>
+    Expected: An expense titled `Bubble Tea` is added with the current date and two categories. UI switches to the Expenses tab.
+
+    1. Test case: `add-expense t/Bubble Tea`<br>
+    Expected: No expense is added. An error message is shown as the command format is invalid.
+
+    1. Test case: `add-expense t/Bubble Tea a/5.000 d/03/10/2020 c/Food & Beverage`<br>
+    Expected: No expense is added. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `add-expense t/ a/5.00 d/03/10/2020 c/Food & Beverage`<br>
+    Expected: No expense is added. An error message is shown as the parameter is empty.
+
+1. Adding an income
+
+    1. Test case: `add-income t/Internship a/560 d/03/10/2020 c/Work`<br>
+    Expected: An income titled `Internship` is added with the given details. UI switches to the Incomes tab.
+
+    1. Test case: `add-income t/Internship a/560 c/Work c/Internship`<br>
+    Expected: An expense titled `Internship` is added with the current date and two categories. UI switches to the Incomes tab.
+
+    1. Test case: `add-income t/Internship`<br>
+    Expected: No expense is added. An error message is shown as the command format is invalid.
+
+    1. Test case: `add-income t/Internship a/560 d/03-10-2020 c/Work`<br>
+    Expected: No expense is added. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `add-income t/Internship a/ d/03/10/2020 c/Work`<br>
+    Expected: No expense is added. An error message is shown as the parameter is empty.
+
+1. Editing a transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 transactions.
+
+    1. Test case: `edit 1 t/Taxi a/10 d/31/10/2020 c/Transport`<br>
+    Expected: First transaction in the list is edited with all details changed.
+
+    1. Test case: `edit 1 c/`<br>
+    Expected: First transaction in the list is edited with all categories cleared.
+
+    1. Test case: `edit t/Taxi`<br>
+    Expected: No transaction is edited. An error message is shown as the command format is invalid.
+
+    1. Test case: `edit 5 a/10`<br>
+    Expected: No transaction is edited. An error message is shown as the index provided is invalid.
+
+    1. Test case: `edit 1 d/10/31/2020`<br>
+    Expected: No transaction is edited. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `edit 1 d/`<br>
+    Expected: No transaction is edited. An error message is shown as the parameter is empty.
+
+    1. Test case: `edit 1`<br>
+    Expected: No transaction is edited. An error message is shown as at least one parameter must be supplied.
+
+1. Deleting a transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 transactions.
+
+    1. Test case: `delete 1`<br>
+    Expected: First transaction in the list is deleted.
+
+    1. Test case: `delete first`<br>
+    Expected: No transaction is deleted. An error message is shown as the command format is invalid.
+
+    1. Test case: `delete 5`<br>
+    Expected: No transaction is deleted. An error message is shown as the index provided is invalid.
+
+1. Listing transactions
+
+    1. Test case: `ls-expense`<br>
+    Expected: UI switches to Expenses tab. All expenses are listed.
+
+    1. Test case: `ls-income`<br>
+    Expected: UI switches to Incomes tab. All incomes are listed.
+
+    1. Test case: `ls-income all`<br>
+    Expected: There is no change in the UI. An error message is shown as the command cannot have any arguments.
+
+1. Finding transactions
+
+    1. Prerequisite: UI is on Overview, Expenses or Incomes tab.
+
+    1. Test case: `find t/Bubble Tea`<br>
+    Expected: All transactions in the displayed list containing the keyphrase `Bubble Tea` (case-insensitive) are displayed.
+
+    1. Test case: `find af/5 c/Food`<br>
+    Expected: All transactions in the displayed list with the category `Food` and amount greater than or equal to `$05.00` are displayed.
+
+    1. Test case: `find df/01/09/2020 dt/30/09/2020`<br>
+    Expected: All transactions in the displayed list in September 2020 are displayed.
+
+    1. Test case: `find tea`<br>
+    Expected: There is no change in the UI. An error message is shown as the command format is wrong.
+
+    1. Test case: `find d/`<br>
+    Expected: There is no change in the UI. An error message is shown as the parameter is empty.
+
+    1. Test case: `find af/10 at/5`<br>
+    Expected: There is no change in the UI. An error message is shown as the range provided is invalid.
+
+### Budgeting
+
+1. Setting expense limit
+
+    1. Test case: `set-expense-limit a/500`<br>
+    Expected: UI switches to Overview tab. Monthly expense limit is changed to `$500.00`. Remaining monthly budget is recalculated.
+
+    1. Test case: `set-expense-limit 500`<br>
+    Expected: Monthly expense limit remains unchanged. An error message is shown as the command format is invalid.
+
+    1. Test case: `set-expense-limit a/`<br>
+    Expected: Monthly expense limit remains unchanged. An error message is shown as the parameter cannot be empty.
+
+1. Setting savings goal
+
+    1. Test case: `set-savings-goal a/500`<br>
+    Expected: UI switches to Overview tab. Monthly savings goal is changed to `$500.00`.
+
+    1. Test case: `set-savings-goal 500`<br>
+    Expected: Monthly savings goal remains unchanged. An error message is shown as the command format is invalid.
+
+    1. Test case: `set-savings-goal a/`<br>
+    Expected: Monthly savings goal remains unchanged. An error message is shown as the parameter cannot be empty.
+
+### Bookmark transactions
+
+{more to be added}
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Dealing with missing data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. Delete the file `fine$$e.json` in the `data` folder.
 
-1. _{ more test cases …​ }_
+    1. Launch the app by double-clicking the jar file.
+    Expected: Shows the GUI with a set of sample data.
+
+1. Dealing with corrupted data files
+
+    1. Replace the contents of `fine$$e.json` in the `data` folder with the text `File Corrupted`.
+
+    1. Launch the app by double-clicking the jar file.
+    Expected: Shows the GUI with no data.
+
+1. Deleting data file while app is running
+
+    1. Launch the app by double-clicking the jar file.
+
+    1. While the app is running, delete the file `fine$$e.json` in the `data` folder.
+
+    1. Close the app.
+    Expected: `fine$$e.json` is regenerated with the data from the app.
+
