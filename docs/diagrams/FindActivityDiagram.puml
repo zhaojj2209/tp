@@ -1,8 +1,6 @@
 @startuml
 start
 :User executes find command;
-:Parses input;
-:Generates predicates;
 
 if () then ([user is on Overview tab])
     :Filters all transactions;
@@ -11,6 +9,6 @@ elseif () then ([user is on Expenses tab])
 else ([user is on Incomes tab])
     :Filters all incomes;
 endif
-    :Displays filtered list;
+    :Displays filtered list on current tab;
 stop
 @enduml

@@ -208,8 +208,8 @@ The find transactions feature is implemented via `FindCommandParser`, as well as
 Depending on the parameters present, `FindCommandParser` then creates a `List<Predicate<Transaction>>` containing the predicates that will be used to filter the transactions.
 It then returns a `FindCommand` containing the list of predicates.
 
-Depending on the UI tab the user inputted the command in, a `FindXXXCommand` (`FindTransactionCommand`, `FindExpenseCommand` or `FindIncomeCommand`) will be created from the base `FindCommand`.
-When executed, the `FindXXXCommand` will combine all of the predicates in the list into a `combinedPredicate`, then sets the predicate of the respective `FilteredList` in `ModelManager` so that only the transactions matching the `combinedPredicate` will be displayed in the UI.
+Depending on the UI tab the user inputted the command in, a `FindXYZCommand` (`FindTransactionCommand`, `FindExpenseCommand` or `FindIncomeCommand`) will be created from the base `FindCommand`.
+When executed, the `FindXYZCommand` will combine all of the predicates in the list into a `combinedPredicate`, then sets the predicate of the respective `FilteredList` in `ModelManager` so that only the transactions matching the `combinedPredicate` will be displayed in the UI.
 
 The list of predicates that can be used to filter the `FilteredList`s are as follows:
 * `TitleContainsKeyphrasesPredicate` checks if any of the given keyphrases is present in the transaction's title.
@@ -221,7 +221,7 @@ The list of predicates that can be used to filter the `FilteredList`s are as fol
 
 ##### Finding transactions
 
-Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"find t/tea af/5"` command while on the Overview tab.
+Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"find t/tea a/5"` command while on the Overview tab.
 
 ![Sequence diagram for executing the `find t/tea a/5` command on the Overview tab](images/FindSequenceDiagram.png)
 
@@ -235,7 +235,7 @@ The alternative implementations considered, as well as the rationale behind our 
 
 | Alternative considered  | Current implementation and rationale   |
 | ----------- | -------------------------   |
-| Having separate command parsers for each tab in which the find command can be input, e.g. `FindTransactionCommandParser`, `FindExpenseCommandParser` and `FindIncomeCommandParser`, which return a `FindTransactionCommand`, a `FindExpenseCommand` and a `FindIncomeCommand` respectively. | Use only one `FindCommandParser`, which returns a `FindCommand` that is then further split into the respective `FindXXXCommand`. This is because the parsing for the input is similar same regardless of the tab the user is on.          |
+| Having separate command parsers for each tab in which the find command can be input, e.g. `FindTransactionCommandParser`, `FindExpenseCommandParser` and `FindIncomeCommandParser`, which return a `FindTransactionCommand`, a `FindExpenseCommand` and a `FindIncomeCommand` respectively. | Use only one `FindCommandParser`, which returns a `FindCommand` that is then further split into the respective `FindXYZCommand`. This is because the parsing for the input is similar same regardless of the tab the user is on.          |
 | Have `FindCommandParser` take in an `Index` corresponding to the parameter being searched. | Make the input of similar format to that of adding transactions, so that the input can be parsed into an `ArgumentMultimap` which is then used generate the relevant `Predicate`s. This is so that multiple search parameters can be employed in one command. |
 
 #### Programmatically switch selected tab
@@ -266,7 +266,7 @@ The user sets the monthly expense limit and monthly savings goal, and the remain
 
 The class diagram below depicts the components involved in the budget feature.
 
-![Class diagram for find transactions feature](images/FindClassDiagram.png)
+![Class diagram for budgeting feature](images/BudgetClassDiagram.png)
 
 ##### Implementation of feature
 
@@ -295,13 +295,13 @@ The commands that trigger a call of `calculateBudgetInfo` are as follows:
 ##### Set monthly spending limit
 
 `SetExpenseLimitCommand` and `SetSavingsGoalCommand` work in similar ways.
-Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"set-expense-limit a/500"` command.
+Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"setel a/500"` command.
 
-![Sequence diagram for executing the `set-expense-limit` command](images/SetExpenseLimitSequenceDiagram.png)
+![Sequence diagram for executing the `setel a/500` command](images/SetExpenseLimitSequenceDiagram.png)
 
 The following activity diagram summarizes what happens when the user executes any command that changes the calculated values in `MonthlyBudget` (e.g. setting expense limit):
 
-![Activity diagram for executing the find command](images/SetExpenseLimitActivityDiagram.png)
+![Activity diagram for executing any command that changes the budget](images/BudgetActivityDiagram.png)
 
 ##### Design considerations
 
