@@ -140,7 +140,7 @@ The `FinanceTracker` has the following fields:
 * a `TransactionList` field which stores all `Expense` and `Income` objects together.
 * a `BookmarkExpenseList` field which stores all `BookmarkExpense` objects.
 * a `BookmarkIncomeList` field which stores all `BookmarkIncome` objects.
-* a `MonthlyBudget` field which stores a `MonthlyExpenseLimit`, a `MonthlySavingsGoal`, and all calculated values for the user's statistics.
+* a `MonthlyBudget` field which stores the user's set monthly expense limit and monthly savings goal, as well as all calculated values for the user's statistics.
 
 The `ModelManager` has the following fields:
 * three `FilteredList` fields which point to the same `ObservableList` obtained from `FinanceTracker::getTransactionList`. The `Predicate` fields in the three `FilteredList` fields are set such that:
@@ -182,14 +182,19 @@ Classes used by multiple components are in the `ay2021s1_cs2103_w16_3.finesse.co
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Find transactions feature
+### Transactions
 
-#### Overview
+#### Find transactions feature
+##### Overview
 
 The find transactions feature allows users to search for transactions in the `FinanceTracker` by various search parameters.
 Each search parameter corresponds to a different predicate which will be used to filter transactions in the various `FilteredList`s.
 
-#### Implementation of feature
+Below is the class diagram of the components involved in the find transactions feature.
+
+![Class diagram for find transactions feature](images/FindClassDiagram.png)
+
+##### Implementation of feature
 
 The find transactions feature is implemented via `FindCommandParser`, as well as the following commands:
 
@@ -214,7 +219,7 @@ The list of predicates that can be used to filter the `FilteredList`s are as fol
 * `InAmountRangePredicate` checks if the transaction's amount is within the given amount range.
 * `InDateRangePredicate` checks if the transaction's date is within the given date range.
 
-#### Finding transactions
+##### Finding transactions
 
 Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"find t/tea af/5"` command while on the Overview tab.
 
@@ -224,7 +229,7 @@ The following activity diagram summarizes what happens when the user executes a 
 
 ![Activity diagram for executing the find command](images/FindActivityDiagram.png)
 
-#### Design considerations
+##### Design considerations
 
 The alternative implementations considered, as well as the rationale behind our current implementation is as follows:
 
@@ -233,7 +238,7 @@ The alternative implementations considered, as well as the rationale behind our 
 | Having separate command parsers for each tab in which the find command can be input, e.g. `FindTransactionCommandParser`, `FindExpenseCommandParser` and `FindIncomeCommandParser`, which return a `FindTransactionCommand`, a `FindExpenseCommand` and a `FindIncomeCommand` respectively. | Use only one `FindCommandParser`, which returns a `FindCommand` that is then further split into the respective `FindXXXCommand`. This is because the parsing for the input is similar same regardless of the tab the user is on.          |
 | Have `FindCommandParser` take in an `Index` corresponding to the parameter being searched. | Make the input of similar format to that of adding transactions, so that the input can be parsed into an `ArgumentMultimap` which is then used generate the relevant `Predicate`s. This is so that multiple search parameters can be employed in one command. |
 
-### Programmatically switch selected tab
+#### Programmatically switch selected tab
 
 Several of the expense/income-specific commands update the list of transactions displayed in a particular tab.
 Examples of these include the `add-expense` and `add-income` commands.
@@ -253,19 +258,60 @@ Alternatives considered:
 * Add a method in `MainWindow` which can be called to programmatically switch tabs in the user interface upon execution of the command.
   This was decided against as it would result in a much tighter coupling of `Logic` and `UI` components.
 
-### Set monthly spending limit
+### Budgeting
+##### Overview
 
-The monthly budgeting feature is implemented via `SetExpenseLimitCommand` as well as `MonthlyExpenseLimit`.
+The budgeting feature allows users to track their remaining budget and current savings based on their set monthly expense limit and monthly savings goal.
+The user sets the monthly expense limit and monthly savings goal, and the remaining budget and current savings will automatically be calculated based on the transactions in the `FinanceTracker`.
 
-[Coming soon]
+The class diagram below depicts the components involved in the budget feature.
 
-### Set monthly savings goal
+![Class diagram for find transactions feature](images/FindClassDiagram.png)
 
-The monthly budgeting feature is implemented via `SetSavingsGoalCommand` as well as `MonthlySavingsGoal`.
+##### Implementation of feature
 
-[Coming soon]
+The find transactions feature is implemented via `MonthlyBudget`, which contains the following fields:
 
-### [Proposed] Frequent Expense Feature
+* Two `ObjectProperty<Amount>` fields for `monthlyExpenseLimit` and `monthlySavingsGoal`.
+* Two `ObjectProperty<CalculatedAmount>` fields for `remainingBudget` and `currentSavings`.
+* Three c fields for `monthlyExpenses`, `monthlyIncomes` and `monthlySavings`, which are used for the [Analytics feature](#analytics).
+* An `ObservableList<String>` of `months`, to determine which elements in the `ObservableList<CalculatedAmount>` corresponds to which month.
+
+`CalculatedAmount` differs from `Amount` in that a `CalculatedAmount` can be negative, and supports addition and subtraction.
+
+The method that is integral to the `MonthlyBudget` is the `calculateBudgetInfo` method.
+It takes in the current `TransactionList` in the `FinanceTracker` and an integer `numOfMonths`, and recalculates all `CalculatedAmount`s in the `MonthlyBudget` as follows:
+* Sum the amounts of all `Expense`s in the `TransactionList` dated in the current month, subtracts it from `monthlyExpenseLimit`, and sets it as the `remainingBudget`.
+* Sums the amounts of all `Expense`s in the `TransactionList` dated in the current month, subtracts it from the sum of all `Income`s dated in the current month, and sets it as the `currentSavings`.
+* For the past number of months indicated by `numOfMonths` (including the current month), calculate the total expenses, total incomes and total savings for each month and add them to the corresponding `ObservableList<CalculatedAmount>`.
+
+The commands that trigger a call of `calculateBudgetInfo` are as follows:
+* `AddExpenseCommand`, `AddIncomeCommand`, `DeleteExpenseCommand` and `DeleteIncomeCommand`, which change the total expenses/incomes of the `Transaction`s in the `TransactionList`.
+* `EditExpenseCommand` and `EditIncomeCommand`, if the `Amount` is edited.
+* `SetExpenseLimitCommand`, which changes the `Amount` in `monthlyExpenseLimit`.
+* `SetSavingsGoalCommand`, which changes the `Amount` in `monthlySavingsGoal`.
+`calculateBudgetInfo` is also called by `Storage` whenever the finance tracker data is loaded upon startup.
+
+##### Set monthly spending limit
+
+`SetExpenseLimitCommand` and `SetSavingsGoalCommand` work in similar ways.
+Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"set-expense-limit a/500"` command.
+
+![Sequence diagram for executing the `set-expense-limit` command](images/SetExpenseLimitSequenceDiagram.png)
+
+The following activity diagram summarizes what happens when the user executes any command that changes the calculated values in `MonthlyBudget` (e.g. setting expense limit):
+
+![Activity diagram for executing the find command](images/SetExpenseLimitActivityDiagram.png)
+
+##### Design considerations
+
+The alternative implementations considered, as well as the rationale behind our current implementation is as follows:
+
+| Alternative considered  | Current implementation and rationale   |
+| ----------- | -------------------------   |
+| Use the `Amount` class for calculated amounts. | Use a separate class `CalculatedAmount` for calculated amounts, so as to avoid breaking abstraction and support negative values.
+
+### Bookmark Transactions
 
 #### Proposed Implementation
 The Frequent Expense feature consists of `add-frequent-expense`, `edit-frequent-expense`, `delete-frequent-expense`,
@@ -305,6 +351,11 @@ then call `FrequentExpense#convert` on the frequent expense together with the da
 it to an `Expense` object.
 4. After converting the `FrequentExpense` object to an `Expense` object, it will call `Model#addExpense` to add the
 `Expense` object to the expense list in the finance tracker.
+
+### Analytics
+
+[Coming soon]
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
