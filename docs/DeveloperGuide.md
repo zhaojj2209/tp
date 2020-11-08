@@ -380,11 +380,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user                     | delete a transaction             | remove expenses/incomes that were entered wrongly                           |
 | `* * *`  | user                     | group transactions by categories | keep track of my past expenses/incomes across various categories            |
 | `* * *`  | user                     | search for transactions          | easily find related expenses/incomes                                        |
-| `* *`    | user                     | set a monthly spending limit     | track how much I have left to spend for the month                           |
-| `* *`    | user                     | set a monthly saving goal        | cultivate good saving habits                                                |
-| `* *`    | user                     | view my saving trends            | better manage my future expenses                                            |
-
-*{More to be added}*
+| `* * *`  | user                     | bookmark expenses                | easily add recurring expenses                                               |
+| `* * *`  | user                     | bookmark incomes                 | easily add recurring incomes                                                |
+| `* *`    | user                     | set a monthly spending limit     | plan the maximum amount I wish to spend for the month                       |
+| `* *`    | user                     | set a monthly saving goal        | work towards saving consistently and reaching my savings goals              |
+| `* *`    | user                     | see my remaining monthly budget  | track how much I have left to spend for the month                           |
+| `* *`    | user                     | set a current monthly savings    | track how much I have to save to hit my savings goal                        |
+| `* *`    | user                     | view my saving trends            | better plan my future expenses                                              |
 
 ### Use cases
 
