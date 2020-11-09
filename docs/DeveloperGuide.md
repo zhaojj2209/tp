@@ -831,12 +831,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. User filters the list first.
-
-    * 1a1. User filters the list using <u>Find an expense</u>.
-
-      Use case resumes at step 3.
-
 * 2a. The list is empty.
 
   Use case ends.
@@ -911,12 +905,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     Use case ends.
 
 **Extensions**
-
-* 1a. User filters the list first.
-
-    * 1a1. User filters the list using <u>Find an income</u>.
-
-      Use case resumes at step 3.
 
 * 2a. The list is empty.
 
