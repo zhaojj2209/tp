@@ -30,7 +30,7 @@ The rest of the App consists of four components.
 
 Each of the four components:
 
-* defines its *API* in an `interface` with the same name as the Component.
+* defines its *API* in an `interface` with the same name as the component.
 * exposes its functionality using a concrete `{Component Name}Manager` class (which implements the corresponding API `interface` mentioned in the previous point.
 
 For example, the `Logic` component (see the class diagram given below) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class which implements the `Logic` interface.
@@ -39,7 +39,7 @@ For example, the `Logic` component (see the class diagram given below) defines i
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *sequence diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
@@ -86,7 +86,7 @@ The `UI` component:
 1. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to `Ui`.
 1. In addition, the `CommandResult` object can also instruct `Ui` to perform certain actions, such as displaying the help message to the user.
 
-Below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
+Below is the sequence diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
 
 ![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
 
@@ -268,7 +268,7 @@ Note that the arguments in the full command string have been abbreviated to `...
 
 ![Sequence diagram for executing the `add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage` command on the Expenses tab](images/AddTransactionSequenceDiagram.png)
 
-When `AddIncomeCommandParser` is used, the sequence diagram is similar, but replace all occurrences of `Expense` with `Income`.
+When `AddIncomeCommandParser` is used, the sequence diagram is similar, but all occurrences of `Expense` are replaced with `Income`.
 
 The following activity diagram summarizes what happens within `FinanceTrackerParser` when the user executes a new add command:
 
@@ -318,7 +318,7 @@ It is split into two diagrams, one for parsing and one for execution.
 
 ![Sequence diagram for executing the `edit 1 a/5` command on the Expenses tab](images/EditTransactionSequenceDiagram2.png)
 
-When `EditExpenseCommand` is used, the sequence diagram is similar, but replace all occurrences of `Expense` with `Income`.
+When `EditExpenseCommand` is used, the sequence diagram is similar, but all occurrences of `Expense` are replaced with `Income`.
 
 The following activity diagram summarizes what happens within `FinanceTrackerParser` when the user executes a new edit command:
 
@@ -349,7 +349,7 @@ Below is the sequence diagram for interactions within the `Logic` and `Model` co
 
 ![Sequence diagram for parsing the `delete 1` command on the Expenses tab](images/DeleteSequenceDiagram.png)
 
-When `DeleteExpenseCommand` is used, the sequence diagram is similar, but replace all occurrences of `Expense` with `Income`.
+When `DeleteExpenseCommand` is used, the sequence diagram is similar, but all occurrences of `Expense` are replaced with `Income`.
 
 The following activity diagram summarizes what happens within `FinanceTrackerParser` when the user executes a new delete command:
 
@@ -465,13 +465,11 @@ The alternative implementations considered, as well as the rationale behind our 
 
 ### Bookmark transaction
 
-Bookmark transaction is a transaction that is a template that allows users to create transactions that they make frequently, such as paying phone bills monthly or receiving stipend for being a teaching assistant.
+A bookmark transaction is a template that allows users to create transactions that they make frequently, such as paying phone bills monthly or receiving stipend for being a teaching assistant.
 This feature reduces the hassle of keying in information repeatedly for identical transactions that occur frequently.
 
-Bookmark Transaction object is made up of 3 fields. They are mainly: `Title`, `Amount` and `Category`.
-The class diagram below depicts the structure of the `BookmarkTransaction`, `BookmarkExpense`, `BookmarkIncome`, `BookmarkExpenseList` and `BookmarkIncomeList` in the Model Component.
-
-The class diagram below depicts the components involved in the budget feature.
+A `BookmarkTransaction` is made up of 3 fields: `Title`, `Amount` and `Category`.
+The class diagram below depicts the structure of the `BookmarkTransaction`, `BookmarkExpense`, `BookmarkIncome`, `BookmarkExpenseList` and `BookmarkIncomeList` in the Model component.
 
 ![Class Diagram for Bookmark Transaction Class](images/BookmarkTransactionClassDiagram.png)
 
@@ -482,8 +480,8 @@ Class diagram for bookmark transaction model component
 
 ##### Overview
 
-The add bookmark transactions feature allows users to add bookmark transactions into the FinanceTracker.
-Each new bookmark transaction must have the data fields Title, Amount, and Category.
+The add bookmark transactions feature allows users to add bookmark transactions into the `FinanceTracker`.
+Each new bookmark transaction must have the data fields `Title`, `Amount`, and `Category`.
 
 Below is the class diagram of the components involved in the add transactions feature.
 
@@ -542,7 +540,7 @@ Class diagram of components involved in edit bookmark transaction feature
 
 Following is a detailed elaboration of how `EditBoomarkExpenseCommand` operates.
 
-> :information_source: &nbsp; This command can only be executed on the Expense Tab.
+> :information_source: &nbsp; This command can only be executed on the Expenses tab.
 
 **Step 1**. After the successful parsing of user input, the `EditBookmarkExpenseCommand#execute(Model model)` method is called which checks if the `Index` defined as an argument when instantiating `EditBookmarkCommand(Index targetIndex, EditBookmarkTransactionDescriptor editBookmarkTransactionDescriptor)` is valid.
 It uses `EditBookmarkTransactionDescriptor` to create a new edited bookmark expense.
@@ -575,9 +573,9 @@ Class diagram of components involved in delete bookmark transaction feature
 
 Following is a detailed elaboration of how `DeleteBoomarkExpenseCommand` operates.
 
-> :information_source: &nbsp; This command can only be executed on the Expense Tab.
+> :information_source: &nbsp; This command can only be executed on the Expenses tab.
 
-**Step 1**. After the successful parsing of user input, the `DeleteBookmarkExpenseCommand#execute(Model model)` method is called which checks if the `Index` defined when instantiating the `DeleteBookmarkCommand(Index index)` constructor is valid.
+**Step 1**. After the successful parsing of user input, the `DeleteBookmarkExpenseCommand#execute(Model model)` method is called which checks if the `Index` is defined when instantiating the `DeleteBookmarkCommand(Index index)` constructor is valid.
 
 > :information_source: &nbsp; The `Index` must be within the bounds of the list of bookmark expenses.
 
@@ -611,9 +609,9 @@ Class diagram of components involved in convert bookmark transaction feature
 
 Following is a detailed elaboration of how `ConvertBoomarkExpenseCommand` operates.
 
-> :information_source: &nbsp; This command can only be executed on the Expense Tab.
+> :information_source: &nbsp; This command can only be executed on the Expenses tab.
 
-**Step 1**. After the successful parsing of user input, the `ConvertBookmarkExpenseCommand#execute(Model model)` method is called which checks if the `Index` defined when instantiating the `ConvertBookmarkCommand(Index index)` constructor is valid.
+**Step 1**. After the successful parsing of user input, the `ConvertBookmarkExpenseCommand#execute(Model model)` method is called which checks if the `Index` is defined when instantiating the `ConvertBookmarkCommand(Index index)` constructor is valid.
 
 > :information_source: &nbsp; The `Index` must be within the bounds of the list of bookmark expenses.
 
@@ -860,7 +858,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3c1. Fine$$e shows an error message.
 
       Use case resumes at step 2.
-      
+
 **Use case: UC03 - Delete an expense**
 
 **MSS**
@@ -964,7 +962,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. Fine$$e shows an error message.
 
       Use case resumes at step 2.
-      
+
 **Use case: UC07 - Set the expense limit**
 
 **MSS**
@@ -982,7 +980,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2a1. Fine$$e shows an error message.
 
       Use case ends.
-      
+
 **Use case: UC08 - Set the savings goal**
 
 **MSS**
