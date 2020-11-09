@@ -138,11 +138,11 @@ The `FinanceTracker` has the following fields:
 
 The `ModelManager` has the following fields:
 * three `FilteredList` fields which point to the same `ObservableList` obtained from `FinanceTracker::getTransactionList`. The `Predicate` fields in the three `FilteredList` fields are set such that:
-    * `filteredTransactions` shows a view of all `Transaction` objects
-    * `filteredExpenses` shows a view of all `Transaction` objects of type `Expense`
-    * `filteredIncomes` shows a view of all `Transaction` objects of type `Income`
+    * `filteredTransactions` shows a view of all `Transaction` objects.
+    * `filteredExpenses` shows a view of all `Transaction` objects of type `Expense`.
+    * `filteredIncomes` shows a view of all `Transaction` objects of type `Income`.
 
-    The motivation behind having three lists is due to the fact that there are three tabs in the user interface, each having its own list while at the same time retrieving data from the same transaction list.
+    The motivation behind having three lists is due to the fact that there are three tabs in the user interface which display transactions, each having its own list while at the same time retrieving data from the same transaction list.
 * two `ObservableList` fields, `castFilteredExpenses` and `castFilteredIncomes` that contain the same objects as that in `filteredExpenses` and `filteredIncomes` respectively. This is so that the UI can automatically update when the values in the two lists change.
 * two `FilteredList` fields, `FilteredBookmarkExpenses` and `FilteredBookmarkIncomes` that point to the `ObservableList`s obtained from `FinanceTracker::getBookmarkExpenseList` and `FinanceTracker::getBookmarkIncomeList` respectively.
 * a `MonthlyBudget` field which is the same as the `MonthlyBudget` stored in `FinanceTracker`.
@@ -225,7 +225,7 @@ The following activity diagram summarizes what happens when the user executes a 
 
 ##### Design considerations
 
-The alternative implementations considered, as well as the rationale behind our current implementation is as follows:
+The alternative implementations considered, as well as the rationale behind our current implementation are as follows:
 
 | Alternative considered  | Current implementation and rationale   |
 | ----------- | -------------------------   |
@@ -268,7 +268,7 @@ The find transactions feature is implemented via `MonthlyBudget`, which contains
 
 * Two `ObjectProperty<Amount>` fields for `monthlyExpenseLimit` and `monthlySavingsGoal`.
 * Two `ObjectProperty<CalculatedAmount>` fields for `remainingBudget` and `currentSavings`.
-* Three c fields for `monthlyExpenses`, `monthlyIncomes` and `monthlySavings`, which are used for the [Analytics feature](#analytics).
+* Three `ObservableList<CalculatedAmount>` fields for `monthlyExpenses`, `monthlyIncomes` and `monthlySavings`, which are used for the [Analytics feature](#analytics).
 * An `ObservableList<String>` of `months`, to determine which elements in the `ObservableList<CalculatedAmount>` corresponds to which month.
 
 `CalculatedAmount` differs from `Amount` in that a `CalculatedAmount` can be negative, and supports addition and subtraction.
@@ -284,6 +284,7 @@ The commands that trigger a call of `calculateBudgetInfo` are as follows:
 * `EditExpenseCommand` and `EditIncomeCommand`, if the `Amount` is edited.
 * `SetExpenseLimitCommand`, which changes the `Amount` in `monthlyExpenseLimit`.
 * `SetSavingsGoalCommand`, which changes the `Amount` in `monthlySavingsGoal`.
+
 `calculateBudgetInfo` is also called by `Storage` whenever the finance tracker data is loaded upon startup.
 
 ##### Set monthly spending limit
@@ -299,7 +300,7 @@ The following activity diagram summarizes what happens when the user executes an
 
 ##### Design considerations
 
-The alternative implementations considered, as well as the rationale behind our current implementation is as follows:
+The alternative implementations considered, as well as the rationale behind our current implementation are as follows:
 
 | Alternative considered  | Current implementation and rationale   |
 | ----------- | -------------------------   |
@@ -473,21 +474,21 @@ testers are expected to do more *exploratory* testing.
 
 1. View help
 
-    1. Test case: `help`
+    1. Test case: `help`<br>
        Expected: UI switches to the user guide.
 
-    1. Test case: `help me`
+    1. Test case: `help me`<br>
        Expected: There is no change to the UI. An error message is shown as the command cannot have any arguments.
 
 1. Switching tabs
 
-    1. Test case: `tab 2`
+    1. Test case: `tab 2`<br>
        Expected: UI switches to the Expenses tab.
 
-    1. Test case: `tab overview`
+    1. Test case: `tab overview`<br>
        Expected: UI does not switch tabs. An error message is shown as the command format is invalid.
 
-    1. Test case: `tab 5`
+    1. Test case: `tab 5`<br>
        Expected: UI does not switch tabs. An error message is shown as the specified tab does not exist.
 
 ### Transactions
@@ -583,7 +584,7 @@ testers are expected to do more *exploratory* testing.
     Expected: All transactions in the displayed list containing the keyphrase `Bubble Tea` (case-insensitive) are displayed.
 
     1. Test case: `find af/5 c/Food`<br>
-    Expected: All transactions in the displayed list with the category `Food` and amount greater than or equal to `$05.00` are displayed.
+    Expected: All transactions in the displayed list with the category `Food` and amount greater than or equal to `$5.00` are displayed.
 
     1. Test case: `find df/01/09/2020 dt/30/09/2020`<br>
     Expected: All transactions in the displayed list in September 2020 are displayed.
