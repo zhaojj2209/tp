@@ -493,6 +493,7 @@ testers are expected to do more *exploratory* testing.
 ### Transactions
 
 1. Adding an expense
+
     1. Test case: `add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage`<br>
     Expected: An expense titled `Bubble Tea` is added with the given details. UI switches to the Expenses tab.
 
@@ -622,7 +623,105 @@ testers are expected to do more *exploratory* testing.
 
 ### Bookmark transactions
 
-{more to be added}
+1. Adding a bookmark expense
+
+    1. Test case: `add-bookmark-expense t/Phone Bill a/24 c/Utilities`<br>
+    Expected: A bookmark expense titled `Phone Bill` is added with the given details. UI switches to the Expenses tab.
+
+    1. Test case: `add-bookmark-expense t/Phone Bill`<br>
+    Expected: No bookmark expense is added. An error message is shown as the command format is invalid.
+
+    1. Test case: `add-bookmark-expense t/Phone Bill a/24.0 c/Utilities`<br>
+    Expected: No bookmark expense is added. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `add-bookmark-expense t/ a/24 c/Utilities`<br>
+    Expected: No bookmark expense is added. An error message is shown as the parameter is empty.
+
+    1. Test case: `add-bookmark-expense t/Phone Bill a/24 d/10/10/2020 c/Utilities`<br>
+    Expected: No bookmark expense is added. An error message is shown as bookmark expenses should not contain dates.
+
+    1. Test case: `add-bookmark-expense t/Phone Bill a/24 c/Utilities` (again) <br>
+    Expected: No bookmark expense is added. An error message is shown as duplicate bookmark expenses cannot be added.
+
+1. Adding a bookmark income
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/1000 c/Work`<br>
+    Expected: A bookmark income titled `Summer Internship` is added with the given details. UI switches to the Income tab.
+
+    1. Test case: `add-bookmark-income a/1000 c/Work`<br>
+    Expected: No bookmark income is added. An error message is shown as the command format is invalid.
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/1000.000 c/Work`<br>
+    Expected: No bookmark income is added. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/ c/Work`<br>
+    Expected: No bookmark income is added. An error message is shown as the parameter is empty.
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/1000 d/10/10/2020 c/Work`<br>
+    Expected: No bookmark income is added. An error message is shown as bookmark incomes should not contain dates.
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/1000 c/Work` (again) <br>
+    Expected: No bookmark income is added. An error message is shown as duplicate bookmark incomes cannot be added.
+
+1. Editing a bookmark transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 bookmark transactions.
+
+    1. Test case: `edit-bookmark 1 t/Taxi a/10 c/Transport`<br>
+    Expected: First bookmark transaction in the list is edited with all details changed.
+
+    1. Test case: `edit-bookmark 1 c/`<br>
+    Expected: First bookmark transaction in the list is edited with all categories cleared.
+
+    1. Test case: `edit-bookmark t/Taxi`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as the command format is invalid.
+
+    1. Test case: `edit-bookmark 5 a/10`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as the index provided is invalid.
+
+    1. Test case: `edit-bookmark 1 a/12.345`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `edit-bookmark 1 d/`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as the parameter is empty.
+
+    1. Test case: `edit 1`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as at least one parameter must be supplied.
+
+1. Deleting a bookmark transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 bookmark transactions.
+
+    1. Test case: `delete-bookmark 1`<br>
+    Expected: First bookmark transaction in the list is deleted.
+
+    1. Test case: `delete-bookmark first`<br>
+    Expected: No bookmark transaction is deleted. An error message is shown as the command format is invalid.
+
+    1. Test case: `delete-bookmark 5`<br>
+    Expected: No bookmark transaction is deleted. An error message is shown as the index provided is invalid.
+
+1. Converting a bookmark transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 bookmark transactions.
+
+    1. Test case: `convert-bookmark 1 d/10/10/2020`<br>
+    Expected: First bookmark transaction in the list is converted to a transaction with the given date.
+
+    1. Test case: `convert-bookmark 1 c/`<br>
+    Expected: First bookmark transaction in the list is converted to a transaction with the current date.
+
+    1. Test case: `convert-bookmark d/10/10/2020`<br>
+    Expected: No bookmark transaction is converted. An error message is shown as the command format is invalid.
+
+    1. Test case: `convert-bookmark 5 d/10/10/2020`<br>
+    Expected: No bookmark transaction is converted. An error message is shown as the index provided is invalid.
+
+    1. Test case: `convert-bookmark 1 d/10/31/2020`<br>
+    Expected: No bookmark transaction is converted. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `convert-bookmark 1 d/`<br>
+    Expected: No bookmark transaction is converted. An error message is shown as the parameter is empty.
 
 ### Saving data
 
