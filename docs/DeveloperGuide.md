@@ -52,9 +52,21 @@ The sections below give more details of each component.
 **API** :
 [`Ui.java`](https://github.com/AY2021S1-CS2103T-W16-3/tp/blob/master/src/main/java/ay2021s1_cs2103_w16_3/finesse/ui/Ui.java)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `TransactionListPanel`, `StatusBarFooter` etc. All of these, including `MainWindow`, inherit from the abstract `UiPart` class.
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `TransactionListPanel`, `OverviewTabPane` etc.
+All of these, including `MainWindow`, inherit from the abstract `UiPart` class.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts is defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of [`MainWindow`](https://github.com/AY2021S1-CS2103T-W16-3/tp/blob/master/src/main/java/ay2021s1_cs2103_w16_3/finesse/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2021S1-CS2103T-W16-3/tp/blob/master/src/main/resources/view/MainWindow.fxml).
+There are 5 tab panes which are contained within `MainWindow`:
+* `OverviewTabPane` - Displays an overview of the most recent transactions (both incomes and expenses) along with the savings goals.
+  * Contains `TransactionListPanel` and `SavingsGoalPanel`.
+* `IncomeTabPane` - Displays a list of incomes along with bookmark incomes.
+  * Contains `IncomePanel` and `BookmarkIncomePanel`.
+* `ExpenseTabPane` - Displays a list of expenses along with bookmark expenses.
+  * Contains `ExpensePanel` and `BookmarkExpensePanel`.
+* `AnalyticsTabPane` - Displays statistics.
+* `UserGuideTabPane` - Displays the user guide.
+
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts is defined in matching `.fxml` files that are in the `src/main/resources/view` folder.
+For example, the layout of [`MainWindow`](https://github.com/AY2021S1-CS2103T-W16-3/tp/blob/master/src/main/java/ay2021s1_cs2103_w16_3/finesse/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2021S1-CS2103T-W16-3/tp/blob/master/src/main/resources/view/MainWindow.fxml).
 
 The `UI` component:
 
@@ -90,6 +102,7 @@ Below is the Sequence Diagram for interactions within the `Logic` component for 
 The `Model`:
 
 * stores a `UserPref` object that represents the user’s preferences.
+* stores a `CommandHistory` object that keeps track of the 50 most recent commands entered.
 * stores the finance tracker data in the following components:
     * a `TransactionList` containing `Transaction`s.
     * a `BookmarkExpenseList` and `BookmarkIncomeList`, each containing `BookmarkTransaction`s.
@@ -175,6 +188,50 @@ Classes used by multiple components are in the `ay2021s1_cs2103_w16_3.finesse.co
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Tabs
+
+#### Programmatically switch selected tab
+
+##### Overview
+
+Fine$$e supports the ability to switch tabs programmatically.
+The following is a list of commands that utilise this ability:
+* `help` - Opens the [user guide](UserGuide.md).
+* `tab` - Switches to the tab corresponding to the index entered by the user.
+* `add-expense` - Adds an expense to the finance tracker and switches to the Expenses tab.
+* `ls-expense` - Shows a list of all expenses in the finance tracker by switching to the Expenses tab.
+* `add-income` - Adds an income to the finance tracker and switches to the Incomes tab.
+* `ls-income` - Shows a list of all incomes in the finance tracker by switching to the Incomes tab.
+* `add-bookmark-expense` - Adds a bookmark expense to the finance tracker and switches to the Expenses tab.
+* `add-bookmark-income` - Adds a bookmark income to the finance tracker and switches to the Incomes tab.
+
+##### Implementation of feature
+
+The ability to programmatically update the selected tab is implemented via `CommandResult`.
+Upon the successful execution of a command, a `CommandResult` is generated and passed back to `MainWindow`.
+This `CommandResult` contains the necessary information which the `MainWindow` needs to update the user interface, such as:
+* The feedback to be displayed to the user;
+* Whether to exit the application; and
+* Whether to programmatically switch to a different tab in the user interface.
+
+`MainWindow` will then select the tab specified in `CommandResult` as the active tab if applicable.
+
+##### Switching tabs
+
+The following sequence diagram shows how the `CommandResult` is created and returned upon the execution of any command.
+If the command in question is one of those listed above, the UI will switch to the specified tab.
+
+![Interactions inside the Logic Component when executing commands](images/CommandResultSequenceDiagram.png)
+
+##### Design considerations
+
+The alternative implementations considered, as well as the rationale behind our current implementation are as follows:
+
+| Alternative considered  | Current implementation and rationale   |
+| ----------- | -------------------------   |
+| Add a method in `MainWindow` which can be called to programmatically switch tabs in the user interface upon execution of the command. | Encapsulate the tab switching information within `CommandResult` to prevent tight coupling of `Logic` and `UI` components. |
+
 
 ### Transactions
 
@@ -352,26 +409,6 @@ The alternative implementations considered, as well as the rationale behind our 
 | Having separate command parsers for each tab in which the find command can be input, e.g. `FindTransactionCommandParser`, `FindExpenseCommandParser` and `FindIncomeCommandParser`, which return a `FindTransactionCommand`, a `FindExpenseCommand` and a `FindIncomeCommand` respectively. | Use only one `FindCommandParser`, which returns a `FindCommand` that is then further split into the respective `FindXYZCommand`. This is because the parsing for the input is similar same regardless of the tab the user is on.          |
 | Have `FindCommandParser` take in an `Index` corresponding to the parameter being searched. | Make the input of similar format to that of adding transactions, so that the input can be parsed into an `ArgumentMultimap` which is then used generate the relevant `Predicate`s. This is so that multiple search parameters can be employed in one command. |
 
-#### Programmatically switch selected tab
-
-Several of the expense/income-specific commands update the list of transactions displayed in a particular tab.
-Examples of these include the `add-expense` and `add-income` commands.
-As such, on the execution of such commands, the UI has to switch to the affected tab to display the result of the command execution.
-
-The ability to programmatically update the selected tab is implemented via `CommandResult`.
-Upon the successful execution of a command, a `CommandResult` is generated and passed back to `MainWindow`.
-This `CommandResult` contains the necessary information which the `MainWindow` needs to update the user interface, such as:
-* The feedback to be displayed to the user;
-* Whether to exit the application; and
-* Whether to programmatically switch to a different tab in the user interface.
-
-![Interactions inside the Logic Component when executing commands](images/CommandResultSequenceDiagram.png)
-
-Alternatives considered:
-
-* Add a method in `MainWindow` which can be called to programmatically switch tabs in the user interface upon execution of the command.
-  This was decided against as it would result in a much tighter coupling of `Logic` and `UI` components.
-
 ### Budgeting
 ##### Overview
 
@@ -384,7 +421,7 @@ The class diagram below depicts the components involved in the budget feature.
 
 ##### Implementation of feature
 
-The find transactions feature is implemented via `MonthlyBudget`, which contains the following fields:
+The budgeting feature is implemented via `MonthlyBudget`, which contains the following fields:
 
 * Two `ObjectProperty<Amount>` fields for `monthlyExpenseLimit` and `monthlySavingsGoal`.
 * Two `ObjectProperty<CalculatedAmount>` fields for `remainingBudget` and `currentSavings`.
@@ -493,6 +530,103 @@ When the constructor for `AnalyticsTabPane` is called:
 ##### Design considerations
 
 * An external library, [Data2Viz](https://data2viz.io/), was considered, rather than *JavaFX Charts*, but the former was rejected due to difficulty in implementation.
+
+### Command history
+
+##### Overview
+
+In order to fully replicate the Command Line Interface (CLI) experience, Fine$$e features the ability to navigate through the last 50 commands entered.
+This is done by pressing the ↑ or ↓ arrow keys on the keyboard while focused on the command input box.
+
+The class diagram below depicts the components involved in the command history feature.
+
+![Class diagram for command history feature](images/CommandHistoryClassDiagram.png)
+
+##### Implementation of feature
+
+The command history feature is implemented via `CommandHistory`.
+Whenever the user inputs a command, the command is added to the `CommandHistory` so as to be tracked.
+Note that for this section on the command history, all mentions of 'command' refer to the user input, and not the various `Command`s present in the codebase.
+
+`CommandHistory` is backed by an `EvictingStack`, a data structure that works similarly to a normal Last In First Out (LIFO) stack.
+However, when the `EvictingStack` is full, the bottom-most element of the stack is removed (or in other words, evicted).
+This behaviour is achieved by maintaining a doubly-linked list made out of `Node`s.
+
+Each `Node` keeps track of the following information:
+* Its value, which corresponds to a command in this context.
+* A reference to the next `Node` in the linked list.
+* A reference to the previous `Node` in the linked list.
+
+For the `EvictingStack`, it keeps track of not only the `Node` at the top of the stack, but also the `Node` at the bottom.
+This is so that the bottom-most element can be removed in Θ(1) time.
+Due to the linked list being doubly-linked, we can then also find the next bottom-most element of the `EvictingStack` in constant time.
+
+In addition, `CommandHistory` maintains an internal navigation state that gets reset whenever a new command is entered.
+This internal navigation state keeps track of the current position while traversing the command history using the ↑ and ↓ arrow keys, much like a typical CLI.
+
+##### Navigating the command history
+
+When the ↑ arrow key is pressed, there are two possible scenarios:
+1. The current command in the navigation state is the earliest tracked command.
+  * Nothing happens.
+1. The current command in the navigation state is not the earliest tracked command.
+  * The command immediately preceding the current command is retrieved.
+
+The following activity diagram summarizes what happens when the user presses the ↑ arrow key.
+
+![Activity diagram for pressing the ↑ arrow key](images/CommandHistoryUpActivityDiagram.png)
+
+Similarly, when the ↓ arrow key is pressed, there are two possible scenarios:
+1. The current command in the navigation state is the latest tracked command.
+  * The command input box is cleared.
+1. The current command in the navigation state is not the latest tracked command.
+  * The command immediately succeeding the current command is retrieved.
+
+The following activity diagram summarizes what happens when the user presses the ↓ arrow key.
+
+![Activity diagram for pressing the ↓ arrow key](images/CommandHistoryDownActivityDiagram.png)
+
+##### Design considerations
+
+The alternative implementations considered, as well as the rationale behind our current implementation are as follows:
+
+| Alternative considered  | Current implementation and rationale   |
+| ----------- | -------------------------   |
+| Use Java's in-built `Stack` class in `CommandHistory`. | Use a custom `EvictingStack` instead, so as to prevent potentially running out of memory if an extremely large number of commands are entered. |
+
+### Data integrity safeguards
+
+##### Overview
+
+Since Fine$$e is an offline desktop application, it is reliant on the system time to perform date validations.
+This makes it vulnerable to changes in the system time while it is running.
+In particular, if the system time were to be changed to an earlier time, the existing data might get corrupted.
+
+##### Implementation of feature
+
+To safeguard against potential loss or corruption of data, Fine$$e tracks the system time across actions via `Timekeeper`, which keeps track of the last observed time.
+Upon launching the application, `Timekeeper` is instantiated with the current system time.
+Subsequently, every time a command is entered by the user, the last observed time in `Timekeeper` is validated against the current system time.
+
+If the current system time is earlier than the last observed time, Fine\$\$e disables itself to prevent data loss.
+A prompt is shown to the user to ensure that their system time is correct before restarting Fine$$e in order to continue using the application.
+Upon relaunching the application, the data file is validated by `JsonFinanceTrackerParser`.
+
+Should the current system time be later than or equals to the last observed time, the last observed time in `Timekeeper` is updated to the current system time.
+
+##### Validating the time whenever a command is executed
+
+The following sequence diagram shows what happens when a command is entered by the user.
+
+![Sequence diagram for Timekeeper](images/TimekeeperSequenceDiagram.png)
+
+##### Design considerations
+
+The alternative implementations considered, as well as the rationale behind our current implementation are as follows:
+
+| Alternative considered  | Current implementation and rationale   |
+| ----------- | -------------------------   |
+| Query and use the time from some remote server rather than the system time. | Keep track of the last observed system time so that there is no need for an internet connection to use the application. |
 
 --------------------------------------------------------------------------------------------------------------------
 
