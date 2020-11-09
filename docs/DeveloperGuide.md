@@ -463,46 +463,177 @@ The alternative implementations considered, as well as the rationale behind our 
 | ----------- | -------------------------   |
 | Use the `Amount` class for calculated amounts. | Use a separate class `CalculatedAmount` for calculated amounts, so as to avoid breaking abstraction and support negative values.
 
-### Bookmark Transactions
+### Bookmark transaction
 
-#### Proposed Implementation
-The Frequent Expense feature consists of `add-frequent-expense`, `edit-frequent-expense`, `delete-frequent-expense`,
-`convert-frequent-expense`.
+Bookmark transaction is a transaction that is a template that allows users to create transactions that they make frequently, such as paying phone bills monthly or receiving stipend for being a teaching assistant.
+This feature reduces the hassle of keying in information repeatedly for identical transactions that occur frequently.
 
-Frequent expenses are expenses that the user have identified to be occurring regularly or with high frequency.
-Examples of such expenses can be phone bill, music subscription or buying bubble tea on a weekly basis.
+Bookmark Transaction object is made up of 3 fields. They are mainly: `Title`, `Amount` and `Category`.
+The class diagram below depicts the structure of the `BookmarkTransaction`, `BookmarkExpense`, `BookmarkIncome`, `BookmarkExpenseList` and `BookmarkIncomeList` in the Model Component.
 
-This feature allows users to add frequent expenses to the finance tracker. The user can then choose to convert a
-frequent expense to an expense that the user wants to add to the transaction list in the finance tracker. This is done by
-calling `Logic#execute` which creates an  `AddFrequentExpenseCommand`. This command then calls
-`ModelManager#addFrequentExpense`, adding the specified frequent expense into the frequent expense list.
+The class diagram below depicts the components involved in the budget feature.
 
-This feature also simplifies the deletion and editing of frequent expenses, and they work in a similar manner.
+![Class Diagram for Bookmark Transaction Class](images/BookmarkTransactionClassDiagram.png)
 
-#### Convert Frequent Expense To Expense Feature
+{:.image-caption}
+Class diagram for bookmark transaction model component
 
-The purpose of this feature is to allow users to add expenses, that they add to the transaction list in the finance
-tracker on a frequent basis in a convenient manner. After adding a frequent expense into the frequent expense list in
-the finance tracker, the user can call convert-frequent-expense to the respective frequent expense to make the
-conversion.
+#### Add bookmark transactions
 
-Given below is the proposed UML sequence diagram and explanation of an example usage scenario for
-convert-frequent-expense
+##### Overview
+
+The add bookmark transactions feature allows users to add bookmark transactions into the FinanceTracker.
+Each new bookmark transaction must have the data fields Title, Amount, and Category.
+
+Below is the class diagram of the components involved in the add transactions feature.
+
+![AddBookmarkTransaction Class Diagram](images/AddBookmarkTransactionClassDiagram.png)
+
+##### Implementation of feature
+
+The add bookmark transaction feature is implemented via `AddBookmarkExpenseCommand` and `AddBookmarkIncomeCommand`, which are created from `AddBookmarkExpenseCommandParser` and `AddBookmarkIncomeCommandParser` respectively.
+
+1. `AddBookmarkExpenseCommandParser` and `AddBookmarkIncomeCommandParser` take in the argument string and parses it into an `ArgumentMultiMap` that contains all the different data fields mapped (as strings) to their respective prefix.
+
+2. The strings are then parsed to create the data fields within the Model component (dependency arrows omitted in the above diagram for simplicity).
+
+3. The parsers use the data fields to create `BookmarkExpense` or `BookmarkIncome` objects, which are then used to create `AddBookmarkExpenseCommand` or `AddBookmarkIncomeCommand` objects.
+
+
+The following is a detailed elaboration of how `AddBookmarkExpenseCommand` operates.
+
+**Step 1**. After the successful parsing of user input, the `AddBookmarkExpenseCommand#execute(Model model)` method is executed.
+
+**Step 2**. `ModelManager#addBookmarkExpense(toAdd)` is invoked to add the new bookmark expense.
+
+**Step 3**. The new bookmark expense is added into `FinanceTracker#bookmarkExpenses`,  via the `FinanceTracker#addBookmarkExpense(BookmarkExpense bookmarkExpense)`.
+
+**Step 4**. This will then call the `BookmarkExpenseList#add(BookmarkExpense toAdd)` method which will check if the title of the new bookmark expense already exists in `BookmarkExpenseList#internalBookmarkExpenseList` via `BookmarkExpenseList#contains(BookmarkExpense toCheck)` before adding it.
+If the title does exist already, the `DuplicateBookmarkTransactionException` will be thrown otherwise the new bookmark expense will be added.
+
+**Step 5**. After successfully adding the new bookmark expense, the command box will be reflected with `AddBookmarkExpenseCommand#MESSAGE_SUCCESS` constant and a new `CommandResult` will be returned with the message.
+
+![Sequence Diagram of AddBookmarkExpenseCommand](images/AddBookmarkExpenseSequenceDiagram.png)
+
+{:.image-caption}
+Sequence diagram for adding bookmark expenses
+
+![Sequence Diagram of parsing input to create AddBookmarkExpenseCommand](images/ParsingAddBookmarkExpenseInputSequenceDiagram.png)
+
+{:.image-caption}
+Reference frame for sequence diagram
+
+#### Edit bookmark transaction
+
+##### Overview
+
+The edit bookmark transaction feature allows users to edit the details of a specified bookmark transaction in the `FinanceTracker`.
+
+Below is the class diagram of the components involved in the edit bookmark transaction feature.
+
+![Class diagram for edit bookmark transaction](images/EditBookmarkTransactionClassDiagram.png)
+
+{:.image-caption}
+Class diagram of components involved in edit bookmark transaction feature
+
+##### Implementation of feature
+
+> :information_source: &nbsp; `EditBookmarkExpenseCommand` and `EditBookmarkIncomeCommand` work in similar ways.
+
+Following is a detailed elaboration of how `EditBoomarkExpenseCommand` operates.
+
+> :information_source: &nbsp; This command can only be executed on the Expense Tab.
+
+**Step 1**. After the successful parsing of user input, the `EditBookmarkExpenseCommand#execute(Model model)` method is called which checks if the `Index` defined as an argument when instantiating `EditBookmarkCommand(Index targetIndex, EditBookmarkTransactionDescriptor editBookmarkTransactionDescriptor)` is valid.
+It uses `EditBookmarkTransactionDescriptor` to create a new edited bookmark expense.
+Since it is optional for the users to input fields, the fields which are not entered will reuse the existing values that are currently stored and defined in the `BookmarkExpense` object.
+
+> :information_source: &nbsp; The `Index` must be within the bounds of the list of bookmark expenses.
+
+**Step 2**. A new `BookmarkExpense` with the newly updated attributes will be created which replaces the existing `BookmarkExpense` object using `Model#setBookmarkExpense(BookmarkExpense target, BookmarkExpense editedBookmarkExpense)` method.
+
+**Step 3**. The filtered bookmark expense list is then updated with the new `BookmarkExpense` with the `Model#updateFilteredBookmarkExpenseList(PREDICATE_SHOW_ALL_BOOKMARK_EXPENSES)` method.
+
+**Step 4**. The command box will be reflected with the `EditBookmarkExpenseCommand#MESSAGE_EDIT_BOOKMARK_EXPENSE_SUCCESS` constant and a new `CommandResult` will be returned with the success message.
+
+#### Delete bookmark transaction
+
+##### Overview
+
+The delete bookmark transaction feature allows users to delete a specified bookmark transaction in the `FinanceTracker`.
+
+Below is the class diagram of the components involved in the delete bookmark transaction feature.
+
+![Class diagram for delete bookmark transaction](images/DeleteBookmarkTransactionClassDiagram.png)
+
+{:.image-caption}
+Class diagram of components involved in delete bookmark transaction feature
+
+##### Implementation of feature
+
+> :information_source: &nbsp; `DeleteBookmarkExpenseCommand` and `DeleteBookmarkIncomeCommand` work in similar ways.
+
+Following is a detailed elaboration of how `DeleteBoomarkExpenseCommand` operates.
+
+> :information_source: &nbsp; This command can only be executed on the Expense Tab.
+
+**Step 1**. After the successful parsing of user input, the `DeleteBookmarkExpenseCommand#execute(Model model)` method is called which checks if the `Index` defined when instantiating the `DeleteBookmarkCommand(Index index)` constructor is valid.
+
+> :information_source: &nbsp; The `Index` must be within the bounds of the list of bookmark expenses.
+
+**Step 2**. The `BookmarkExpense` at the specified `Index` is then removed from the `BookmarkExpenseList#internalBookmarkExpenseList` observable list using the `Model#deleteBookmarkExpense(BookmarkExpense bookmarkExpense)` method.
+
+**Step 3**. The command box will be reflected with the `DeleteBookmarkExpenseCommand#MESSAGE_DELETE_BOOKMARK_EXPENSE_SUCCESS` constant and a new `CommandResult` will be returned with the success message.
+
+The following activity diagram summarizes what happens when the user executes any command that deletes a specified bookmark expense:
+
+![Activity diagram for delete bookmark expense command](images/DeleteBookmarkExpenseActivityDiagram.png)
+
+{:.image-caption}
+Activity diagram for deleting bookmark expense
+
+#### Convert bookmark transaction
+
+##### Overview
+
+The convert bookmark transaction feature converts a specified bookmark transaction into a transaction and adds it to the `FinanceTracker`.
+
+Below is the class diagram of the components involved in the convert bookmark transaction feature.
+
+![Class diagram for convert bookmark transaction command](images/ConvertBookmarkTransactionClassDiagram.png)
+
+{:.image-caption}
+Class diagram of components involved in convert bookmark transaction feature
+
+##### Implementation of feature
+
+> :information_source: &nbsp; `ConvertBookmarkExpenseCommand` and `ConvertBookmarkIncomeCommand` work in similar ways.
+
+Following is a detailed elaboration of how `ConvertBoomarkExpenseCommand` operates.
+
+> :information_source: &nbsp; This command can only be executed on the Expense Tab.
+
+**Step 1**. After the successful parsing of user input, the `ConvertBookmarkExpenseCommand#execute(Model model)` method is called which checks if the `Index` defined when instantiating the `ConvertBookmarkCommand(Index index)` constructor is valid.
+
+> :information_source: &nbsp; The `Index` must be within the bounds of the list of bookmark expenses.
+
+**Step 2**. The list of bookmark expenses will then be retrieved by calling `Model#getFilteredBookmarkExpenseList()`.
+
+**Step 3**. The program will then retrieve the specified bookmark expense from the list of bookmark expenses. It will
+then call `BookmarkExpense#convert` on the bookmark expense together with the date the user has inputted and convert
+it to an `Expense` object.
+
+**Step 4**. After converting the `BookmarkExpense` object to an `Expense` object, it will call `Model#addExpense` to add the
+`Expense` object to the expense list in the finance tracker.
+
+**Step 5**. The command box will be reflected with the `ConvertBookmarkExpenseCommand#MESSAGE_CONVERT_BOOKMARK_EXPENSE_SUCCESS` constant and a new `CommandResult` will be returned with the success message.
 
 ![Sequence Diagram of the Convert Frequent Expense To Expense Feature](images/ConvertBookmarkExpenseSequenceDiagram.png)
 
-1. User enters the command `convert-frequent-expense 1 d/05/05/2020`, where `1` is the index of the respective frequent
-expense in the frequent expense list and `d/05/05/20` is the date on which the user wants to carry out the conversion,
-to add the selected frequent expense into the expense list. This command is executed by `LogicManager`, which will then
-call `FinanceTrackerParser#parseCommand(“convert-frequent-expense 1 d/05/05/2020”)`. This will create a
-`ConvertFrequentExpenseCommand` object and return it to the `LogicManager`.
-2. The `LogicManager` will then call `ConvertFrequentExpenseCommand#execute`, which will call
-`Model#getFilteredFrequentExpenseList()` to retrieve the list of frequent expenses in the finance tracker.
-3. The program will then retrieve the specified frequent expense from the list of frequent expenses. It will
-then call `FrequentExpense#convert` on the frequent expense together with the date the user has inputted and convert
-it to an `Expense` object.
-4. After converting the `FrequentExpense` object to an `Expense` object, it will call `Model#addExpense` to add the
-`Expense` object to the expense list in the finance tracker.
+{:.image-caption}
+Sequence diagram for converting bookmark expense to expense
+
+![Sequence Diagram of parsing input to create ConvertBookmarkExpenseCommand](images/ParsingConvertBookmarkExpenseInputSequenceDiagram.png)
 
 ### Analytics
 
@@ -810,6 +941,234 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case resumes at step 2.
 
 *{More to be added}*
+
+**Use case: UC12 - Add Bookmark Expense**
+
+**MSS**
+
+1. User enters command, together with a title, expense amount and categories related to the bookmark expense.
+2. Fine$$e displays the feedback that a new bookmark expense has been added.
+3. Fine$$e bookmark expenses list panel will reflect the updated bookmark expenses list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Command is invalid.
+
+    * 1a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1b. Title of the new bookmark expense already exists in the bookmark expenses list.
+
+    * 1b1. Fine$$e shows an error message.
+
+      Use case ends.
+
+**Use case: UC13 - Edit Bookmark Expense**
+
+**MSS**
+
+1. User enters command, together with an index of the bookmark expense to edit, and fields to update.
+2. Fine$$e displays feedback that the specific bookmark expense chosen has been edited.
+3. Fine$$e bookmark expenses list will display the updated bookmark expenses list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Command is invalid.
+
+    * 1a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1b. Index given is invalid.
+
+    * 1b1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1c. Title of edited expense already exists in the bookmark expenses list.
+
+    * 1c1. Fine$$e shows an error message.
+
+      Use case ends.
+
+**Use case: UC14 - Delete Bookmark Expense**
+
+**MSS**
+
+1. User enters command, together with index of the bookmark expense to delete.
+2. Fine$$e displays the feedback that the specified bookmark expense is deleted.
+3. Fine$$e’s bookmark expenses list will display the updated bookmark expenses list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Command is invalid.
+
+    * 1a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1b. Bookmark expenses list is empty.
+
+    * 1b1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1c. Index given is invalid.
+
+    * 1c1. Fine$$e shows an error message.
+
+      Use case ends.
+
+**Use case: UC15 - Convert Bookmark Expense**
+
+**MSS**
+
+1. User enters command, together with the index of the bookmark expense to convert and the date of when the user intends to convert the bookmark expense to an expense.
+2. Fine$$e displays the feedback that the specified bookmark expense has been converted and added to the expenses list.
+3. Fine$$e’s expense list will display the updated expenses list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Command is invalid.
+
+    * 1a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1b. Bookmark expenses list is empty.
+
+    * 1b1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1c. Index given is invalid.
+
+    * 1c1. Fine$$e shows an error message.
+
+      Use case ends.
+
+**Use case: UC16 - Add Bookmark Income**
+
+**MSS**
+
+1. User enters command, together with a title, income amount and categories related to the bookmark income.
+2. Fine$$e displays the feedback that a new bookmark income has been added.
+3. Fine$$e bookmark incomes list panel will reflect the updated bookmark incomes list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Command is invalid.
+
+    * 1a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1b. Title of the new bookmark income already exists in the bookmark incomes list.
+
+    * 1b1. Fine$$e shows an error message.
+
+      Use case ends.
+
+**Use case: UC17 - Edit Bookmark Income**
+
+**MSS**
+
+1. User enters command, together with an index of the bookmark income to edit, and fields to update.
+2. Fine$$e displays feedback that the specific bookmark income chosen has been edited.
+3. Fine$$e bookmark incomes list will display the updated bookmark incomes list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Command is invalid.
+
+    * 1a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1b. Index given is invalid.
+
+    * 1b1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1c. Title of edited income already exists in the bookmark incomes list.
+
+    * 1c1. Fine$$e shows an error message.
+
+      Use case ends.
+
+**Use case: UC18 - Delete Bookmark Income**
+
+**MSS**
+
+1. User enters command, together with index of the bookmark income to delete.
+2. Fine$$e displays the feedback that the specified bookmark income is deleted.
+3. Fine$$e’s bookmark incomes list will display the updated bookmark incomes list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Command is invalid.
+
+    * 1a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1b. Bookmark incomes list is empty.
+
+    * 1b1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1c. Index given is invalid.
+
+    * 1c1. Fine$$e shows an error message.
+
+      Use case ends.
+
+**Use case: UC19 - Convert Bookmark Income**
+
+**MSS**
+
+1. User enters command, together with the index of the bookmark income to convert and the date of when the user intends to convert the bookmark income to an income.
+2. Fine$$e displays the feedback that the specified bookmark income has been converted and added to the incomes list.
+3. Fine$$e’s incomes list will display the updated incomes list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Command is invalid.
+
+    * 1a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1b. Bookmark incomes list is empty.
+
+    * 1b1. Fine$$e shows an error message.
+
+      Use case ends.
+
+* 1c. Index given is invalid.
+
+    * 1c1. Fine$$e shows an error message.
+
+      Use case ends.
 
 --------------------------------------------------------------------------------------------------------------------
 
