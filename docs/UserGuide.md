@@ -66,7 +66,7 @@ Let's get started!
 
 ### 2.1 Installation
 
-1. Ensure you have Java 11 or above installed in your Computer.
+1. Ensure you have Java 11 or above installed in your computer.
 
 1. Download the latest version of `finesse.jar` from [here](https://github.com/AY2021S1-CS2103T-W16-3/tp/releases).
 
@@ -77,22 +77,23 @@ The Fine$$e GUI should appear in a few seconds, with sample data included, simil
 
    ![Ui](images/Ui.png)
 
-1. Type a command in the command box and press Enter to execute it. e.g. typing `help` and pressing Enter will bring up this user guide.
+1. Type a command in the command box and press Enter to execute it.<br>
+   e.g. typing `help` and pressing Enter will bring up this user guide in the finance tracker.<br>
    Some example commands you can try:
 
-   * `list`: Lists all transactions on the current list.
+   * `list`: Lists all transactions in the current list.
 
    * `add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage`:
-   Adds an expense with the title `Bubble Tea`, amount `$5.00`, date `03/10/2020` and category `Food & Beverage` to the finance tracker.
+   Adds an expense with the title `Bubble Tea`, amount `$5.00`, date `03/10/2020` and category `Food & Beverage` to the finance tracker. The UI switches to the [Expenses tab](#223-expenses-tab).
 
-   * `tab 3`: Switches to the [Expenses Tab](#223-expenses-tab).
+   * `tab 3`: Switches to the [Expenses tab](#223-expenses-tab).
 
    * `delete 3`: Deletes the 3rd transaction shown in the current list.
-      Note that this command only works in the [Expenses Tab](#223-expenses-tab) and the [Incomes Tab](#222-incomes-tab).
+      Note that this command only works in the [Expenses tab](#223-expenses-tab) and the [Incomes tab](#222-incomes-tab).
 
    * `exit`: Exits the app.
 
-1. Once you are comfortable with the various features of Fine\\$\\$e, [clear the sample data](#410-clear-data-clear) by typing `clear`, pressing Enter,
+1. Once you are comfortable with the various features in Fine\\$\\$e, [clear the sample data](#410-clear-data-clear) by typing `clear`, pressing Enter,
 typing `clear` again, and pressing Enter again.
 
 1. Start tracking your own finances with Fine\\$\\$e!
@@ -142,7 +143,7 @@ This section will provide you with a brief overview of Fine\\$\\$e, so that you 
   * Create templates for transactions that occur regularly so that frequent expenses/incomes can be added to the finance tracker more conveniently
 1. Budgeting
   * Set a monthly expense limit to track your remaining budget for the month
-  * Set a monthly savings goal to cultivate good saving habits
+  * Set a monthly savings goal to help you cultivate good saving habits
 1. Analytics
   * View trends in your finances to analyze your spending and saving habits and better plan for the future
 
@@ -150,7 +151,7 @@ This section will provide you with a brief overview of Fine\\$\\$e, so that you 
 
 ## 4. Features
 
-This section aims to provide you with in-depth details on Fine\$\$e's unique features, with relevant examples.
+This section aims to provide you with in-depth details of Fine\$\$e's unique features, with relevant examples.
 
 <div markdown="block" class="alert alert-info">
 
@@ -158,7 +159,6 @@ This section aims to provide you with in-depth details on Fine\$\$e's unique fea
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add-expense t/TITLE`, `TITLE` is a parameter which can be used as `add t/Bubble Tea`.
-  Any leading/trailing whitespaces will be ignored. e.g. `add t/   Bubble Tea` and `add t/Bubble Tea   ` will be treated as `add t/Bubble Tea`.
 
 * Items in square brackets (`[]`) are optional.<br>
   e.g `t/TITLE [c/CATEGORY]` can be used as `t/Bubble Tea c/Food & Beverage` or as `t/Bubble Tea`.
@@ -169,7 +169,8 @@ This section aims to provide you with in-depth details on Fine\$\$e's unique fea
 * Parameters can be in any order.<br>
   e.g. if the command specifies `t/TITLE a/AMOUNT`, `a/AMOUNT t/TITLE` is also acceptable.
 
-* Any leading/trailing whitespaces for the user input as a whole will be ignored. e.g. `   find t/Bubble Tea   ` will be treated as `find t/Bubble Tea`.
+* Any leading/trailing whitespaces for the parameters or the user input as a whole will be ignored.<br>
+  e.g. `   find t/Bubble Tea`, `find t/    Bubble Tea` and `find t/Bubble Tea   ` will be treated as `find t/Bubble Tea`.
 
 </div>
 
@@ -189,7 +190,7 @@ The formats of the parameters used in the rest of the document are as follows:
   An optional `$` may be included in front as well.
 * `DATE`, `DATE_FROM` and `DATE_TO` should each be a valid calendar date in `dd/mm/yyyy` format, representing day, month, and year respectively.
   * Valid ranges for days and months are governed by the rules of the [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar#Description).
-    * Months should only range from 1 to 12 (inclusive), representing the 12 months of a year.
+    * Months should only range from 1 to 12 (inclusive), representing the 12 months in a year.
     * Days should only range from 1 to 28, 29, 30, or 31 (all inclusive),
     depending on the number of days in the given month and whether the given year is a leap year.
   * For day and month values, single-digit values must be padded with leading zeroes, meaning that a value of 5 should be written as `05` instead of `5`.
@@ -200,12 +201,12 @@ The formats of the parameters used in the rest of the document are as follows:
 
 Unless stated otherwise, only one input per parameter is allowed for each command.
 
-Furthermore, within each command, any other parameters, other than the ones listed in each command format, are considered invalid.
+Furthermore, within each command, any other parameters other than the ones listed in each command format are considered invalid.
 The command will not be executed, and an error message will be displayed, if any invalid parameters are present.
 
 </div>
 
-### 4.1 Viewing Help: `help`
+### 4.1 View Help: `help`
 
 Brings up the user guide.
 
@@ -231,10 +232,10 @@ Switches the current tab on Fine$$e.
 
 Format: `tab INDEX`
 * Switches to the tab corresponding to the specified `INDEX`. For the `tab` command, `INDEX` **must be 1, 2, 3 or 4**.
-  * Index 1 switches to the [Overview Tab](#221-overview-tab)
-  * Index 2 switches to the [Incomes Tab](#222-incomes-tab)
-  * Index 3 switches to the [Expenses Tab](#223-expenses-tab)
-  * Index 4 switches to the [Analytics Tab](#224-analytics-tab)
+  * Index 1 switches to the [Overview tab](#221-overview-tab).
+  * Index 2 switches to the [Incomes tab](#222-incomes-tab).
+  * Index 3 switches to the [Expenses tab](#223-expenses-tab).
+  * Index 4 switches to the [Analytics tab](#224-analytics-tab).
 
 Example:
 * `tab 3`
@@ -296,9 +297,9 @@ Edits an expense in the finance tracker.
 Format: (when on the [Expenses tab](#223-expenses-tab)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY...]`
 
 * `INDEX` allows you to choose which expense to edit by specifying its position in the currently displayed expenses list.
-* `TITLE`, `AMOUNT`, `DATE` and `CATEGORY` allow you to specify the expense information to update.
-  None of them are mandatory, but at least one must be specified.
-  If any `CATEGORY` is specified, it will replace all of the expense's categories.
+* `TITLE`, `AMOUNT`, `DATE` and `CATEGORY` allow you to specify the expense information to update.<br>
+  None of them are mandatory, but at least one must be specified.<br>
+  If any `CATEGORY` is specified, it will replace all of the expense's categories.<br>
   For parameters that have been omitted, the value will remain unchanged.
 
 > :bulb: &nbsp; To remove all categories from an expense, simply use `c/` with no category name following it.
@@ -318,6 +319,8 @@ Edited Expense: Artificial Intelligence: A Modern Approach Amount: $5.00 Date: 2
 ```
 Edits the first expense in the currently displayed expenses list to have amount `$5.00` and date `22/09/2020`.
 The rest of the expense information remains unchanged.
+
+> :information_source: &nbsp; After executing this command, any filtering done on the expenses list via the `find` command will be reset, and the expenses list will display all expenses.
 
 #### 4.3.3 Delete Expense: `delete`
 
@@ -411,8 +414,8 @@ Lists all expenses with titles containing `tea` and/or `coffee`, with amount equ
 
 ### 4.4 Income
 
-An **income** represents *you receiving money for something*.
-It could be your internship allowance, prize money you won from a pitching competition, or even red packets that you receive over Chinese New Year.
+An **income** represents you *receiving money for something*.
+It could be your internship allowance, prize money you won from a pitch competition, or even red packets that you received over Chinese New Year.
 
 To help you manage your finances, Fine\$\$e records the following information about each of your incomes:
 1. **Title**: A descriptive title, to remind you what the income was about.
@@ -455,9 +458,9 @@ Edits an expense in the finance tracker.
 Format: (when on the [Incomes tab](#222-incomes-tab)) `edit INDEX [t/TITLE] [a/AMOUNT] [d/DATE] [c/CATEGORY...]`
 
 * `INDEX` allows you to choose which income to edit by specifying its position in the currently displayed incomes list.
-* `TITLE`, `AMOUNT`, `DATE` and `CATEGORY` allow you to specify the updated income information.
-  None of them are mandatory, but at least one must be specified.
-  If any `CATEGORY` is specified, it will replace all of the income's existing categories.
+* `TITLE`, `AMOUNT`, `DATE` and `CATEGORY` allow you to specify the updated income information.<br>
+  None of them are mandatory, but at least one must be specified.<br>
+  If any `CATEGORY` is specified, it will replace all of the income's existing categories.<br>
   For parameters that have been omitted, the value will remain unchanged.
 
 > :bulb: &nbsp; To remove all categories from an income, simply use `c/` with no category name following it.
@@ -477,6 +480,8 @@ Edited Income: Teaching Assistant Amount: $2000.00 Date: 18/10/2020 Categories:
 ```
 Edits the third income in the currently displayed incomes list to have amount `$2000.00` and no categories.
 The rest of the income information remains unchanged.
+
+> :information_source: &nbsp; After executing this command, any filtering done on the incomes list via the `find` command will be reset, and the incomes list will display all incomes.
 
 #### 4.4.3 Delete Income: `delete`
 
@@ -595,11 +600,10 @@ Shortcut: `addbe t/TITLE a/AMOUNT [c/CATEGORY...]`
 
 * `CATEGORY` is optional. Multiple `c/` prefixes can be used to specify multiple categories.
 
-> :warning: &nbsp; Adding of duplicate bookmark expenses is not allowed.
-> Bookmark expenses with the same title are considered to be duplicates of each other.
-> Contiguous whitespace characters between words in the title will be treated as a single whitespace character.
->
-> For example: `Phone Bill` and `Phone  Bill` are considered to be the same title while `Phone Bill` and `PhoneBill` are not considered to be the same title.
+> :warning: &nbsp; Adding of duplicate bookmark expenses is not allowed.<br>
+> Bookmark expenses with the same titles are considered to be duplicates of each other.<br>
+> Contiguous whitespace characters between words in the title will be treated as a single whitespace character.<br>
+> e.g. `Phone Bill` and `Phone  Bill` are considered to be the same title, while `Phone Bill` and `PhoneBill` are not considered to be the same title.
 
 Examples:
 * `add-bookmark-expense t/Phone Bill a/60 c/Utilities c/Personal`
@@ -627,16 +631,16 @@ Edits a bookmark expense in the finance tracker.
 
 > :warning: &nbsp; This command can only be executed on the [Expenses tab](#223-expenses-tab).
 
-> :warning: &nbsp; Bookmark expenses with same titles are considered to be duplicates of each other.
-> Therefore, editing the title of a bookmark expense to an already existing title in the bookmark expenses list is not allowed.
+> :warning: &nbsp; Bookmark expenses with the same titles are considered to be duplicates of each other.<br>
+> Therefore, editing the title of a bookmark expense to an already existing title in the bookmark expenses list is not allowed.<br>
 > Contiguous whitespace characters between words in the title will be treated as a single whitespace character.
 
 Format: `edit-bookmark INDEX [t/TITLE] [a/AMOUNT] [c/CATEGORY...]`
 
 * `INDEX` allows you to choose which bookmark expense to edit by specifying its position in the bookmark expenses list.
-* `TITLE`, `AMOUNT` and `CATEGORY` allow you to specify the updated bookmark expense information.
-  None of them are mandatory, but at least one must be specified.
-  If any `CAEGORY` is specified, it will replace all of the bookmark expense's existing categories.
+* `TITLE`, `AMOUNT` and `CATEGORY` allow you to specify the updated bookmark expense information.<br>
+  None of them are mandatory, but at least one must be specified.<br>
+  If any `CAEGORY` is specified, it will replace all of the bookmark expense's existing categories.<br>
   For parameters that have been omitted, the value will remain unchanged.
 
 > :bulb: &nbsp; To remove all categories from a bookmark expense, simply use `c/` with no category name following it.
@@ -658,7 +662,7 @@ Edited Bookmark Expense: Netflix Subscription Amount: $15.00 Categories: [Entert
 
 ![Edit Bookmark Expense](images/userguide/bookmark/AnnotatedEditBookmarkExpense.png)
 
-Edits the third bookmark expense in the bookmark expenses list to have an amount of `$15.00` and two categories of `Entertainment` and `Personal`.
+Edits the third bookmark expense in the bookmark expenses list to have an amount of `$15.00` and two categories `Entertainment` and `Personal`.
 
 #### 4.5.3 Delete Bookmark Expense: `delete-bookmark`
 
@@ -682,11 +686,11 @@ Expected Outcome:
 ```
 Deleted Bookmark Expense: Phone Bill Amount: $60.00 Categories: [Utilities]
 ```
-Deletes the bookmark expense at index 3 in the bookmark expenses list.
+Deletes the third bookmark expense in the bookmark expenses list.
 
 #### 4.5.4 Convert Bookmark Expense: `convert-bookmark`
 
-Converts a bookmark expense into an expense, and adds it to the finance tracker.
+Converts a bookmark expense into an expense, and adds it to the expenses list.
 
 > :warning: &nbsp; This command can only be executed on the [Expense tab](#223-expenses-tab).
 
@@ -713,7 +717,7 @@ Bookmark expense has been converted and successfully added to finance tracker: N
 
 ![Convert Bookmark Expense](images/userguide/bookmark/AnnotatedConvertBookmarkExpense.png)
 
-Converts the third bookmark expense in the bookmark expense list into an expense with the information of the
+Converts the third bookmark expense in the bookmark expenses list into an expense with the information of the
 specified bookmark expense and date `10/08/2020`, and adds it to the expenses list in the finance tracker.
 
 ### 4.6 Bookmark Income
@@ -729,7 +733,7 @@ To help you manage your finances, Fine\$\$e records the following information ab
 ![Overview Bookmark Income Panel](images/userguide/bookmark/AnnotatedBookmarkIncomeOverview.png)
 
 {:.image-caption}
-Bookmark Incomes List Panel in the Incomes tab
+Bookmark Incomes List Panel in the Incomes Tab
 
 #### 4.6.1 Add Bookmark Income: `add-bookmark-income`
 
@@ -743,11 +747,10 @@ Shortcut: `addbi t/TITLE a/AMOUNT [c/CATEGORY...]`
 
 * `CATEGORY` is optional. Multiple `c/` prefixes can be used to specify multiple categories.
 
-> :warning: &nbsp; Adding of duplicate bookmark incomes is not allowed.
-> Bookmark incomes with the same title are considered to be duplicates of each other.
-> Contiguous whitespace characters between words in the title will be treated as a single whitespace character.
->
-> For example: `Part Time` and `Part  Time` are considered to be the same title while `Part Time` and `PartTime` are not considered to be the same title.
+> :warning: &nbsp; Adding of duplicate bookmark incomes is not allowed.<br>
+> Bookmark incomes with the same titles are considered to be duplicates of each other.<br>
+> Contiguous whitespace characters between words in the title will be treated as a single whitespace character.<br>
+> e.g. `Part Time` and `Part  Time` are considered to be the same title, while `Part Time` and `PartTime` are not considered to be the same title.
 
 Examples:
 * `add-bookmark-income t/Internship a/$1000 c/Work`
@@ -775,17 +778,17 @@ Edits a bookmark income in the finance tracker.
 
 > :warning: &nbsp; This command can only be executed on the [Incomes tab](#222-incomes-tab).
 
-> :warning: &nbsp; Bookmark incomes with same titles are considered to be duplicates of each other.
-> Therefore, editing the title of a bookmark income to an already existing title in the bookmark incomes list is not allowed.
+> :warning: &nbsp; Bookmark incomes with the same titles are considered to be duplicates of each other.<br>
+> Therefore, editing the title of a bookmark income to an already existing title in the bookmark incomes list is not allowed.<br>
 > Contiguous whitespace characters between words in the title will be treated as a single whitespace character.
 
 Format: `edit-bookmark INDEX [t/TITLE] [a/AMOUNT] [c/CATEGORY...]`
 
 * `INDEX` allows you to choose which bookmark income to edit by specifying its position in the bookmark incomes list.
-* `TITLE`, `AMOUNT` and `CATEGORY` allow you to specify the updated bookmark income information.
- None of them are mandatory, but at least one must be specified.
- If any `CATEGORY` is specified, it will replace all of the bookmark income's existing categories.
- For parameters that have been omitted, the value will remain unchanged.
+* `TITLE`, `AMOUNT` and `CATEGORY` allow you to specify the updated bookmark income information.<br>
+ None of them are mandatory, but at least one must be specified.<br>
+ If any `CATEGORY` is specified, it will replace all of the bookmark income's existing categories.<br>
+ For parameters that have been omitted, the value will remain unchanged.<br>
 
 > :bulb: &nbsp; To remove all categories from a bookmark income, simply use `c/` with no category name following it.
 
@@ -830,11 +833,11 @@ Expected Outcome:
 ```
 Deleted Bookmark Income: Teaching Assistant Amount: $1890.00 Categories: [CS1101S][CS1231S]
 ```
-Deletes the bookmark income at index 2 in the bookmark incomes list.
+Deletes the second bookmark expense in the bookmark incomes list.
 
 #### 4.6.4 Convert Bookmark Income: `convert-bookmark`
 
-Converts a bookmark income into an income, and adds it to the finance tracker.
+Converts a bookmark income into an income, and adds it to the incomes list.
 
 > :warning: &nbsp; This command can only be executed on the [Incomes tab](#222-incomes-tab).
 
@@ -868,7 +871,7 @@ specified bookmark income and date `03/08/2020`, then adds it to the incomes lis
 
 Ever feel like your wallet just won't stop bleeding? Try setting a monthly expense limit!
 The expense limit feature allows you to limit your spending by setting a budget for the month.
-Once the expense limit is set, it will be visible on the Overview tab along with your remaining budget for this month.
+The monthly expense limit is visible on the Overview tab along with your remaining budget for this month, which is automatically calculated based on the expenses in the finance tracker.
 
 #### 4.7.1 Set Expense Limit: `set-expense-limit`
 
@@ -898,7 +901,7 @@ Sets the monthly expense limit in the finance tracker to be `$400.00`.
 
 Want to save up for the new PlayStation 5 but can't seem to no matter what? Fine$$e has you covered!
 The savings goal feature allows you to save consistently by setting a monthly savings goal, so that you can save up bit by bit and build good financial habits.
-Once the savings goal is set, it will be visible on the Overview tab along with your current savings for this month.
+The monthly savings goal visible on the Overview tab along with your current savings for this month, which is automatically calculated based on the expenses and incomes in the finance tracker.
 
 #### 4.8.1 Set Savings Goal: `set-savings-goal`
 
@@ -935,23 +938,23 @@ There are three bar charts that show the following data over the past three mont
 * Total monthly incomes
 * Total monthly savings
 
-The data in the bar charts is automatically updated to include any recent modifications you have made in the finance tracker every time you switch to the [Analytics Tab](#224-analytics-tab).
+Whenever you switch to the [Analytics tab](#224-analytics-tab), the data in the bar charts is automatically updated to include any recent modifications you have made in the finance tracker.
 This ensures that you will always see the latest information about your spending and saving trends.
 
 ### 4.10 Clear Data: `clear`
 
-Ready to start using Fine\\$\\$e?
+Ready to start using Fine\\$\\$e after fiddling with the sample data? Want to start over your finance tracking journey on a clean slate?
 This command allows you to clear *all* existing data inside the finance tracker. That includes:
 * Expenses and incomes
 * Bookmark expenses and bookmark incomes
-* Expense limit
-* Savings goal
+* Monthly expense limit
+* Monthly savings goal
 
 Format: `clear`
 
 > :warning: &nbsp; This is a powerful command. You might lose your precious data if you are not careful with it.
 
-> :bulb: &nbsp; If there is any data you would like to keep before clearing, write it down somewhere so that you can re-enter it later.
+> :bulb: &nbsp; If there is any data you would like to keep before clearing, save it somewhere so that you can re-enter it later.
 
 To protect against accidental usage, this command needs to be entered **twice in succession** before it takes effect.
 A single `clear` command is nullified when not followed by another `clear` command.
@@ -992,7 +995,7 @@ Finance tracker has been cleared!
 ```
 All data in the finance tracker is cleared.
 
-### 4.11 Exiting the Program: `exit`
+### 4.11 Exit the Program: `exit`
 
 Exits the program.
 
@@ -1049,12 +1052,12 @@ Exit | `exit`
 
 Term | Definition
 -----|-----------
-Bookmark Expense | A template for an expense, which can be used to create expenses and add them to the finance tracker.
-Bookmark Income | A template for an income, which can be used to create incomes and add them to the finance tracker.
-Current date | The system date on the computer on which Fine$$e is set up.
+Bookmark Expense | A template for an expense, which can be used to create expenses that are added to the finance tracker.
+Bookmark Income | A template for an income, which can be used to create incomes that are added to the finance tracker.
+Current Date | The system date on the computer on which Fine$$e is set up.
 Expense | A one-time transaction that results in a decrease in the amount of money you have.
 Income | A one-time transaction that results in an increase in the amount of money you have.
-Text cursor | A blinking vertical line that indicates where text will be placed when entered.
+Text Cursor | A blinking vertical line that indicates where text will be placed when entered.
 
 --------------------------------------------------------------------------------------------------------------------
 
