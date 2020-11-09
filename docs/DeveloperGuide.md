@@ -803,12 +803,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is `Fine$$e` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Add an expense**
+**Use case: UC01 - Add an expense**
 
 **MSS**
 
-1.  User requests to add an expense
-2.  Fine$$e adds the expense
+1.  User requests to add an expense.
+2.  Fine$$e adds the expense.
 
     Use case ends.
 
@@ -820,7 +820,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: Edit an expense**
+**Use case: UC02 - Edit an expense**
 
 **MSS**
 
@@ -860,8 +860,31 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3c1. Fine$$e shows an error message.
 
       Use case resumes at step 2.
+      
+**Use case: UC03 - Delete an expense**
 
-**Use case: Add an income**
+**MSS**
+
+1.  User requests to list expenses.
+2.  Fine$$e shows a list of expenses.
+3.  User requests to delete a specific expense.
+4.  Fine$$e deletes the expense.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given index is invalid.
+
+    * 3a1. Fine$$e shows an error message.
+
+      Use case resumes at step 2.
+
+**Use case: UC04 - Add an income**
 
 **MSS**
 
@@ -878,7 +901,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: Edit an income**
+**Use case: UC05 - Edit an income**
 
 **MSS**
 
@@ -919,12 +942,14 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
+**Use case: UC06 - Delete an income**
+
 **MSS**
 
-1.  User requests to list expenses.
-2.  Fine$$e shows a list of expenses.
-3.  User requests to delete a specific expense.
-4.  Fine$$e deletes the expense.
+1.  User requests to list incomes.
+2.  Fine$$e shows a list of incomes.
+3.  User requests to delete a specific income.
+4.  Fine$$e deletes the income.
 
     Use case ends.
 
@@ -939,10 +964,44 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. Fine$$e shows an error message.
 
       Use case resumes at step 2.
+      
+**Use case: UC07 - Set the expense limit**
 
-*{More to be added}*
+**MSS**
 
-**Use case: UC12 - Add Bookmark Expense**
+1.  User requests to set the expense limit to a specific amount.
+2.  Fine$$e sets the expense limit.
+3.  Fine$$e recalculates budget information.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. The given data field is invalid.
+
+    * 2a1. Fine$$e shows an error message.
+
+      Use case ends.
+      
+**Use case: UC08 - Set the savings goal**
+
+**MSS**
+
+1.  User requests to set the savings goal to a specific amount.
+2.  Fine$$e sets the savings goal.
+3.  Fine$$e recalculates budget information.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. The given data field is invalid.
+
+    * 2a1. Fine$$e shows an error message.
+
+      Use case ends.
+
+**Use case: UC09 - Add Bookmark Expense**
 
 **MSS**
 
@@ -966,7 +1025,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC13 - Edit Bookmark Expense**
+**Use case: UC10 - Edit Bookmark Expense**
 
 **MSS**
 
@@ -996,7 +1055,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC14 - Delete Bookmark Expense**
+**Use case: UC11 - Delete Bookmark Expense**
 
 **MSS**
 
@@ -1026,7 +1085,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC15 - Convert Bookmark Expense**
+**Use case: UC12 - Convert Bookmark Expense**
 
 **MSS**
 
@@ -1056,7 +1115,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC16 - Add Bookmark Income**
+**Use case: UC13 - Add Bookmark Income**
 
 **MSS**
 
@@ -1080,7 +1139,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC17 - Edit Bookmark Income**
+**Use case: UC14 - Edit Bookmark Income**
 
 **MSS**
 
@@ -1110,7 +1169,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC18 - Delete Bookmark Income**
+**Use case: UC15 - Delete Bookmark Income**
 
 **MSS**
 
@@ -1140,7 +1199,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC19 - Convert Bookmark Income**
+**Use case: UC16 - Convert Bookmark Income**
 
 **MSS**
 
@@ -1181,8 +1240,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 5.  The data should not be stored in a Database Management System (DBMS).
 6.  Should not require an installer.
 7.  Should not depend on any remote server.
-
-*{More to be added}*
 
 --------------------------------------------------------------------------------------------------------------------
 
