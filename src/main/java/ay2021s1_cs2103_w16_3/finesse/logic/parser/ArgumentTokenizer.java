@@ -1,9 +1,14 @@
 package ay2021s1_cs2103_w16_3.finesse.logic.parser;
 
+import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static ay2021s1_cs2103_w16_3.finesse.commons.core.Messages.MESSAGE_INVALID_PREFIX_PRESENT_HEADER;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ay2021s1_cs2103_w16_3.finesse.logic.parser.exceptions.ParseException;
 
 /**
  * Tokenizes arguments string of the form: {@code preamble <prefix>value <prefix>value ...}<br>
@@ -14,6 +19,7 @@ import java.util.stream.Collectors;
  *    in the above example.<br>
  */
 public class ArgumentTokenizer {
+
     /**
      * Prevents instantiation of this class.
      */
@@ -21,23 +27,42 @@ public class ArgumentTokenizer {
 
     /**
      * Tokenizes an arguments string and returns an {@code ArgumentMultimap} object that maps prefixes to their
-     * respective argument values. Only the given prefixes will be recognized in the arguments string.
+     * respective argument values. All prefixes from {@code CliSyntax::getAllPrefixes} are recognized, but only the
+     * specified {@param prefixes} are considered valid. The other prefixes from {@param prefixFullSet} that are not
+     * specified are considered invalid and, if detected, will throw {@code ParseException}.
      *
-     * @param argsString Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}
-     * @param prefixes   Prefixes to tokenize the arguments string with
-     * @return           ArgumentMultimap object that maps prefixes to their arguments
+     * @param argsString    Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}.
+     * @param prefixes      Subset of prefixFullSet that are considered valid. Any other prefixes is invalid and
+     *                      thus should throw ParseException.
+     * @return              ArgumentMultimap object that maps prefixes to their arguments.
+     * @throws              ParseException if any invalid prefixes are detected.
      */
-    public static ArgumentMultimap tokenize(String argsString, Prefix... prefixes) {
-        List<PrefixPosition> positions = findAllPrefixPositions(argsString, prefixes);
-        return extractArguments(argsString, positions);
+    public static ArgumentMultimap tokenize(String argsString, String exceptionMessage, Prefix... prefixes)
+            throws ParseException {
+        List<PrefixPosition> positions = findAllPrefixPositions(argsString, CliSyntax.getAllPrefixes());
+        ArgumentMultimap argumentMultimap = extractArguments(argsString, positions);
+
+        List<Prefix> prefixComplementList = Arrays.stream(CliSyntax.getAllPrefixes()).collect(Collectors.toList());
+        List<Prefix> prefixSubList = Arrays.stream(prefixes).collect(Collectors.toList());
+        prefixComplementList.removeAll(prefixSubList);
+        List<Prefix> presentInvalidPrefixes = argumentMultimap.getPresentPrefixes(
+                prefixComplementList.toArray(new Prefix[0]));
+
+        if (!presentInvalidPrefixes.isEmpty()) {
+            StringBuilder invalidPrefixesMessage = new StringBuilder(MESSAGE_INVALID_PREFIX_PRESENT_HEADER);
+            presentInvalidPrefixes.forEach(prefix -> invalidPrefixesMessage.append(" ").append(prefix.toString()));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    invalidPrefixesMessage.toString() + "\n" + exceptionMessage));
+        }
+        return argumentMultimap;
     }
 
     /**
      * Finds all zero-based prefix positions in the given arguments string.
      *
-     * @param argsString Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}
-     * @param prefixes   Prefixes to find in the arguments string
-     * @return           List of zero-based prefix positions in the given arguments string
+     * @param argsString Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}.
+     * @param prefixes   Prefixes to find in the arguments string.
+     * @return           List of zero-based prefix positions in the given arguments string.
      */
     private static List<PrefixPosition> findAllPrefixPositions(String argsString, Prefix... prefixes) {
         return Arrays.stream(prefixes)
@@ -84,9 +109,9 @@ public class ArgumentTokenizer {
      * extracted prefixes to their respective arguments. Prefixes are extracted based on their zero-based positions in
      * {@code argsString}.
      *
-     * @param argsString      Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}
-     * @param prefixPositions Zero-based positions of all prefixes in {@code argsString}
-     * @return                ArgumentMultimap object that maps prefixes to their arguments
+     * @param argsString      Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}.
+     * @param prefixPositions Zero-based positions of all prefixes in {@code argsString}.
+     * @return                ArgumentMultimap object that maps prefixes to their arguments.
      */
     private static ArgumentMultimap extractArguments(String argsString, List<PrefixPosition> prefixPositions) {
 

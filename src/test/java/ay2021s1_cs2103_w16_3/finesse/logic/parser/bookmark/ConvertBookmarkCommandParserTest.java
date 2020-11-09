@@ -5,6 +5,7 @@ import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.DATE_
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.DATE_DESC_SPOTIFY_SUBSCRIPTION;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.INVALID_DATE_DESC;
 import static ay2021s1_cs2103_w16_3.finesse.logic.commands.CommandTestUtil.VALID_DATE_SPOTIFY_SUBSCRIPTION;
+import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CliSyntax.PREFIX_DATE_TO;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static ay2021s1_cs2103_w16_3.finesse.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static ay2021s1_cs2103_w16_3.finesse.testutil.TypicalIndexes.INDEX_SECOND;
@@ -59,7 +60,7 @@ public class ConvertBookmarkCommandParserTest {
         // multiple dates
         assertParseFailure(parser, INDEX_SECOND + DATE_DESC_SPOTIFY_SUBSCRIPTION
                         + DATE_DESC_BUBBLE_TEA,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ConvertBookmarkCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -86,5 +87,21 @@ public class ConvertBookmarkCommandParserTest {
                 new ConvertBookmarkCommand(targetIndex, convertedDate);
 
         assertParseSuccess(parser, userInput, expectedConvertBookmarkCommand);
+    }
+
+    @Test
+    public void parse_moreThanOneDateFieldSpecified_throwParseException() {
+        Index targetIndex = INDEX_SECOND;
+        String userInput = targetIndex.getOneBased() + DATE_DESC_SPOTIFY_SUBSCRIPTION + DATE_DESC_SPOTIFY_SUBSCRIPTION;
+        assertParseFailure(parser, userInput, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                Transaction.MESSAGE_DATE_CONSTRAINTS));
+    }
+
+    @Test
+    public void parse_invalidFieldSpecified_throwParseException() {
+        Index targetIndex = INDEX_SECOND;
+        String userInput = targetIndex.getOneBased() + PREFIX_DATE_TO.toString() + VALID_DATE_SPOTIFY_SUBSCRIPTION;
+        assertParseFailure(parser, userInput, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ConvertBookmarkCommand.MESSAGE_USAGE));
     }
 }

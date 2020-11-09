@@ -24,7 +24,9 @@ public class SetSavingsGoalCommandParser implements Parser<SetSavingsGoalCommand
      * @throws ParseException if the user input does not conform the expected format
      */
     public SetSavingsGoalCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_AMOUNT);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, SetSavingsGoalCommand.MESSAGE_USAGE,
+                PREFIX_AMOUNT);
+
         if (!argMultimap.arePrefixesPresent(PREFIX_AMOUNT)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(

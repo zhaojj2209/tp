@@ -60,6 +60,19 @@ public class ArgumentMultimap {
     }
 
     /**
+     * Returns a list of prefixes that are present in this {@code ArgumentMultimap}.
+     */
+    public List<Prefix> getPresentPrefixes(Prefix... prefixes) {
+        List<Prefix> presentPrefixes = new ArrayList<>();
+        Stream.of(prefixes).forEach(prefix -> {
+            if (getValue(prefix).isPresent()) {
+                presentPrefixes.add(prefix);
+            }
+        });
+        return presentPrefixes;
+    }
+
+    /**
      * Returns true if the prefix contains more than one value.
      */
     public boolean moreThanOneValuePresent(Prefix prefix) {

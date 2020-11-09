@@ -26,28 +26,28 @@ public class ConvertBookmarkCommandParser implements Parser<ConvertBookmarkComma
      */
     public ConvertBookmarkCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_DATE);
 
-        Date date;
-
-        if (argMultimap.getValue(PREFIX_DATE).isPresent()) {
-            if (argMultimap.moreThanOneValuePresent(PREFIX_DATE)) {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, Transaction.MESSAGE_DATE_CONSTRAINTS));
-            } else {
-                date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
-            }
-        } else {
-            date = Date.getCurrentDate();
-        }
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, ConvertBookmarkCommand.MESSAGE_USAGE,
+                PREFIX_DATE);
 
         Index index;
-
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     ConvertBookmarkCommand.MESSAGE_USAGE), pe);
+        }
+
+        if (argMultimap.moreThanOneValuePresent(PREFIX_DATE)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    Transaction.MESSAGE_DATE_CONSTRAINTS));
+        }
+
+        Date date;
+        if (argMultimap.getValue(PREFIX_DATE).isPresent()) {
+            date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
+        } else {
+            date = Date.getCurrentDate();
         }
 
         return new ConvertBookmarkCommand(index, date);
