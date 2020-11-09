@@ -7,12 +7,6 @@ title: Developer Guide
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Setting up, getting started**
-
-Refer to the guide [_Setting up and getting started_](SettingUp.md).
-
---------------------------------------------------------------------------------------------------------------------
-
 ## **Design**
 
 ### Architecture
@@ -96,15 +90,23 @@ Below is the Sequence Diagram for interactions within the `Logic` component for 
 The `Model`:
 
 * stores a `UserPref` object that represents the user’s preferences.
-* stores the finance tracker data in a `TransactionList` containing `Transaction`s.
-* exposes `MonthlySavings` and `MonthlyBudget`, which can be 'observed' e.g. the UI can be bound to the values in these classes so that the UI automatically updates when the values in the classes change.
-* exposes an unmodifiable `ObservableList<Transaction>` which can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list changes.
+* stores the finance tracker data in the following components:
+    * a `TransactionList` containing `Transaction`s.
+    * a `BookmarkExpenseList` and `BookmarkIncomeList`, each containing `BookmarkTransaction`s.
+    * a `MonthlyBudget`.
+* exposes `MonthlyBudget`, which can be 'observed' e.g. the UI can be bound to the values in the class so that the UI automatically updates when the values in the class changes.
+* exposes an unmodifiable `ObservableList<Transaction>`, `ObservableList<Expense>`, `ObservableList<Income>`, `ObservableList<BookmarkExpense>` and `ObservableList<BookmarkIncome>` each, which can be 'observed' e.g. the UI can be bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components (`UI`, `Logic`, `Storage`).
 
 A `Transaction`:
-* represents a unit of user data within the finance tracker.
+* represents a unit of user data of transactions within the finance tracker.
 * is either an `Expense` or an `Income`.
 * is composed of a `Title`, an `Amount`, a `Date`, and any number of `Category`s. These are known as *data fields*.
+
+A `BookmarkTransaction`:
+* represents a unit of user data of bookmark transactions within the finance tracker.
+* is either a `BookmarkExpense` or a `BookmarkIncome`.
+* is composed of a `Title`, an `Amount`, and any number of `Category`s.
 
 The *data fields* `Title`, `Amount`, `Date`, and `Category` are encapsulations of an underlying Java data type.
 
@@ -117,7 +119,7 @@ The *data fields* `Title`, `Amount`, `Date`, and `Category` are encapsulations o
 
 The underlying Java data types allow more operations to be done on `Transaction` objects, such as filtering `Transaction`s by `Date`, or aggregating the `Amount`s of `Expense`s and `Income`s.
 
-<div markdown="span" class="alert alert-info">:information_source:
+<div markdown="span" class="alert alert-info">:information_source: &nbsp;
 **Note:** All data fields take in a `String` in their constructor, regardless of the underlying Java data type.
 Within the constructor, data validation takes place to ensure that the `String` correctly represents a valid data field.
 If the `String` given is not valid, an `IllegalArgumentException` will be thrown.
@@ -128,15 +130,22 @@ This abstraction is maintained so that the implementation of other components (`
 the underlying Java data type choices in the `Model` component.
 </div>
 
-The `FinanceTracker` has a `TransactionList` field which stores all `Expense` and `Income` objects together.
+The `FinanceTracker` has the following fields:
+* a `TransactionList` field which stores all `Expense` and `Income` objects together.
+* a `BookmarkExpenseList` field which stores all `BookmarkExpense` objects.
+* a `BookmarkIncomeList` field which stores all `BookmarkIncome` objects.
+* a `MonthlyBudget` field which stores the user's set monthly expense limit and monthly savings goal, as well as all calculated values for the user's statistics.
 
-The `ModelManager` has three `FilteredList` fields which point to the same `ObservableList` obtained from `FinanceTracker::getTransactionList`.
-The `Predicate` fields in the three `FilteredList` fields are set such that:
-* `filteredTransactions` shows a view of all `Transaction` objects
-* `filteredExpenses` shows a view of all `Transaction` objects of type `Expense`
-* `filteredIncomes` shows a view of all `Transaction` objects of type `Income`
+The `ModelManager` has the following fields:
+* three `FilteredList` fields which point to the same `ObservableList` obtained from `FinanceTracker::getTransactionList`. The `Predicate` fields in the three `FilteredList` fields are set such that:
+    * `filteredTransactions` shows a view of all `Transaction` objects.
+    * `filteredExpenses` shows a view of all `Transaction` objects of type `Expense`.
+    * `filteredIncomes` shows a view of all `Transaction` objects of type `Income`.
 
-The motivation behind having three lists is due to the fact that there are three tabs in the user interface, each having its own list while at the same time retrieving data from the same transaction list.
+    The motivation behind having three lists is due to the fact that there are three tabs in the user interface which display transactions, each having its own list while at the same time retrieving data from the same transaction list.
+* two `ObservableList` fields, `castFilteredExpenses` and `castFilteredIncomes` that contain the same objects as that in `filteredExpenses` and `filteredIncomes` respectively. This is so that the UI can automatically update when the values in the two lists change.
+* two `FilteredList` fields, `FilteredBookmarkExpenses` and `FilteredBookmarkIncomes` that point to the `ObservableList`s obtained from `FinanceTracker::getBookmarkExpenseList` and `FinanceTracker::getBookmarkIncomeList` respectively.
+* a `MonthlyBudget` field which is the same as the `MonthlyBudget` stored in `FinanceTracker`.
 
 ### Storage component
 
@@ -167,28 +176,63 @@ Classes used by multiple components are in the `ay2021s1_cs2103_w16_3.finesse.co
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Find transactions
+### Transactions
+
+#### Find transactions feature
+##### Overview
+
+The find transactions feature allows users to search for transactions in the `FinanceTracker` by various search parameters.
+Each search parameter corresponds to a different predicate which will be used to filter transactions in the various `FilteredList`s.
+
+Below is the class diagram of the components involved in the find transactions feature.
+
+![Class diagram for find transactions feature](images/FindClassDiagram.png)
+
+##### Implementation of feature
 
 The find transactions feature is implemented via `FindCommandParser`, as well as the following commands:
 
-* `FindCommand`, the base command that is returned when the command is parsed
-* `FindTransactionCommand`, to be executed when the user inputs the command on the Overview tab
-* `FindExpenseCommand`, to be executed when the user inputs the command on the Expenses tab
-* `FindIncomeCommand`, to be executed when the user inputs the command on the Incomes tab
+* `FindCommand`, the base command that is returned when the command is parsed.
+* `FindTransactionCommand`, to be executed when the user inputs the command on the Overview tab.
+* `FindExpenseCommand`, to be executed when the user inputs the command on the Expenses tab.
+* `FindIncomeCommand`, to be executed when the user inputs the command on the Incomes tab.
 
-`FindCommandParser` takes in the command arguments and parses them to return a `FindCommand` containing the correct predicate for finding the transactions.
-Depending on the UI tab the user inputted the command in, a `FindXXXCommand` (`FindTransactionCommand`, `FindExpenseCommand` or `FindIncomeCommand`) will be created from the base `FindCommand`.
-When executed, the `FindXXXCommand` will set the predicate of the respective `FilteredList` in `ModelManager` so that only the transactions matching the keywords will be displayed in the list.
+`FindCommandParser` takes in the argument string and parses it into an `ArgumentMultimap` that contains all the different search parameters mapped to their respective prefix.
 
-Below is the Sequence Diagram for interactions within the `Logic` and `Model` components when the user inputs the `"find tea"` command while on the Overview tab.
+Depending on the parameters present, `FindCommandParser` then creates a `List<Predicate<Transaction>>` containing the predicates that will be used to filter the transactions.
+It then returns a `FindCommand` containing the list of predicates.
 
-![Interactions Inside the Logic Component for the `find tea` Command on the Overview tab](images/FindSequenceDiagram.png)
+Depending on the UI tab the user inputted the command in, a `FindXYZCommand` (`FindTransactionCommand`, `FindExpenseCommand` or `FindIncomeCommand`) will be created from the base `FindCommand`.
+When executed, the `FindXYZCommand` will combine all of the predicates in the list into a `combinedPredicate`, then sets the predicate of the respective `FilteredList` in `ModelManager` so that only the transactions matching the `combinedPredicate` will be displayed in the UI.
 
-Alternatives considered:
+The list of predicates that can be used to filter the `FilteredList`s are as follows:
+* `TitleContainsKeyphrasesPredicate` checks if any of the given keyphrases is present in the transaction's title.
+* `HasExactAmountPredicate` checks if the transaction's amount is equal to the given amount.
+* `OnExactDatePredicate` checks if the transaction's date is equal to the given date.
+* `HasCategoriesPredicate` checks if the transaction's categories contains any of the given categories.
+* `InAmountRangePredicate` checks if the transaction's amount is within the given amount range.
+* `InDateRangePredicate` checks if the transaction's date is within the given date range.
 
-* Having separate command parsers for each tab in which the find command can be input, e.g. `FindTransactionCommandParser`, `FindExpenseCommandParser` and `FindIncomeCommandParser`.
+##### Finding transactions
 
-### Programmatically switch selected tab
+Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"find t/tea a/5"` command while on the Overview tab.
+
+![Sequence diagram for executing the `find t/tea a/5` command on the Overview tab](images/FindSequenceDiagram.png)
+
+The following activity diagram summarizes what happens when the user executes a new find command:
+
+![Activity diagram for executing the find command](images/FindActivityDiagram.png)
+
+##### Design considerations
+
+The alternative implementations considered, as well as the rationale behind our current implementation are as follows:
+
+| Alternative considered  | Current implementation and rationale   |
+| ----------- | -------------------------   |
+| Having separate command parsers for each tab in which the find command can be input, e.g. `FindTransactionCommandParser`, `FindExpenseCommandParser` and `FindIncomeCommandParser`, which return a `FindTransactionCommand`, a `FindExpenseCommand` and a `FindIncomeCommand` respectively. | Use only one `FindCommandParser`, which returns a `FindCommand` that is then further split into the respective `FindXYZCommand`. This is because the parsing for the input is similar same regardless of the tab the user is on.          |
+| Have `FindCommandParser` take in an `Index` corresponding to the parameter being searched. | Make the input of similar format to that of adding transactions, so that the input can be parsed into an `ArgumentMultimap` which is then used generate the relevant `Predicate`s. This is so that multiple search parameters can be employed in one command. |
+
+#### Programmatically switch selected tab
 
 Several of the expense/income-specific commands update the list of transactions displayed in a particular tab.
 Examples of these include the `add-expense` and `add-income` commands.
@@ -208,19 +252,61 @@ Alternatives considered:
 * Add a method in `MainWindow` which can be called to programmatically switch tabs in the user interface upon execution of the command.
   This was decided against as it would result in a much tighter coupling of `Logic` and `UI` components.
 
-### Set monthly spending limit
+### Budgeting
+##### Overview
 
-The monthly budgeting feature is implemented via `SetExpenseLimitCommand` as well as `MonthlyExpenseLimit`.
+The budgeting feature allows users to track their remaining budget and current savings based on their set monthly expense limit and monthly savings goal.
+The user sets the monthly expense limit and monthly savings goal, and the remaining budget and current savings will automatically be calculated based on the transactions in the `FinanceTracker`.
 
-[Coming soon]
+The class diagram below depicts the components involved in the budget feature.
 
-### Set monthly savings goal
+![Class diagram for budgeting feature](images/BudgetClassDiagram.png)
 
-The monthly budgeting feature is implemented via `SetSavingsGoalCommand` as well as `MonthlySavingsGoal`.
+##### Implementation of feature
 
-[Coming soon]
+The find transactions feature is implemented via `MonthlyBudget`, which contains the following fields:
 
-### [Proposed] Frequent Expense Feature
+* Two `ObjectProperty<Amount>` fields for `monthlyExpenseLimit` and `monthlySavingsGoal`.
+* Two `ObjectProperty<CalculatedAmount>` fields for `remainingBudget` and `currentSavings`.
+* Three `ObservableList<CalculatedAmount>` fields for `monthlyExpenses`, `monthlyIncomes` and `monthlySavings`, which are used for the [Analytics feature](#analytics).
+* An `ObservableList<String>` of `months`, to determine which elements in the `ObservableList<CalculatedAmount>` corresponds to which month.
+
+`CalculatedAmount` differs from `Amount` in that a `CalculatedAmount` can be negative, and supports addition and subtraction.
+
+The method that is integral to the `MonthlyBudget` is the `calculateBudgetInfo` method.
+It takes in the current `TransactionList` in the `FinanceTracker` and an integer `numOfMonths`, and recalculates all `CalculatedAmount`s in the `MonthlyBudget` as follows:
+* Sum the amounts of all `Expense`s in the `TransactionList` dated in the current month, subtracts it from `monthlyExpenseLimit`, and sets it as the `remainingBudget`.
+* Sums the amounts of all `Expense`s in the `TransactionList` dated in the current month, subtracts it from the sum of all `Income`s dated in the current month, and sets it as the `currentSavings`.
+* For the past number of months indicated by `numOfMonths` (including the current month), calculate the total expenses, total incomes and total savings for each month and add them to the corresponding `ObservableList<CalculatedAmount>`.
+
+The commands that trigger a call of `calculateBudgetInfo` are as follows:
+* `AddExpenseCommand`, `AddIncomeCommand`, `DeleteExpenseCommand` and `DeleteIncomeCommand`, which change the total expenses/incomes of the `Transaction`s in the `TransactionList`.
+* `EditExpenseCommand` and `EditIncomeCommand`, if the `Amount` is edited.
+* `SetExpenseLimitCommand`, which changes the `Amount` in `monthlyExpenseLimit`.
+* `SetSavingsGoalCommand`, which changes the `Amount` in `monthlySavingsGoal`.
+
+`calculateBudgetInfo` is also called by `Storage` whenever the finance tracker data is loaded upon startup.
+
+##### Set monthly spending limit
+
+`SetExpenseLimitCommand` and `SetSavingsGoalCommand` work in similar ways.
+Below is the sequence diagram for interactions within the `Logic` and `Model` components when the user inputs the `"setel a/500"` command.
+
+![Sequence diagram for executing the `setel a/500` command](images/SetExpenseLimitSequenceDiagram.png)
+
+The following activity diagram summarizes what happens when the user executes any command that changes the calculated values in `MonthlyBudget` (e.g. setting expense limit):
+
+![Activity diagram for executing any command that changes the budget](images/BudgetActivityDiagram.png)
+
+##### Design considerations
+
+The alternative implementations considered, as well as the rationale behind our current implementation are as follows:
+
+| Alternative considered  | Current implementation and rationale   |
+| ----------- | -------------------------   |
+| Use the `Amount` class for calculated amounts. | Use a separate class `CalculatedAmount` for calculated amounts, so as to avoid breaking abstraction and support negative values.
+
+### Bookmark Transactions
 
 #### Proposed Implementation
 The Frequent Expense feature consists of `add-frequent-expense`, `edit-frequent-expense`, `delete-frequent-expense`,
@@ -260,21 +346,14 @@ then call `FrequentExpense#convert` on the frequent expense together with the da
 it to an `Expense` object.
 4. After converting the `FrequentExpense` object to an `Expense` object, it will call `Model#addExpense` to add the
 `Expense` object to the expense list in the finance tracker.
---------------------------------------------------------------------------------------------------------------------
 
-## **Documentation, logging, testing, configuration, dev-ops**
+### Analytics
 
-* [Documentation guide](Documentation.md)
-* [Testing guide](Testing.md)
-* [Logging guide](Logging.md)
-* [Configuration guide](Configuration.md)
-* [DevOps guide](DevOps.md)
+[Coming soon]
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Requirements**
-
-### Product scope
+## **Appendix A: Product scope**
 
 **Target user profile**:
 
@@ -286,7 +365,9 @@ it to an `Expense` object.
 
 **Value proposition**: Manage finances and cultivate good financial habits (such as saving) efficiently by typing in CLI commands
 
-### User stories
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix B: User stories**
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
@@ -300,13 +381,17 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user                     | delete a transaction             | remove expenses/incomes that were entered wrongly                           |
 | `* * *`  | user                     | group transactions by categories | keep track of my past expenses/incomes across various categories            |
 | `* * *`  | user                     | search for transactions          | easily find related expenses/incomes                                        |
-| `* *`    | user                     | set a monthly spending limit     | track how much I have left to spend for the month                           |
-| `* *`    | user                     | set a monthly saving goal        | cultivate good saving habits                                                |
-| `* *`    | user                     | view my saving trends            | better manage my future expenses                                            |
+| `* * *`  | user                     | bookmark expenses                | easily add recurring expenses                                               |
+| `* * *`  | user                     | bookmark incomes                 | easily add recurring incomes                                                |
+| `* *`    | user                     | set a monthly spending limit     | plan the maximum amount I wish to spend for the month                       |
+| `* *`    | user                     | set a monthly saving goal        | work towards saving consistently and reaching my savings goals              |
+| `* *`    | user                     | see my remaining monthly budget  | track how much I have left to spend for the month                           |
+| `* *`    | user                     | set a current monthly savings    | track how much I have to save to hit my savings goal                        |
+| `* *`    | user                     | view my saving trends            | better plan my future expenses                                              |
 
-*{More to be added}*
+--------------------------------------------------------------------------------------------------------------------
 
-### Use cases
+## **Appendix C: Use cases**
 
 (For all use cases below, the **System** is `Fine$$e` and the **Actor** is the `user`, unless specified otherwise)
 
@@ -335,7 +420,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 *{More to be added}*
 
-### Non-Functional Requirements
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix D: Non-Functional Requirements**
 
 1.  Should work on any mainstream OS as long as it has Java `11` or above installed.
 2.  Should be able to hold up to 1000 expenses/incomes without a noticeable sluggishness in performance for typical usage.
@@ -347,7 +434,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 *{More to be added}*
 
-### Glossary
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix E: Glossary**
 
 * **Expense**: A single transaction that results in a decrease in cash
 * **Income**: A single transaction that results in an increase in cash
@@ -356,11 +445,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+## **Appendix F: Instructions for manual testing**
 
 Given below are instructions to test the app manually.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
+<div markdown="span" class="alert alert-info">:information_source: &nbsp; **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 
 </div>
@@ -369,40 +458,294 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+   1. Download the jar file and copy into an empty folder.
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file.<br>
+      Expected: Shows the GUI with a set of sample data. The window size may not be optimum.
 
 1. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
    1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+      Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Help and switching tabs
 
-### Deleting a transaction
+1. View help
 
-1. Deleting a transaction while all transactions are being shown
+    1. Test case: `help`<br>
+       Expected: UI switches to the user guide.
 
-   1. Prerequisites: List all transactions using the `list` command. Multiple transactions in the list.
+    1. Test case: `help me`<br>
+       Expected: There is no change to the UI. An error message is shown as the command cannot have any arguments.
 
-   1. Test case: `delete 1`<br>
-      Expected: First transaction is deleted from the list. Details of the deleted transaction shown in the status message. Timestamp in the status bar is updated.
+1. Switching tabs
 
-   1. Test case: `delete 0`<br>
-      Expected: No transaction is deleted. Error details shown in the status message. Status bar remains the same.
+    1. Test case: `tab 2`<br>
+       Expected: UI switches to the Expenses tab.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+    1. Test case: `tab overview`<br>
+       Expected: UI does not switch tabs. An error message is shown as the command format is invalid.
 
-1. _{ more test cases …​ }_
+    1. Test case: `tab 5`<br>
+       Expected: UI does not switch tabs. An error message is shown as the specified tab does not exist.
+
+### Transactions
+
+1. Adding an expense
+
+    1. Test case: `add-expense t/Bubble Tea a/5 d/03/10/2020 c/Food & Beverage`<br>
+    Expected: An expense titled `Bubble Tea` is added with the given details. UI switches to the Expenses tab.
+
+    1. Test case: `add-expense t/Bubble Tea a/5 c/Food c/Beverage`<br>
+    Expected: An expense titled `Bubble Tea` is added with the current date and two categories. UI switches to the Expenses tab.
+
+    1. Test case: `add-expense t/Bubble Tea`<br>
+    Expected: No expense is added. An error message is shown as the command format is invalid.
+
+    1. Test case: `add-expense t/Bubble Tea a/5.000 d/03/10/2020 c/Food & Beverage`<br>
+    Expected: No expense is added. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `add-expense t/ a/5.00 d/03/10/2020 c/Food & Beverage`<br>
+    Expected: No expense is added. An error message is shown as the parameter is empty.
+
+1. Adding an income
+
+    1. Test case: `add-income t/Internship a/560 d/03/10/2020 c/Work`<br>
+    Expected: An income titled `Internship` is added with the given details. UI switches to the Incomes tab.
+
+    1. Test case: `add-income t/Internship a/560 c/Work c/Internship`<br>
+    Expected: An expense titled `Internship` is added with the current date and two categories. UI switches to the Incomes tab.
+
+    1. Test case: `add-income t/Internship`<br>
+    Expected: No expense is added. An error message is shown as the command format is invalid.
+
+    1. Test case: `add-income t/Internship a/560 d/03-10-2020 c/Work`<br>
+    Expected: No expense is added. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `add-income t/Internship a/ d/03/10/2020 c/Work`<br>
+    Expected: No expense is added. An error message is shown as the parameter is empty.
+
+1. Editing a transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 transactions.
+
+    1. Test case: `edit 1 t/Taxi a/10 d/31/10/2020 c/Transport`<br>
+    Expected: First transaction in the list is edited with all details changed.
+
+    1. Test case: `edit 1 c/`<br>
+    Expected: First transaction in the list is edited with all categories cleared.
+
+    1. Test case: `edit t/Taxi`<br>
+    Expected: No transaction is edited. An error message is shown as the command format is invalid.
+
+    1. Test case: `edit 5 a/10`<br>
+    Expected: No transaction is edited. An error message is shown as the index provided is invalid.
+
+    1. Test case: `edit 1 d/10/31/2020`<br>
+    Expected: No transaction is edited. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `edit 1 d/`<br>
+    Expected: No transaction is edited. An error message is shown as the parameter is empty.
+
+    1. Test case: `edit 1`<br>
+    Expected: No transaction is edited. An error message is shown as at least one parameter must be supplied.
+
+1. Deleting a transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 transactions.
+
+    1. Test case: `delete 1`<br>
+    Expected: First transaction in the list is deleted.
+
+    1. Test case: `delete first`<br>
+    Expected: No transaction is deleted. An error message is shown as the command format is invalid.
+
+    1. Test case: `delete 5`<br>
+    Expected: No transaction is deleted. An error message is shown as the index provided is invalid.
+
+1. Listing transactions
+
+    1. Test case: `ls-expense`<br>
+    Expected: UI switches to Expenses tab. All expenses are listed.
+
+    1. Test case: `ls-income`<br>
+    Expected: UI switches to Incomes tab. All incomes are listed.
+
+    1. Test case: `ls-income all`<br>
+    Expected: There is no change in the UI. An error message is shown as the command cannot have any arguments.
+
+1. Finding transactions
+
+    1. Prerequisite: UI is on Overview, Expenses or Incomes tab.
+
+    1. Test case: `find t/Bubble Tea`<br>
+    Expected: All transactions in the displayed list containing the keyphrase `Bubble Tea` (case-insensitive) are displayed.
+
+    1. Test case: `find af/5 c/Food`<br>
+    Expected: All transactions in the displayed list with the category `Food` and amount greater than or equal to `$5.00` are displayed.
+
+    1. Test case: `find df/01/09/2020 dt/30/09/2020`<br>
+    Expected: All transactions in the displayed list in September 2020 are displayed.
+
+    1. Test case: `find tea`<br>
+    Expected: There is no change in the UI. An error message is shown as the command format is wrong.
+
+    1. Test case: `find d/`<br>
+    Expected: There is no change in the UI. An error message is shown as the parameter is empty.
+
+    1. Test case: `find af/10 at/5`<br>
+    Expected: There is no change in the UI. An error message is shown as the range provided is invalid.
+
+### Budgeting
+
+1. Setting expense limit
+
+    1. Test case: `set-expense-limit a/500`<br>
+    Expected: UI switches to Overview tab. Monthly expense limit is changed to `$500.00`. Remaining monthly budget is recalculated.
+
+    1. Test case: `set-expense-limit 500`<br>
+    Expected: Monthly expense limit remains unchanged. An error message is shown as the command format is invalid.
+
+    1. Test case: `set-expense-limit a/`<br>
+    Expected: Monthly expense limit remains unchanged. An error message is shown as the parameter cannot be empty.
+
+1. Setting savings goal
+
+    1. Test case: `set-savings-goal a/500`<br>
+    Expected: UI switches to Overview tab. Monthly savings goal is changed to `$500.00`.
+
+    1. Test case: `set-savings-goal 500`<br>
+    Expected: Monthly savings goal remains unchanged. An error message is shown as the command format is invalid.
+
+    1. Test case: `set-savings-goal a/`<br>
+    Expected: Monthly savings goal remains unchanged. An error message is shown as the parameter cannot be empty.
+
+### Bookmark transactions
+
+1. Adding a bookmark expense
+
+    1. Test case: `add-bookmark-expense t/Phone Bill a/24 c/Utilities`<br>
+    Expected: A bookmark expense titled `Phone Bill` is added with the given details. UI switches to the Expenses tab.
+
+    1. Test case: `add-bookmark-expense t/Phone Bill`<br>
+    Expected: No bookmark expense is added. An error message is shown as the command format is invalid.
+
+    1. Test case: `add-bookmark-expense t/Phone Bill a/24.0 c/Utilities`<br>
+    Expected: No bookmark expense is added. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `add-bookmark-expense t/ a/24 c/Utilities`<br>
+    Expected: No bookmark expense is added. An error message is shown as the parameter is empty.
+
+    1. Test case: `add-bookmark-expense t/Phone Bill a/24 d/10/10/2020 c/Utilities`<br>
+    Expected: No bookmark expense is added. An error message is shown as bookmark expenses should not contain dates.
+
+    1. Test case: `add-bookmark-expense t/Phone Bill a/24 c/Utilities` (again) <br>
+    Expected: No bookmark expense is added. An error message is shown as duplicate bookmark expenses cannot be added.
+
+1. Adding a bookmark income
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/1000 c/Work`<br>
+    Expected: A bookmark income titled `Summer Internship` is added with the given details. UI switches to the Income tab.
+
+    1. Test case: `add-bookmark-income a/1000 c/Work`<br>
+    Expected: No bookmark income is added. An error message is shown as the command format is invalid.
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/1000.000 c/Work`<br>
+    Expected: No bookmark income is added. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/ c/Work`<br>
+    Expected: No bookmark income is added. An error message is shown as the parameter is empty.
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/1000 d/10/10/2020 c/Work`<br>
+    Expected: No bookmark income is added. An error message is shown as bookmark incomes should not contain dates.
+
+    1. Test case: `add-bookmark-income t/Summer Internship a/1000 c/Work` (again) <br>
+    Expected: No bookmark income is added. An error message is shown as duplicate bookmark incomes cannot be added.
+
+1. Editing a bookmark transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 bookmark transactions.
+
+    1. Test case: `edit-bookmark 1 t/Taxi a/10 c/Transport`<br>
+    Expected: First bookmark transaction in the list is edited with all details changed.
+
+    1. Test case: `edit-bookmark 1 c/`<br>
+    Expected: First bookmark transaction in the list is edited with all categories cleared.
+
+    1. Test case: `edit-bookmark t/Taxi`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as the command format is invalid.
+
+    1. Test case: `edit-bookmark 5 a/10`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as the index provided is invalid.
+
+    1. Test case: `edit-bookmark 1 a/12.345`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `edit-bookmark 1 d/`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as the parameter is empty.
+
+    1. Test case: `edit 1`<br>
+    Expected: No bookmark transaction is edited. An error message is shown as at least one parameter must be supplied.
+
+1. Deleting a bookmark transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 bookmark transactions.
+
+    1. Test case: `delete-bookmark 1`<br>
+    Expected: First bookmark transaction in the list is deleted.
+
+    1. Test case: `delete-bookmark first`<br>
+    Expected: No bookmark transaction is deleted. An error message is shown as the command format is invalid.
+
+    1. Test case: `delete-bookmark 5`<br>
+    Expected: No bookmark transaction is deleted. An error message is shown as the index provided is invalid.
+
+1. Converting a bookmark transaction
+
+    1. Prerequisite: UI is on Expenses or Incomes tab. List displayed contains less than 5 bookmark transactions.
+
+    1. Test case: `convert-bookmark 1 d/10/10/2020`<br>
+    Expected: First bookmark transaction in the list is converted to a transaction with the given date.
+
+    1. Test case: `convert-bookmark 1 c/`<br>
+    Expected: First bookmark transaction in the list is converted to a transaction with the current date.
+
+    1. Test case: `convert-bookmark d/10/10/2020`<br>
+    Expected: No bookmark transaction is converted. An error message is shown as the command format is invalid.
+
+    1. Test case: `convert-bookmark 5 d/10/10/2020`<br>
+    Expected: No bookmark transaction is converted. An error message is shown as the index provided is invalid.
+
+    1. Test case: `convert-bookmark 1 d/10/31/2020`<br>
+    Expected: No bookmark transaction is converted. An error message is shown as the parameter format is wrong.
+
+    1. Test case: `convert-bookmark 1 d/`<br>
+    Expected: No bookmark transaction is converted. An error message is shown as the parameter is empty.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Dealing with missing data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. Delete the file `fine$$e.json` in the `data` folder.
 
-1. _{ more test cases …​ }_
+    1. Launch the app by double-clicking the jar file.
+    Expected: Shows the GUI with a set of sample data.
+
+1. Dealing with corrupted data files
+
+    1. Replace the contents of `fine$$e.json` in the `data` folder with the text `File Corrupted`.
+
+    1. Launch the app by double-clicking the jar file.
+    Expected: Shows the GUI with no data.
+
+1. Deleting data file while app is running
+
+    1. Launch the app by double-clicking the jar file.
+
+    1. While the app is running, delete the file `fine$$e.json` in the `data` folder.
+
+    1. Close the app.
+    Expected: `fine$$e.json` is regenerated with the data from the app.
+
